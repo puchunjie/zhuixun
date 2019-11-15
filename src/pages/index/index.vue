@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
+		<image @click="go" class="logo" src="/static/logo.png"></image>
 		<view>
 			<text class="title">{{title}}</text>
 		</view>
@@ -18,7 +18,11 @@
 
 		},
 		methods: {
-
+			go(){
+				uni.navigateTo({
+					url: '/pages/transfer/index'
+				})
+			}
 		}
 	}
 </script>

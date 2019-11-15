@@ -1,16 +1,40 @@
 {
 	"pages": [ 
 		{
+			"path": "pages/transfer/index",
+			"style": {
+				"navigationBarTitleText": "选择角色"
+			}
+		},
+		{
+			"path": "pages/login/teacher",
+			"style": {
+				"navigationBarTitleText": "老师登录"
+			}
+		},
+		{
+			"path": "pages/login/parent",
+			"style": {
+				"navigationBarTitleText": "家长登录"
+			}
+		},
+		{
+			"path": "pages/login/addStudent",
+			"style": {
+				"navigationBarTitleText": "添加学员"
+			}
+		},
+		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "追寻"
 			}
 		}
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarTitleText": "追寻",
+		"navigationBarBackgroundColor": "#fff",
+		"backgroundColor": "#fff"
 	}
 }
