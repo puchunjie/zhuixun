@@ -1,5 +1,11 @@
 {
-	"pages": [ 
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "追寻"
+			}
+		},
 		{
 			"path": "pages/transfer/index",
 			"style": {
@@ -23,12 +29,6 @@
 			"style": {
 				"navigationBarTitleText": "添加学员"
 			}
-		},
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "追寻"
-			}
 		}
 	],
 	"globalStyle": {
@@ -36,5 +36,35 @@
 		"navigationBarTitleText": "追寻",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#fff"
+	},
+	"tabBar": {
+		"color": "#999999",
+		"selectedColor": "#333333",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tab/tab_03.png",
+				"selectedIconPath": "static/tab/tab_15.png"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"text": "课程",
+				"iconPath": "static/tab/tab_05.png",
+				"selectedIconPath": "static/tab/tab_16.png"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"text": "发现",
+				"iconPath": "static/tab/tab_07.png",
+				"selectedIconPath": "static/tab/tab_17.png"
+			},
+			{
+				"pagePath": "pages/index/index",
+				"text": "我的",
+				"iconPath": "static/tab/tab_09.png",
+				"selectedIconPath": "static/tab/tab_18.png"
+			}
+		]
 	}
 }
