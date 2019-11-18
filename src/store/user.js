@@ -1,11 +1,11 @@
 const user = {
     state: {
-        isAdimin: false,
+        isTeacher: true,
         userinfo: {}
     },
     getters: {
         userinfo: state => state.userinfo,
-        isAdimin: state => state.isAdimin
+        isTeacher: state => state.isTeacher
     },
     actions: {
         setUserInfo(context, payload) {
@@ -16,7 +16,6 @@ const user = {
         'SET_USER_INFO': (state, payload) => {
             let user = JSON.parse(JSON.stringify(payload));
             state.userinfo = user;
-            state.isAdimin = user.isAdmin === 1
         }
     }
 }

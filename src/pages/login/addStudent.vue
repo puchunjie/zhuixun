@@ -69,11 +69,11 @@ export default {
             },
             sexes: [{
                 label: '男',
-                img: '/static/man.png',
+                img: '/static/boy.png',
                 value: 1
             },{
                 label: '女',
-                img: '/static/man.png',
+                img: '/static/girl.png',
                 value: 2
             }]
         }

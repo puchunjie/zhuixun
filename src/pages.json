@@ -29,6 +29,30 @@
 			"style": {
 				"navigationBarTitleText": "添加学员"
 			}
+		},
+		{
+			"path": "pages/index/jionIn",
+			"style": {
+				"navigationBarTitleText": "加入机构"
+			}
+		},
+		{
+			"path": "pages/me/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/me/institution/switchInst",
+			"style": {
+				"navigationBarTitleText": "切换机构"
+			}
+		},
+		{
+			"path": "pages/me/studentMana/index",
+			"style": {
+				"navigationBarTitleText": "学员管理"
+			}
 		}
 	],
 	"globalStyle": {
@@ -60,7 +84,7 @@
 				"selectedIconPath": "static/tab/tab_17.png"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/me/index",
 				"text": "我的",
 				"iconPath": "static/tab/tab_09.png",
 				"selectedIconPath": "static/tab/tab_18.png"
