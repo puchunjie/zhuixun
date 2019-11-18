@@ -53,6 +53,18 @@
 			"style": {
 				"navigationBarTitleText": "学员管理"
 			}
+		},
+		{
+			"path": "pages/find/index",
+			"style": {
+				"navigationBarTitleText": "发现"
+			}
+		},
+		{
+			"path": "pages/curriculum/index",
+			"style": {
+				"navigationBarTitleText": "课程"
+			}
 		}
 	],
 	"globalStyle": {
@@ -72,13 +84,13 @@
 				"selectedIconPath": "static/tab/tab_15.png"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/curriculum/index",
 				"text": "课程",
 				"iconPath": "static/tab/tab_05.png",
 				"selectedIconPath": "static/tab/tab_16.png"
 			},
 			{
-				"pagePath": "pages/index/index",
+				"pagePath": "pages/find/index",
 				"text": "发现",
 				"iconPath": "static/tab/tab_07.png",
 				"selectedIconPath": "static/tab/tab_17.png"

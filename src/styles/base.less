@@ -19,6 +19,15 @@
     padding: 24upx;
 }
 
+.clampEllipsis(@num: 2) {
+    text-overflow     : -o-ellipsis-lastline;
+    overflow          : hidden;
+    text-overflow     : ellipsis;
+    display           : -webkit-box;
+    -webkit-line-clamp: @num;
+    -webkit-box-orient: vertical;
+}
+
 .box-shadow(@b: 0 1px 6px rgba(0, 0, 0, .2)) {
     -webkit-box-shadow: @b;
     -moz-box-shadow   : @b;
