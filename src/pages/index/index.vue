@@ -16,7 +16,7 @@
 			</div>
 		</div>
 	
-		<div class="enters" v-if="!isTeacher">
+		<div class="enters">
 			<div class="item" v-for="enter in enters" :key="enter.label">
 				<image class="img" :src="enter.icon"></image>
 				<p class="label">{{ enter.label }}</p>
@@ -24,7 +24,7 @@
 		</div>
 	
 		<!-- 未添加机构 -->
-		<h3 class="title">
+		<h3 class="title mt70">
 			我的课程
 			<div class="right" v-if="jigouList.length > 0">
 				<span class="tip-word">添加机构<i class="iconfont iconjiantou1"></i></span>
@@ -62,7 +62,20 @@ export default {
 				"/static/home/banner02.png",
 				"/static/home/banner03.png"
 			],
-			enters: [{
+			teacherEnters: [{
+				label: '上课签到',
+				icon: '/static/home/qiandao.png'
+			}, {
+				label: '我要请假',
+				icon: '/static/home/qingjia.png'
+			}, {
+				label: '课程调整',
+				icon: '/static/home/pingjia.png'
+			}, {
+				label: '试听安排',
+				icon: '/static/home/goumai.png'
+			}],
+			parentEnters: [{
 				label: '上课签到',
 				icon: '/static/home/qiandao.png'
 			}, {
@@ -100,7 +113,10 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters(['isTeacher'])
+		...mapGetters(['isTeacher']),
+		enters(){
+			return this.isTeacher ? this.teacherEnters : this.parentEnters
+		}
 	},
 	methods: {
 		swiperChange(e) {
@@ -184,7 +200,6 @@ page {
 		display: flex;
 		margin-top: 40upx;
 		justify-content: space-between;
-		margin-bottom: 70upx;
 		.item {
 			width: 120upx;
 			.img {
@@ -201,6 +216,9 @@ page {
 				text-align: center;
 			}
 		}
+	}
+	.mt70{
+		margin-top: 70upx;
 	}
 	
 	.find-banners {
