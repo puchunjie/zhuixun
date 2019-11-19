@@ -6,8 +6,8 @@ import { ScEnumKeys, ScEnums } from '@/utils/enums'
 import './styles/iconfont.css';
 
 Vue.config.productionTip = false
-Vue.prototype.doMain = '';
-Vue.prototype.imgUrl = '';
+Vue.prototype.doMain = 'http://zhuixuncn.com/zapi/webService';
+Vue.prototype.imgUrl = 'http://ptpic.oss-cn-hangzhou.aliyuncs.com/wechat_img';
 Vue.prototype.$clearData = obj => JSON.parse(JSON.stringify(obj));
 Vue.prototype.ScEnumKeys = ScEnumKeys;
 Vue.prototype.ScEnums = ScEnums;
