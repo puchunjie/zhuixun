@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -28,9 +29,13 @@ export default {
 			typeId:0
         }
     },
+    computed: {
+        ...mapGetters(['userinfo'])
+    },
 	onShow:function(){
 		this.getArticleTypeList();
-		this.getArticleList();
+        this.getArticleList();
+        console.log(this.userinfo)
 	},
     methods: {
         changeNav(nav,i){
@@ -40,7 +45,7 @@ export default {
 		getArticleTypeList(){
 			uni.request({
 				method: 'POST',
-				url: '${this.doMain}/article/listArticleTypeByPage',
+				url: `${this.doMain}/article/listArticleTypeByPage`,
 				header: {
 					'content-type': 'application/x-www-form-urlencoded'
 				},
@@ -56,7 +61,7 @@ export default {
 		getArticleList(){
 			uni.request({
 				method: 'POST',
-				url: '${this.doMain}/article/listArticleByTypeId',
+				url: `${this.doMain}/article/listArticleByTypeId`,
 				header: {
 					'content-type': 'application/x-www-form-urlencoded'
 				},
