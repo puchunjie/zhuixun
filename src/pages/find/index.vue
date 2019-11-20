@@ -2,12 +2,10 @@
     <div class="find-container">
         <div class="scroll-warp">
             <scroll-view scroll-x class="scroll-view">
-                <div class="item" :class="{'active': active === i}"
-                @click="changeNav(nav,i)" 
-                v-for="(nav,i) in navs" :key="i">{{ nav.typeName }}</div>
+                <div class="item" :class="{'active': active === i}" @click="changeNav(nav,i)" v-for="(nav,i) in navs" :key="i">{{ nav.typeName }}</div>
             </scroll-view>
         </div>
-
+    
         <div class="list-content">
             <div class="item" v-for="(item,i) in list" :key="i">
                 <h3 class="title">{{ item.title }}</h3>
@@ -26,63 +24,64 @@ export default {
             navs: null,
             active: 0,
             list: null,
-			typeId:0
+            typeId: 0
         }
     },
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onShow:function(){
-		this.getArticleTypeList();
+    methods: {
+        changeNav(nav, i) {
+            this.active = i;
+            this.typeId = nav.typeId;
+        },
+        getArticleTypeList() {
+            return uni.request({
+                method: 'POST',
+                url: `${this.doMain}/article/listArticleTypeByPage`,
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: { pageNo: 1, pageSize: 100 },
+                success: res => {
+                    if (res.data.code === 0) {
+                        this.navs = res.data.data;
+                        console.log(this.articleTypeList);
+                    }
+                }
+            });
+        },
+        getArticleList() {
+            uni.request({
+                method: 'POST',
+                url: `${this.doMain}/article/listArticleByTypeId`,
+                header: {
+                    'content-type': 'application/x-www-form-urlencoded'
+                },
+                data: { typeId: this.typeId },
+                success: res => {
+                    if (res.data.code === 0) {
+                        this.list = res.data.data;
+                        console.log(this.articleTypeList);
+                    }
+                }
+            });
+        }
+    },
+    async onShow() {
+        await this.getArticleTypeList();
         this.getArticleList();
         console.log(this.userinfo)
-	},
-    methods: {
-        changeNav(nav,i){
-            this.active = i;
-			this.typeId = nav.typeId;
-        },
-		getArticleTypeList(){
-			uni.request({
-				method: 'POST',
-				url: `${this.doMain}/article/listArticleTypeByPage`,
-				header: {
-					'content-type': 'application/x-www-form-urlencoded'
-				},
-				data:{pageNo:1, pageSize:100},
-				success: res => {
-					if (res.data.code === 0) {
-						this.navs=res.data.data;
-						console.log(this.articleTypeList);
-					}
-				}
-			});
-		},
-		getArticleList(){
-			uni.request({
-				method: 'POST',
-				url: `${this.doMain}/article/listArticleByTypeId`,
-				header: {
-					'content-type': 'application/x-www-form-urlencoded'
-				},
-				data:{typeId:this.typeId},
-				success: res => {
-					if (res.data.code === 0) {
-						this.navs=res.data.data;
-						console.log(this.articleTypeList);
-					}
-				}
-			});
-		}
     },
 }
 </script>
 
 <style lang="less">
 @import url('../../styles/base.less');
-page{
+page {
     padding-top: 94upx;
 }
+
 .find-container {
     .scroll-warp {
         position: fixed;
@@ -121,29 +120,26 @@ page{
                 background: none;
                 border-radius: 3upx;
             }
-
-            &.active{
+            &.active {
                 color: @dark_green;
-                &:after{
+                &:after {
                     background: rgba(26, 188, 156, 1);
                 }
             }
         }
     }
-
-    .list-content{
+    .list-content {
         width: 100%;
         background: #fff;
         padding: 0 40upx 20upx;
-        .item{
+        .item {
             display: flex;
             position: relative;
             margin-bottom: 25upx;
             padding-top: 40upx;
             width: 100%;
             justify-content: space-between;
-
-            .title{
+            .title {
                 width: 418upx;
                 .clampEllipsis;
                 font-size: 30upx;
@@ -151,15 +147,13 @@ page{
                 font-weight: 500;
                 line-height: 44upx;
             }
-
-            .img{
+            .img {
                 display: block;
                 width: 220upx;
                 height: 164upx;
                 border-radius: 8upx;
             }
-
-            .type{
+            .type {
                 position: absolute;
                 left: 0;
                 bottom: 0;

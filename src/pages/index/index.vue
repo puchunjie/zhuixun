@@ -166,7 +166,7 @@ page {
 				background-color: #BAEBE1;
 				transition: width 0.2s;
 				&:not(:last-child) {
-					margin-right: 5upx;
+					margin-right: 10upx;
 				}
 				&.active {
 					opacity: 1;

@@ -35,7 +35,7 @@ export default {
         }
     },
     methods: {
-        ...mapActions(['setUserInfo']),
+        ...mapActions(['setUserInfo', 'setTeacher']),
         submit() {
 			if(this.form.mobilePhone == ''){
 				return;
@@ -53,7 +53,8 @@ export default {
                 data: this.form,
                 success: res => {
                     if (res.data.code === 0) {
-                        this.setUserInfo(res.data.data)
+                        this.setUserInfo(res.data.data);
+                        this.setTeacher(true);
                         uni.switchTab({
                             url: '/pages/index/index'
                         });

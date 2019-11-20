@@ -61,9 +61,27 @@
 			}
 		},
 		{
+			"path": "pages/find/detail",
+			"style": {
+				"navigationBarTitleText": "文章详情"
+			}
+		},
+		{
 			"path": "pages/curriculum/index",
 			"style": {
 				"navigationBarTitleText": "课程"
+			}
+		},
+		{
+			"path": "pages/curriculum/classDetail_teacher",
+			"style": {
+				"navigationBarTitleText": "课程详情"
+			}
+		},
+		{
+			"path": "pages/curriculum/studentRegistration",
+			"style": {
+				"navigationBarTitleText": "学员签到"
 			}
 		}
 	],
