@@ -4,7 +4,7 @@
             <scroll-view scroll-x class="scroll-view">
                 <div class="item" :class="{'active': active === i}"
                 @click="changeNav(nav,i)" 
-                v-for="(nav,i) in navs" :key="i">{{ nav.label }}</div>
+                v-for="(nav,i) in navs" :key="i">{{ nav.typeName }}</div>
             </scroll-view>
         </div>
 
@@ -22,65 +22,53 @@
 export default {
     data() {
         return {
-            navs: [{
-                label: '家长课堂',
-                value: ''
-            }, {
-                label: '形体舞蹈',
-                value: ''
-            }, {
-                label: '声乐朗诵',
-                value: ''
-            }, {
-                label: '器乐',
-                value: ''
-            }, {
-                label: '校长来了',
-                value: ''
-            }, {
-                label: '机构咨讯',
-                value: ''
-            }],
+            navs: null,
             active: 0,
-            list: [{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            },{
-                title: '5岁前读完1000本书？ 掌握这些方法就不难了',
-                type: '家长课堂',
-                img: '/static/view-img.png'
-            }]
+            list: null,
+			typeId:0
         }
     },
+	onShow:function(){
+		this.getArticleTypeList();
+		this.getArticleList();
+	},
     methods: {
         changeNav(nav,i){
             this.active = i;
-        }
+			this.typeId = nav.typeId;
+        },
+		getArticleTypeList(){
+			uni.request({
+				method: 'POST',
+				url: '${this.doMain}/article/listArticleTypeByPage',
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data:{pageNo:1, pageSize:100},
+				success: res => {
+					if (res.data.code === 0) {
+						this.navs=res.data.data;
+						console.log(this.articleTypeList);
+					}
+				}
+			});
+		},
+		getArticleList(){
+			uni.request({
+				method: 'POST',
+				url: '${this.doMain}/article/listArticleByTypeId',
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data:{typeId:this.typeId},
+				success: res => {
+					if (res.data.code === 0) {
+						this.navs=res.data.data;
+						console.log(this.articleTypeList);
+					}
+				}
+			});
+		}
     },
 }
 </script>

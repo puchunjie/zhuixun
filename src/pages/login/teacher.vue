@@ -6,13 +6,13 @@
             <div class="form-group">
                 <div class="label">账号</div>
                 <div class="value">
-                    <input v-model="form.mobile" placeholder="请填写手机号码" type="number">
+                    <input v-model="form.mobilePhone" placeholder="请填写手机号码" type="number">
                 </div>
             </div>
             <div class="form-group">
                 <div class="label">密码</div>
                 <div class="value">
-                    <input v-model="form.password" placeholder="填写密码" type="password">
+                    <input v-model="form.pwd" placeholder="填写密码" type="password">
                 </div>
             </div>
         </div>
@@ -29,17 +29,24 @@ export default {
     data() {
         return {
             form: {
-                mobile: '',
-                password: ''
+                mobilePhone: '',
+                pwd: ''
             }
         }
     },
     methods: {
         ...mapActions(['setUserInfo']),
         submit() {
+			if(this.form.mobilePhone == ''){
+				return;
+			}
+			if(this.form.pwd == ''){
+				
+				return;
+			}
             uni.request({
                 method: 'POST',
-                url: `${this.doMain}/user/login`,
+                url: `${this.doMain}/teacher/loginByPwd`,
                 header: {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
@@ -50,7 +57,9 @@ export default {
                         uni.switchTab({
                             url: '/pages/index/index'
                         });
-                    }
+                    }else{
+						//res.data.fieldErrors[0].message
+					}
                 }
             });
         }
