@@ -21,6 +21,18 @@ export const dateformatHM = (value, formatStr = 'hh:mm') => {
     return df.format(d, formatStr)
 };
 
+export const dateformatWeek = (value) => {
+    if (!value) return "";
+    let d = isDate(value) ? value : new Date(value*1000);
+	return "周" + "日一二三四五六".charAt(d.getDay());
+};
+
+export const nowDate = () => {
+    let formatStr= 'yyyy-MM-dd';
+    let d = new Date();
+	return df.format(d, formatStr)
+};
+
 export const enumFilter = (value, key) => {
     if (isUndefined(value) || isNull(value)) return "";
     const en = ScEnums[key];
