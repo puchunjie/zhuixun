@@ -36,6 +36,7 @@
     "dateformat-util": "^1.0.5",
     "flyio": "^0.6.2",
     "regenerator-runtime": "^0.12.1",
+    "tki-qrcode": "^0.1.6",
     "vue": "^2.6.10",
     "vuex": "^3.0.1"
   },
