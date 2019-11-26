@@ -2,12 +2,13 @@
     <div class="curriculum-container">
         <calendar @selected="tapDate"></calendar>
         <teacherModule v-if="isTeacher" :list="lessonlist"></teacherModule>
-        <parentModule v-else></parentModule>
+        <parentModule v-else :list="lessonlist"></parentModule>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import calendar from '@/components/calendar.vue'
 import parentModule from './parentModule'
 import teacherModule from './teacherModule'
@@ -28,15 +29,17 @@ export default {
 		...mapGetters(['userinfo']),
     },
     methods: {
+		...mapActions(['setUserInfo', 'setTeacher']),
         tapDate(data) {
             console.log(data.fullDate);
 			this.startTime = data.fullDate;
-			this.getCourseLessonList();
+			if(this.isTeacher){
+				this.getCourseLessonList();
+			}else{
+				this.getCourseLessonListForParent();
+			}
         },
 		getCourseLessonList(){
-			console.info(this.userinfo.teacherId);
-			console.info(this.userinfo.shopId);
-			console.info(this.startTime);
 			uni.request({
 				method: 'POST',
 				url: `${this.doMain}/course/courseLessonList`,
@@ -57,11 +60,37 @@ export default {
 					}
 				}
 			})
+		},
+		getCourseLessonListForParent(){
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/course/parent/listCourseClassStudentLessonByParentId`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"parentId":this.userinfo.parentId, "date":this.startTime},
+				success: res => {
+					if (res.data.code === 0) {
+						console.info(res.data.data);
+						this.lessonlist = res.data.data;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
 		}
     },
 	onShow() {
-		if(this.isTeacher == 1){
+		this.setUserInfo({parentId:4});
+		this.setTeacher(false);
+		if(this.isTeacher){
 			this.getCourseLessonList();
+		}else{
+			this.getCourseLessonListForParent();
 		}
 	},
 
