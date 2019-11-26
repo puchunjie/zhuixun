@@ -1,7 +1,7 @@
 <template>
     <div class="teacher-module">
         <p v-show="list.length > 0" class="title">课日程总数 <span>{{ list.length }}</span></p>
-        <div class="item" v-for="(item,i) in list" :key="i">
+        <div class="item" @click="openToCourseDetail" :data-courseid="item.courseId" v-for="(item,i) in list" :key="i">
             <div class="top">
                 <h3 class="title">{{item.courseName }}</h3>
                 <p class="class-name">{{item.className }}</p>
@@ -43,6 +43,14 @@ export default {
 	    ...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
 	},
+	methods:{
+		openToCourseDetail(){
+			var courseId = e.currentTarget.dataset.courseid;
+			uni.navigateTo({
+				url: '../curriculum/classDetail_teacher?courseId='+courseId
+			});
+		}
+	}
 	
 }
 </script>

@@ -26,8 +26,6 @@
             </div>
             <p v-if="list.length === 0" class="no-class">今日暂无课程~</p>
         </div>
-    
-        <!-- <div class="add-btn-normal">添加课程</div> -->
     </div>
 </template>
 
