@@ -126,7 +126,7 @@
 				"selectedIconPath": "static/tab/tab_18.png"
 			}
 		]
-	},
+	}/*,
 	"condition": { //模式配置，仅开发期间生效
 	    "current": 1, //当前激活的模式（list 的索引项）
 	    "list": [
@@ -136,5 +136,5 @@
 	            "query": "" //启动参数，在页面的onLoad函数里面得到。
 	        }
 	    ]
-	}
+	}*/
 }
