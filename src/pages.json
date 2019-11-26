@@ -83,6 +83,12 @@
 			"style": {
 				"navigationBarTitleText": "学员签到"
 			}
+		},
+		{
+			"path": "pages/course/classList",
+			"style": {
+				"navigationBarTitleText": "班级管理"
+			}
 		}
 	],
 	"globalStyle": {

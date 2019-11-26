@@ -2,23 +2,23 @@
     <div class="class-detail-teacher">
         <div class="class-info">
             <div class="header">
-                <div class="text">未签到：4</div>
-                <div class="text">已签到：1</div>
-                <div class="text">请假：0</div>
+                <div class="text">未签到：{{unSignNum}}</div>
+                <div class="text">已签到：{{signNum}}</div>
+                <div class="text">请假：{{qingJiaNum}}</div>
             </div>
             <div class="body">
-                <div class="class-name">古筝—龚怡文 <span class="tag">签到中</span></div>
+                <div class="class-name">{{courseLesson.className}} <span class="tag">签到中</span></div>
                 <div class="gp">
-                    <div class="left">古筝</div>
-                    <div class="right">2018-12-27(周四)</div>
+                    <div class="left">{{courseLesson.courseName}}</div>
+                    <div class="right">{{courseLesson.startTime | dateformatYMD}}({{courseLesson.startTime | dateformatWeek}})</div>
                 </div>
                 <div class="gp">
-                    <div class="left">C课室</div>
-                    <div class="right">14:50-15:30</div>
+                    <div class="left">{{courseLesson.classRoom}}</div>
+                    <div class="right">{{courseLesson.startTime | dateformatHM}}-{{courseLesson.endTime | dateformatHM}}</div>
                 </div>
                 <div class="gp">
-                    <div class="left">林艳</div>
-                    <div class="right">5人</div>
+                    <div class="left">{{courseLesson.teacherName}}</div>
+                    <div class="right">{{studentNum}}人</div>
                 </div>
             </div>
             <div class="tip">2018-12-27 08:02系统自动开放签到表,签到表将于8小时后自动归档</div>
@@ -27,7 +27,7 @@
         <div class="student-list">
             <zxTabs :options="tabs" @tabChange="tabChange" :labelFormat="labelFormat"></zxTabs>
             <div class="item-content">
-                <div class="item" v-for="(item,i) in list" :key="i">{{  item.name }}</div>
+                <div class="item" v-for="(item,i) in list" :key="i">{{  item.studentName }}</div>
             </div>
         </div>
 
@@ -53,19 +53,21 @@ export default {
                 value: 2,
                 num: 0
             }],
-            list: [{
-                name: '孙瑞'
-            },{
-                name: '孙瑞'
-            },{
-                name: '孙瑞'
-            },{
-                name: '孙瑞'
-            },{
-                name: '孙瑞'
-            },{
-                name: '孙瑞'
-            }]
+            list: [],
+			lessonId:null,
+			courseLesson:"",
+			course:null,
+			shop:null,
+			unSignNum:null,
+			signNum:0,
+			qingJiaNum:0,
+			shiTingStudentNum:0,
+			normalStudentNum:0,
+			shiTingStudentLessonList:[],
+			normalStudentLessonList:[],
+			studentNum:0,
+			
+			
         }
     },
     computed: {
@@ -79,8 +81,49 @@ export default {
         },
         labelFormat(tab){
             return `${tab.label}${tab.num}`
-        }
+        },
+		getCourseDetail(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/courseLesson/view`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { lessonId: this.lessonId },
+			    success: res => {
+					console.info(res.data);
+			        if (res.data.code === 0) {
+			            var resData = res.data.data;
+						this.courseLesson = resData.courseLesson;
+						this.course = resData.course;
+						this.shop = resData.shop;
+						this.unSignNum = resData.unSignNum;
+						this.signNum = resData.signNum;
+						this.qingJiaNum = resData.qingJiaNum;
+						this.shiTingStudentNum = resData.shiTingStudentNum;
+						this.normalStudentNum = resData.normalStudentNum;
+						this.shiTingStudentLessonList = resData.shiTingStudentLessonList;
+						this.normalStudentLessonList = resData.normalStudentLessonList;
+						this.list = this.normalStudentLessonList;
+						this.tabs =[{
+						    label: '正式学员',
+						    value: 1,
+						    num: this.shiTingStudentNum
+						},{
+						    label: '试听学员',
+						    value: 2,
+						    num: this.shiTingStudentNum
+						}];
+						this.studentNum = this.shiTingStudentLessonList.length+this.normalStudentLessonList.length;
+			        }
+			    }
+			});
+		}
     },
+	onLoad(e) {
+		this.lessonId = e.lessonId;
+		this.getCourseDetail();
+	}
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
     <div class="menu-panel">
-        <div class="menu-item" v-for="(menu,i) in menus" :key="i">
+        <div class="menu-item" v-for="(menu,i) in menus" :key="i" @tap="openToPath(menu.path)">
             <i class="iconfont icon" :class="menu.icon" :style="{color: menu.color}"></i>
             <p class="label">{{ menu.label }}</p>
         </div>
@@ -40,7 +40,7 @@ export default {
                 icon: 'iconico',
                 label: '班级管理',
                 color: '#FDC44A',
-                path: ''
+                path: '/pages/course/classList'
             }, {
                 icon: 'iconico',
                 label: '学员评价',
@@ -54,6 +54,15 @@ export default {
             }]
         }
     },
+	methods: {
+		openToPath(url){
+			console.info(url);
+			uni.navigateTo({
+				url: url
+			});
+		}
+	}
+		 
 }
 </script>
 

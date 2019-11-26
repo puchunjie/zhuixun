@@ -82,11 +82,27 @@ export default {
 					}
 				}
 			})
+		},
+		getNowFormatDate() {
+		  var date = new Date();
+		  var seperator1 = "-";
+		  var year = date.getFullYear();
+		  var month = date.getMonth() + 1;
+		  var strDate = date.getDate();
+		  if (month >= 1 && month <= 9) {
+		    month = "0" + month;
+		  }
+		  if (strDate >= 0 && strDate <= 9) {
+		    strDate = "0" + strDate;
+		  }
+		  var currentdate = year + seperator1 + month + seperator1 + strDate;
+		  return currentdate;
 		}
     },
 	onShow() {
-		this.setUserInfo({parentId:4});
-		this.setTeacher(false);
+		this.startTime = this.getNowFormatDate();
+		/*this.setUserInfo({teacherId:14,shopId:6});
+		this.setTeacher(true);*/
 		if(this.isTeacher){
 			this.getCourseLessonList();
 		}else{
