@@ -7,10 +7,10 @@
         </div>
     
         <div class="list-content">
-            <div class="item" v-for="(item,i) in list" :key="i">
-                <h3 class="title">{{ item.title }}</h3>
-                <image class="img" :src="item.img"></image>
-                <span class="type">{{ item.type }}</span>
+            <div class="item" v-for="(item,i) in list" :key="i" @tap="openToDetail" :data-articleId="item.articleId">
+                <h3 class="title">{{ item.articleName }}</h3>
+                <image class="img" :src="item.thumbPic"></image>
+                <span class="type">{{ item.articleSubheading }}</span>
             </div>
         </div>
     </div>
@@ -34,8 +34,10 @@ export default {
         changeNav(nav, i) {
             this.active = i;
             this.typeId = nav.typeId;
+			this.getArticleList();
         },
         getArticleTypeList() {
+			//console.info(this.typeId);
             return uni.request({
                 method: 'POST',
                 url: `${this.doMain}/article/listArticleTypeByPage`,
@@ -46,12 +48,16 @@ export default {
                 success: res => {
                     if (res.data.code === 0) {
                         this.navs = res.data.data;
-                        console.log(this.articleTypeList);
+						if(this.navs != null && this.navs.length > 0){
+							this.typeId = this.navs[0].typeId;
+						}
+						this.getArticleList();
                     }
                 }
             });
         },
         getArticleList() {
+			console.info(this.typeId);
             uni.request({
                 method: 'POST',
                 url: `${this.doMain}/article/listArticleByTypeId`,
@@ -62,16 +68,24 @@ export default {
                 success: res => {
                     if (res.data.code === 0) {
                         this.list = res.data.data;
-                        console.log(this.articleTypeList);
+                        if(this.list != null && this.list.length > 0){
+                        	for (let i = 0; i < this.list.length; i++) {
+                        		this.list[i].thumbPic = this.imgUrl+this.list[i].thumbPic ;
+                        	}
+                        }
                     }
                 }
             });
-        }
+        },
+		openToDetail(e){
+			var articleid = e.currentTarget.dataset.articleid;
+			uni.navigateTo({
+				url: '../find/detail?articleId='+articleid
+			});
+		}
     },
-    async onShow() {
-        await this.getArticleTypeList();
-        this.getArticleList();
-        console.log(this.userinfo)
+    onShow() {
+        this.getArticleTypeList();
     },
 }
 </script>
@@ -146,6 +160,7 @@ page {
                 color: #222;
                 font-weight: 500;
                 line-height: 44upx;
+				height: 88upx;
             }
             .img {
                 display: block;
@@ -154,11 +169,15 @@ page {
                 border-radius: 8upx;
             }
             .type {
+				width: 418upx;
+				.clampEllipsis(1);
                 position: absolute;
                 left: 0;
                 bottom: 0;
                 font-size: 24upx;
                 color: @light_gray;
+				line-height: 24upx;
+				height:24upx;
             }
         }
     }

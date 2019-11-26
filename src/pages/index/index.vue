@@ -1,37 +1,53 @@
 <template>
 	<view class="index-container">
-		<h3 class="title">追寻艺培
+		<h3 class="title">
+			<label v-if="shop != null">
+				{{shopName}}
+			</label>
+			<label v-if="city != null && city !=''">
+				({{cityName}})
+			</label>
 			<div class="right">
-				<image class="icon" src="/static/home/message.png"></image>
+				<image class="icon"  @tap="openToMessage" src="/static/home/message.png"></image>
 			</div>
 		</h3>
 		<div class="swiper-banner">
 			<swiper class="banner" autoplay @change="swiperChange">
-				<swiper-item v-for="(img, index) in list" :key="index" @click="itemClick(img)">
-					<image :src="img" class="slide-image" mode="scaleToFill" />
+				<swiper-item v-for="(img, index) in advertisementList" :key="index" @click="openToAd(img.advertisementId)">
+					<image :src="img.adImg" class="slide-image" mode="scaleToFill" />
 				</swiper-item>
 			</swiper>
 			<div class="dots-warp">
-				<span class="dot-item" :class="{ 'active': activeIndex === e }" v-for="e in list.length" :key="e"></span>
+				<span class="dot-item" :class="{ 'active': activeIndex === e }" v-for="e in advertisementList.length" :key="e"></span>
 			</div>
 		</div>
-	
-		<div class="enters">
+		
+		<div class="enters" v-if="teacherShopId != '' || isTeacher==false">
 			<div class="item" v-for="enter in enters" :key="enter.label">
 				<image class="img" :src="enter.icon"></image>
 				<p class="label">{{ enter.label }}</p>
 			</div>
 		</div>
 	
-		<!-- 未添加机构 -->
-		<h3 class="title mt70">
-			我的课程
-			<div class="right" v-if="jigouList.length > 0">
-				<span class="tip-word">添加机构<i class="iconfont iconjiantou1"></i></span>
-			</div>
-		</h3>
-		<institutionList :list="jigouList"></institutionList>
-	
+		<!-- 老师 -->
+		<div   v-if="teacherShopId == '' && isTeacher==true">
+			<h3 class="title mt70">
+				我的课程
+				<div class="right">
+					<span class="tip-word">添加机构<i class="iconfont iconjiantou1"></i></span>
+				</div>
+			</h3>
+		</div>
+		<!-- 家长 -->
+		<div   v-if="isTeacher == false">
+			<h3 class="title mt70">
+				我的课程
+				<div class="right">
+					<span class="tip-word">加入机构<i class="iconfont iconjiantou1"></i></span>
+				</div>
+			</h3>
+			<institutionList :list="lessonList"></institutionList>
+		</div>
 	
 		<h3 class="title">发现</h3>
 		<div class="find-banners">
@@ -40,9 +56,9 @@
 		</div>
 	
 		<div class="news-list">
-			<div class="item" v-for="(item,i) in news" :key="i">
-				<div class="value">{{ item.content }}</div>
-				<div class="time">{{ item.createTime }}</div>
+			<div class="item" v-for="(item,i) in articleList" :key="i"  data-articleId="item.articleId">
+				<div class="value" >{{ item.articleName }}</div>
+				<div class="time">{{ item.createdTimestamp | dateformatYMD}}</div>
 			</div>
 		</div>
 	</view>
@@ -58,10 +74,7 @@ export default {
 	data() {
 		return {
 			activeIndex: 0,
-			list: ["/static/home/banner01.png",
-				"/static/home/banner02.png",
-				"/static/home/banner03.png"
-			],
+			advertisementList: [],
 			teacherEnters: [{
 				label: '上课签到',
 				icon: '/static/home/qiandao.png'
@@ -88,7 +101,8 @@ export default {
 				label: '课程购买',
 				icon: '/static/home/goumai.png'
 			}],
-			jigouList: [{
+			lessonList: [],
+			/* lessonList: [{
                 icon: '/static/home/logo01.png',
                 time: '2019-03-07 周六 14:00',
                 place: '追寻艺术培训'
@@ -96,33 +110,129 @@ export default {
                 icon: '/static/home/logo01.png',
                 time: '2019-03-07 周六 14:00',
                 place: '追寻艺术培训'
-            }],
-			news: [{
-				content: '我省3200名贫困新生将获得学习资助',
-				createTime: '03-01'
-			},{
-				content: '我省3200名贫困新生将获得学习资助',
-				createTime: '03-01'
-			},{
-				content: '我省3200名贫困新生将获得学习资助',
-				createTime: '03-01'
-			},{
-				content: '我省3200名贫困新生将获得学习资助',
-				createTime: '03-01'
-			}]
+            }], */
+			articleList: [], 
+			shop:'',
+			city:'',
+			advertisementList:[],
+			unReadMessNum:0,
+			teacherShopId:'',
+			shopName:'',
+			cityName:'',
+			isJoinShop:0,
+			
 		}
 	},
 	computed: {
 		...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
 		enters(){
 			return this.isTeacher ? this.teacherEnters : this.parentEnters
 		}
+	},
+	onLoad() {
+		if(this.isTeacher){
+			this.getTeacherIndexInfo();
+		}else{
+			this.getParentIndexInfo();
+		}
+		
 	},
 	methods: {
 		swiperChange(e) {
 			this.activeIndex = e.mp.detail.current;
 			this.$emit("onChange", e.mp.detail.current);
+		},
+		openToMessage(){
+			uni.navigateTo({
+				url: '../message/list'
+			});
+		},
+		openToAd(e){
+			console.info(e)
+			//var newsid = e.currentTarget.dataset.newsid;
+			// uni.navigateTo({
+			// 	url: '../info/info?newsid='+newsid
+			// });
+		},
+		getTeacherIndexInfo(){
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/teacher/index`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"teacherId":this.userinfo.teacherId},
+				success: res => {
+					if (res.data.code === 0) {
+						var resData = res.data.data;
+						this.shop = resData.shop;
+						if(this.shop != null){
+							this.shopName = this.shop.shopName;
+						}
+						this.articleList = resData.articleList;
+						this.city = resData.city;
+						if(this.city != null){
+							this.cityName = this.city.cityName;
+						}
+						this.advertisementList = resData.advertisementList;
+						if(this.advertisementList != null && this.advertisementList.length > 0){
+							for (let i = 0; i < this.advertisementList.length; i++) {
+								this.advertisementList[i].adImg = this.imgUrl+this.advertisementList[i].adImg ;
+							}
+						}
+						this.unReadMessNum = resData.unReadMessNum;
+						this.teacherShopId = this.userinfo.shopId;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
+		},
+		getParentIndexInfo(){
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/parent/index`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"parentId":this.userinfo.parentId},
+				success: res => {
+					if (res.data.code === 0) {
+						var resData = res.data.data;
+						this.articleList = resData.articleList;
+						this.advertisementList = resData.advertisementList;
+						if(this.advertisementList != null && this.advertisementList.length > 0){
+							for (let i = 0; i < this.advertisementList.length; i++) {
+								this.advertisementList[i].adImg = this.imgUrl+this.advertisementList[i].adImg ;
+							}
+						}
+						this.lessonList = resData.lessonList;
+						if(this.lessonList != null && this.lessonList.length > 0){
+							for (let i = 0; i < this.lessonList.length; i++) {
+								this.lessonList[i].icon = this.imgUrl+this.lessonList[i].logoPic;
+								this.lessonList[i].place =this.lessonList[i].shopName;
+								this.lessonList[i].time =this.lessonList[i].startTime;
+								this.lessonList[i].week =this.lessonList[i].week;
+							}
+						}
+						this.unReadMessNum = resData.unReadMessNum;
+						this.isJoinShop = resData.isJoinShop;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
 		}
+		
 	}
 }
 </script>
@@ -184,6 +294,7 @@ page {
 		color: #181818;
 		font-size: 34upx;
 		margin-bottom: 30upx;
+		margin-top: 30upx;
 		justify-content: space-between;
 		.icon {
 			display: block;
@@ -258,10 +369,13 @@ page {
 			.value {
 				width: 500upx;
 				padding-left: 29upx; 
+				overflow: hidden;
 			}
 			.time {
-				width: 100upx;
+				width: 200upx;
 				color: #999;
+				text-align: right;
+
 			}
 		}
 	}

@@ -9,6 +9,18 @@ export const dateformat = (value, formatStr = 'yyyy-MM-dd hh:mm') => {
     return df.format(d, formatStr)
 };
 
+export const dateformatYMD = (value, formatStr = 'yyyy-MM-dd') => {
+    if (!value) return "";
+    let d = isDate(value) ? value : new Date(value*1000);
+    return df.format(d, formatStr)
+};
+
+export const dateformatHM = (value, formatStr = 'hh:mm') => {
+    if (!value) return "";
+    let d = isDate(value) ? value : new Date(value*1000);
+    return df.format(d, formatStr)
+};
+
 export const enumFilter = (value, key) => {
     if (isUndefined(value) || isNull(value)) return "";
     const en = ScEnums[key];

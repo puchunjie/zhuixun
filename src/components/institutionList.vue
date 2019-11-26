@@ -7,7 +7,7 @@
         <div class="item" v-for="(item,i) in list" :key="i">
             <image class="icon" mode="aspectFill" :src="item.icon"></image>
             <div class="info">
-                <h3 class="time">{{ item.time }}</h3>
+                <h3 class="time">{{ item.time | dateformatYMD}} {{ item.week }}  {{ item.time | dateformatHM}}</h3>
                 <div class="place">
                     <i class="place-icon iconfont icontouzijigou00"></i> {{ item.place }}
                 </div>

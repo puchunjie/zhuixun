@@ -38,11 +38,20 @@ export default {
         ...mapActions(['setUserInfo', 'setTeacher']),
         submit() {
 			if(this.form.mobilePhone == ''){
-				return;
+				uni.showToast({
+					title:"请填写手机号",
+					icon: 'none',
+					duration: 1000
+				})
+				return false;
 			}
 			if(this.form.pwd == ''){
-				
-				return;
+				uni.showToast({
+					title:"请填写密码",
+					icon: 'none',
+					duration: 1000
+				})
+				return false;
 			}
             uni.request({
                 method: 'POST',
@@ -59,7 +68,11 @@ export default {
                             url: '/pages/index/index'
                         });
                     }else{
-						//res.data.fieldErrors[0].message
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
 					}
                 }
             });
