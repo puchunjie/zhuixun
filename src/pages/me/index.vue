@@ -6,14 +6,14 @@
         <div class="jigou-ll">
             <div class="info-panel">
                 <div class="head">
-                    张靓颖
-                    <div class="btn">＋{{ isTeacher ? '增加新机构' : '增加新学员' }}</div>
+                    {{userName}}
+                    <div class="btn" @tab="openToAddShopOrStudent">＋{{ isTeacher ? '增加新机构' : '增加新学员' }}</div>
                 </div>
                 <div class="content">
                     <image class="h-logo" src='/static/boy.png'></image>
                     <div v-if="isTeacher" class="body" @click="goSwitch">
-                        <p class="number">服务于2个机构</p>
-                        <p class="word">3个班级授课 50个学生</p>
+                        <p class="number">服务于{{fuWuJiGouNum}}个机构</p>
+                        <p class="word">{{banJiShouKeNum}}个班级授课 {{studentNum}}个学生</p>
                     </div>
                     <div v-else class="body" @click="goStudentMana">
                         <p class="number">ID： No.1915 1603 7930</p>
@@ -35,6 +35,7 @@
 <script>
 import institutionList from '@/components/institutionList.vue'
 import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import teacherMenu from './teacherMenu.vue'
 import parentMenu from './parentMenu.vue'
 export default {
@@ -45,20 +46,63 @@ export default {
     },
     data() {
         return {
-            
+            userName:'',
+			portrait:'',
+			fuWuJiGouNum:'',
+			banJiShouKeNum:'',
+			studentNum:'',
+			shopList:[],
+			
         }
     },
     computed: {
-        ...mapGetters(['isTeacher'])
+        ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
     },
     methods: {
+		...mapActions(['setUserInfo']),
         goSwitch(){
             uni.navigateTo({url: '/pages/me/institution/switchInst'})
         },
         goStudentMana(){
             uni.navigateTo({url: '/pages/me/studentMana/index'})
-        }
+        },
+		openToAddShopOrStudent(){
+			if(this.isTeacher){
+				uni.navigateTo({url: '/pages/me/institution/add'});
+			}else{
+				uni.navigateTo({url: '/pages/me/studentMana/add'});
+			}
+		}
     },
+	onLoad() {
+		uni.request({
+			method: 'POST',
+			url: `${this.doMain}/teacher/center`,
+			header: {
+				'content-type': 'application/x-www-form-urlencoded'
+			},
+			data: {"teacherId":this.userinfo.teacherId},
+			success: res => {
+				console.info(res);
+				if (res.data.code === 0) {
+					var resData = res.data.data;
+					this.setUserInfo(resData.teacher);
+					this.userName = this.userinfo.userName;
+					this.portrait = this.userinfo.portrait;
+					this.fuWuJiGouNum = resData.fuWuJiGouNum;
+					this.banJiShouKeNum = resData.banJiShouKeNum;
+					this.studentNum = resData.studentNum;
+				}else{
+					uni.showToast({
+						title:res.data.fieldErrors[0].message,
+						icon: 'none',
+						duration: 1000
+					})
+				}
+			}
+		})
+	},
 }
 </script>
 

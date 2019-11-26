@@ -3,42 +3,47 @@
         <p v-show="list.length > 0" class="title">课日程总数 <span>{{ list.length }}</span></p>
         <div class="item" v-for="(item,i) in list" :key="i">
             <div class="top">
-                <h3 class="title">古筝—龚怡文</h3>
-                <p class="class-name">古筝</p>
+                <h3 class="title">{{item.courseName }}</h3>
+                <p class="class-name">{{item.className }}</p>
                 <div class="class-info">
-                    <div class="time">14:50-15:30</div>
-                    <div class="room">C课室</div>
-                    <div class="teacher">老师：林艳</div>
+                    <!-- <div class="time">14:50-15:30</div> -->
+                    <div class="room">{{item.classRoom }}</div>
+                    <div class="teacher">老师：{{item.teacherName }}</div>
                 </div>
             </div>
             <div class="person-nums">
-                <div class="it">固定：1/3</div>
-                <div class="it">临时：0</div>
-                <div class="it">试听：0</div>
+                <div class="it">固定：{{item.actualNormalStudentNum }}/{{item.normalStudentNum }}</div>
+                <div class="it">临时：{{item.linShiStudentNum}}</div>
+                <div class="it">试听：{{item.shiTingStudentNum}}</div>
             </div>
     
-            <span class="stop" v-show="item.isStop">停课</span>
+            <span class="stop">正常</span>
         </div>
         <p v-if="list.length === 0" class="no-class">今日暂无课程~</p>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
+	props: {
+	    list: {
+	        type: Array,
+	        default: function() {
+	            return []
+	        }
+	    }
+	},
     data() {
         return {
-            list: [{
-                title: '古筝—龚怡文',
-                isStop: true
-            }, {
-                title: '古筝—龚怡文',
-                isStop: false
-            }, {
-                title: '古筝—龚怡文',
-                isStop: true
-            }]
+           
         }
     },
+	computed: {
+	    ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
+	},
+	
 }
 </script>
 

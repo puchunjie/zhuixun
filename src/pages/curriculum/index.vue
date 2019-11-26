@@ -1,7 +1,7 @@
 <template>
     <div class="curriculum-container">
         <calendar @selected="tapDate"></calendar>
-        <teacherModule v-if="isTeacher"></teacherModule>
+        <teacherModule v-if="isTeacher" :list="lessonlist"></teacherModule>
         <parentModule v-else></parentModule>
     </div>
 </template>
@@ -17,14 +17,53 @@ export default {
         parentModule,
         teacherModule
     },
+	data() {
+	    return {
+			lessonlist:[],
+			startTime:null,
+	    }
+	},
     computed: {
-        ...mapGetters(['isTeacher'])
+        ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
     },
     methods: {
         tapDate(data) {
-            console.log(data)
-        }
+            console.log(data.fullDate);
+			this.startTime = data.fullDate;
+			this.getCourseLessonList();
+        },
+		getCourseLessonList(){
+			console.info(this.userinfo.teacherId);
+			console.info(this.userinfo.shopId);
+			console.info(this.startTime);
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/course/courseLessonList`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"teacherId":this.userinfo.teacherId,"shopId":this.userinfo.shopId,"startTime":this.startTime},
+				success: res => {
+					if (res.data.code === 0) {
+						console.info(res.data.data);
+						this.lessonlist = res.data.data;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
+		}
     },
+	onShow() {
+		if(this.isTeacher == 1){
+			this.getCourseLessonList();
+		}
+	},
 
 }
 </script>
