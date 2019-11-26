@@ -205,12 +205,13 @@ export default {
 					if (res.data.code === 0) {
 						var resData = res.data.data;
 						this.articleList = resData.articleList;
-						this.advertisementList = resData.advertisementList;
+						/*this.advertisementList = resData.advertisementList;
 						if(this.advertisementList != null && this.advertisementList.length > 0){
 							for (let i = 0; i < this.advertisementList.length; i++) {
 								this.advertisementList[i].adImg = this.imgUrl+this.advertisementList[i].adImg ;
 							}
-						}
+						}*/
+						this.advertisementList = [{adImg:'../../static/ad/ad_1.jpg'}];
 						this.lessonList = resData.lessonList;
 						if(this.lessonList != null && this.lessonList.length > 0){
 							for (let i = 0; i < this.lessonList.length; i++) {

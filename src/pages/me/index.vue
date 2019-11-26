@@ -16,14 +16,14 @@
                         <p class="word">{{banJiShouKeNum}}个班级授课 {{studentNum}}个学生</p>
                     </div>
                     <div v-else class="body" @click="goStudentMana">
-                        <p class="number">ID： No.1915 1603 7930</p>
-                        <p class="word">2个机构学习 剩余学时：1199</p>
+                        <p class="number">ID：{{studentcode}}</p>
+                        <p class="word">{{shopNums}}个机构学习 剩余学时：{{unLearnNum}}</p>
                     </div>
     
                     <i class="iconfont arrow iconarrow"></i>
                 </div>
             </div>
-            <institutionList v-if="!isTeacher"></institutionList>
+            <institutionListForParent v-if="!isTeacher" :list="shopList"></institutionListForParent>
         </div>
 
         <teacherMenu v-if="isTeacher"></teacherMenu>
@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import institutionList from '@/components/institutionList.vue'
+import institutionListForParent from '@/components/institutionListForParent.vue'
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 import teacherMenu from './teacherMenu.vue'
 import parentMenu from './parentMenu.vue'
 export default {
     components: {
-        institutionList,
+        institutionListForParent,
         teacherMenu,
         parentMenu
     },
@@ -52,6 +52,10 @@ export default {
 			banJiShouKeNum:'',
 			studentNum:'',
 			shopList:[],
+			unLearnNum:0,
+			studentcode:'',
+			shopNums:0,
+			
 			
         }
     },
@@ -73,35 +77,77 @@ export default {
 			}else{
 				uni.navigateTo({url: '/pages/me/studentMana/add'});
 			}
+		},
+		getTeacherCenter(){
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/teacher/center`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"teacherId":this.userinfo.teacherId},
+				success: res => {
+					console.info(res);
+					if (res.data.code === 0) {
+						var resData = res.data.data;
+						this.setUserInfo(resData.teacher);
+						this.userName = this.userinfo.userName;
+						this.portrait = this.userinfo.portrait;
+						this.fuWuJiGouNum = resData.fuWuJiGouNum;
+						this.banJiShouKeNum = resData.banJiShouKeNum;
+						this.studentNum = resData.studentNum;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
+		},
+		getParentCenter(){
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/parent/center`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"parentId":this.userinfo.parentId},
+				success: res => {
+					console.info(res);
+					var resData = res.data.data;
+					if (res.data.code === 0) {
+						var student = resData.student;
+						this.userName = student.studentName;
+						this.unLearnNum = resData.unLearnNum;
+						if(student.studentcode != null){
+							this.studentcode = student.studentcode;
+						}
+						this.shopList = resData.shops;
+						if(this.shopList != null && this.shopList.length > 0){
+							this.shopNums = this.shopList.length;
+							for (let i = 0; i < this.shopList.length; i++) {
+								this.shopList[i].logoPic = this.imgUrl+this.shopList[i].logoPic ;
+							}
+						}
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
 		}
     },
 	onLoad() {
-		uni.request({
-			method: 'POST',
-			url: `${this.doMain}/teacher/center`,
-			header: {
-				'content-type': 'application/x-www-form-urlencoded'
-			},
-			data: {"teacherId":this.userinfo.teacherId},
-			success: res => {
-				console.info(res);
-				if (res.data.code === 0) {
-					var resData = res.data.data;
-					this.setUserInfo(resData.teacher);
-					this.userName = this.userinfo.userName;
-					this.portrait = this.userinfo.portrait;
-					this.fuWuJiGouNum = resData.fuWuJiGouNum;
-					this.banJiShouKeNum = resData.banJiShouKeNum;
-					this.studentNum = resData.studentNum;
-				}else{
-					uni.showToast({
-						title:res.data.fieldErrors[0].message,
-						icon: 'none',
-						duration: 1000
-					})
-				}
-			}
-		})
+		if(this.isTeacher){
+			this.getTeacherCenter();
+		}else{
+			this.getParentCenter();
+		}
 	},
 }
 </script>
