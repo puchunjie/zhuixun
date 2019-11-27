@@ -101,6 +101,24 @@
 			"style": {
 				"navigationBarTitleText": "家长列表"
 			}
+		},
+		{
+			"path": "pages/me/leave/teacher",
+			"style": {
+				"navigationBarTitleText": "老师请假"
+			}
+		},
+		{
+			"path": "pages/me/leave/student",
+			"style": {
+				"navigationBarTitleText": "学生请假"
+			}
+		},
+		{
+			"path": "pages/me/audition",
+			"style": {
+				"navigationBarTitleText": "试听学员"
+			}
 		}
 	],
 	"globalStyle": {
