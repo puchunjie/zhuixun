@@ -3,13 +3,13 @@
         <div class="holder"></div>
     
         <div class="login-form">
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">账号</div>
                 <div class="value">
                     <input v-model="form.mobilePhone" placeholder="请填写手机号码" type="number">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">密码</div>
                 <div class="value">
                     <input v-model="form.pwd" placeholder="填写密码" type="password">
