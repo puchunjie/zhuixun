@@ -45,7 +45,7 @@ export default {
                 icon: 'iconico',
                 label: '我要请假',
                 color: '#5BDBB4',
-                path: ''
+                path: '/pages/me/leave/student'
             }, {
                 icon: 'iconico',
                 label: '课程购买',

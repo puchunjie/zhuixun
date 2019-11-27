@@ -20,7 +20,7 @@ export default {
                 icon: 'iconico',
                 label: '我要请假',
                 color: '#5BDBB4',
-                path: ''
+                path: '/pages/me/leave/teacher'
             }, {
                 icon: 'iconico',
                 label: '家长列表',
