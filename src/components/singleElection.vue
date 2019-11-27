@@ -10,10 +10,9 @@
     </div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import mpvuePicker from 'mpvue-picker';
-export default Vue.extend({
+export default {
     components: {
         mpvuePicker
     },
@@ -46,14 +45,24 @@ export default Vue.extend({
     },
     computed: {
         listData() {
-            if(this.ScEnumKey) return this.ScEnums[this.ScEnumKey]
-            if(this.data) return this.data
+            if (this.ScEnumKey) return this.ScEnums[this.ScEnumKey]
+            if (this.data) return this.data
             return []
         }
     },
     watch: {
         pickerValueDefault(val) {
             this.$emit('input', val[0])
+        },
+        value: {
+            handler: function(val) {
+                let item = this.listData.find(item => item.value === val);
+                if (item) {
+                    this.pickerValueDefault = [val];
+                    this.label = item.label || '';
+                }
+            },
+            immediate: true
         }
     },
     methods: {
@@ -61,18 +70,10 @@ export default Vue.extend({
             this.$refs.mpvuePicker.show();
         },
         onConfirm(e) {
-            this.$emit('onConfirm',e)
+            this.$emit('onConfirm', e)
             this.label = e.label;
             this.pickerValueDefault = this.$clearData(e.value);
         }
-    },
-    created() {
-        if (this.value) this.pickerValueDefault = [this.value];
     }
-
-})
+}
 </script>
-
-<style lang="scss">
-
-</style>
