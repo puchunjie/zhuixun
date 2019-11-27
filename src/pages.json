@@ -101,6 +101,12 @@
 			"style": {
 				"navigationBarTitleText": "老师请假"
 			}
+		},
+		{
+			"path": "pages/me/audition",
+			"style": {
+				"navigationBarTitleText": "试听安排"
+			}
 		}
 	],
 	"globalStyle": {
