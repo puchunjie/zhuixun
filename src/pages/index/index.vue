@@ -23,7 +23,7 @@
 		</div>
 		
 		<div class="enters" v-if="teacherShopId != '' || isTeacher==false">
-			<div class="item" v-for="enter in enters" :key="enter.label">
+			<div class="item" v-for="enter in enters" :key="enter.label" @click="openToPage" :data-url="enter.url">
 				<image class="img" :src="enter.icon"></image>
 				<p class="label">{{ enter.label }}</p>
 			</div>
@@ -77,29 +77,37 @@ export default {
 			advertisementList: [],
 			teacherEnters: [{
 				label: '上课签到',
-				icon: '/static/home/qiandao.png'
+				icon: '/static/home/qiandao.png',
+				url:'../curriculum/index'
 			}, {
 				label: '我要请假',
-				icon: '/static/home/qingjia.png'
+				icon: '/static/home/qingjia.png',
+				url:''
 			}, {
 				label: '课程调整',
-				icon: '/static/home/pingjia.png'
+				icon: '/static/home/pingjia.png',
+				url:''
 			}, {
 				label: '试听安排',
-				icon: '/static/home/goumai.png'
+				icon: '/static/home/goumai.png',
+				url:''
 			}],
 			parentEnters: [{
 				label: '上课签到',
-				icon: '/static/home/qiandao.png'
+				icon: '/static/home/qiandao.png',
+				url:''
 			}, {
 				label: '我要请假',
-				icon: '/static/home/qingjia.png'
+				icon: '/static/home/qingjia.png',
+				url:''
 			}, {
 				label: '课程评价',
-				icon: '/static/home/pingjia.png'
+				icon: '/static/home/pingjia.png',
+				url:''
 			}, {
 				label: '课程购买',
-				icon: '/static/home/goumai.png'
+				icon: '/static/home/goumai.png',
+				url:''
 			}],
 			lessonList: [],
 			/* lessonList: [{
@@ -232,6 +240,18 @@ export default {
 					}
 				}
 			})
+		},
+		openToPage(e){
+			let url = e.currentTarget.dataset.url;
+			if(url == '../curriculum/index'){
+				uni.switchTab({//跳转到 tabBar 页面，并关闭其他所有非 tabBar 页面
+				    url: url
+				})
+			}else{
+				uni.navigateTo({//跳转到 非tabBar 页面
+					url: url
+				});
+			}
 		}
 		
 	}
