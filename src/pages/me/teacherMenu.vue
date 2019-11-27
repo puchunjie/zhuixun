@@ -25,7 +25,7 @@ export default {
                 icon: 'iconico',
                 label: '家长列表',
                 color: '#EC8873',
-                path: ''
+                path: '/pages/me/parent/parentList'
             }, {
                 icon: 'iconico',
                 label: '试听排课',
