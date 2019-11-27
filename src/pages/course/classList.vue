@@ -1,16 +1,19 @@
 <template>
-    <div class="class-container">
-        <div class="scroll-warp">
-			<h3 class="title">{{ item.articleName }}</h3>
-        </div>
-    
-        <div class="list-content">
-            <div class="item" v-for="(item,i) in list" :key="i" @tap="openToDetail" :data-articleId="item.articleId">
-                <h3 class="title">{{ item.articleName }}</h3>
-                <image class="img" :src="item.thumbPic"></image>
-                <span class="type">{{ item.articleSubheading }}</span>
+    <div class="clsaa-module">
+		<div class="item">
+			<div class="top">
+				<p>班级总数：{{ courseClassList.length }}</p>
+			</div>
+		</div>
+        <div class="item"  v-for="item in courseClassList" :key="item.classId">
+            <div class="top">
+                <p>班级：{{ item.className }}</p>
+            </div>
+            <div class="person-nums">
+                <p>老师：{{ item.teacherName }}</p>
             </div>
         </div>
+        <p v-if="courseClassList.length === 0" class="no-class">暂无班级~</p>
     </div>
 </template>
 
@@ -19,25 +22,36 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            courseClassList: null
+            courseClassList: []
         }
     },
     computed: {
         ...mapGetters(['userinfo'])
     },
+	onLoad() {
+		this.getClassList();
+		
+	},
     methods: {
 		getClassList() {
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/article/listArticleTypeByPage`,
+			    url: `${this.doMain}/course/listCourseClass`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
 			    data: { teacherId: this.userinfo.teacherId},
 			    success: res => {
 			        if (res.data.code === 0) {
+						console.info(res.data.data);
 			            this.courseClassList = res.data.data;
-			        }
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
 			    }
 			});
 		}
@@ -49,95 +63,45 @@ export default {
 <style lang="less">
 @import url('../../styles/base.less');
 page {
-    /* padding-top: 94upx; */
+	padding: 18upx 20upx 20upx;
 	background:#F2F2F2;
-
 }
-
-/* .find-container {
-    .scroll-warp {
-        position: fixed;
-        width: 100%;
-        height: 94upx;
-        padding: 0 13upx;
-        overflow: hidden;
-        background-color: #fff;
-        left: 0;
-        top: 0;
-        z-index: 10;
-        border-bottom: 20upx solid #F2F2F2;
-    }
-    .scroll-view {
-        display: flex;
-        white-space: nowrap;
-        width: 100%;
-        height: 74upx;
-        line-height: 70upx;
-        color: #181818;
+.clsaa-module {
+    margin-top: 30upx;
+    min-height: 280upx;
+    .no-class {
+        line-height: 280upx;
+        color: #999;
         font-size: 26upx;
-        .item {
-            position: relative;
-            display: inline-block;
-            width: auto;
-            height: 100%;
-            margin-left: 25upx;
-            &:after {
-                content: '';
-                position: absolute;
-                display: block;
-                width: 90%;
-                left: 5%;
-                bottom: 0;
-                height: 6upx;
-                background: none;
-                border-radius: 3upx;
-            }
-            &.active {
-                color: @dark_green;
-                &:after {
-                    background: rgba(26, 188, 156, 1);
-                }
-            }
-        }
+        text-align: center;
     }
-    .list-content {
+    .item {
         width: 100%;
         background: #fff;
-        padding: 0 40upx 20upx;
-        .item {
-            display: flex;
-            position: relative;
-            margin-bottom: 25upx;
-            padding-top: 40upx;
+        border: 1px solid rgba(230, 230, 230, 1);
+        border-radius: 8upx;
+        margin-top: 20upx;
+        .top {
+			width: 100%;
+			height: 66upx;
+			line-height: 66upx;
+			font-size: 30upx;
+			color: #242039;
+			padding: 0 22upx 0 28upx;
+			text-indent: 14upx;
+			font-weight: 800;
+        }
+        .person-nums {
             width: 100%;
-            justify-content: space-between;
-            .title {
-                width: 418upx;
-                .clampEllipsis;
-                font-size: 30upx;
-                color: #222;
-                font-weight: 500;
-                line-height: 44upx;
-				height: 88upx;
-            }
-            .img {
-                display: block;
-                width: 220upx;
-                height: 164upx;
-                border-radius: 8upx;
-            }
-            .type {
-				width: 418upx;
-				.clampEllipsis(1);
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                font-size: 24upx;
-                color: @light_gray;
-				line-height: 24upx;
-				height:24upx;
-            }
+            height: 66upx;
+            line-height: 66upx;
+            font-size: 26upx;
+            color: #666666;
+            border-top: 1px solid #E5E5E5;
+            padding: 0 22upx 0 28upx;
+            text-indent: 14upx;
         }
     }
-} */
+}
+		
 </style>
