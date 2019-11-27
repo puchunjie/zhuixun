@@ -59,10 +59,10 @@
 
 <script>
 import { mapActions } from 'vuex'
-import singleElection from '@/components/singleElection.vue'
-import citySelect from '@/components/citySelect.vue'
-export default Vue.extend({
-    components: {singleElection,citySelect},
+/*import singleElection from '@/components/singleElection.vue'
+import citySelect from '@/components/citySelect.vue'*/
+export default /*Vue.extend*/({
+   /* components: {singleElection,citySelect},*/
     data() {
         return {
             form: {
@@ -74,7 +74,6 @@ export default Vue.extend({
 				provinceId:0,
 				cityId:0,
 				districtId:0
-				
             },
             sexes: [{
                 label: '男',
@@ -119,7 +118,7 @@ export default Vue.extend({
             this.form.districtId = data.value[2];
         }*/
     }
-}
+})
 </script>
 
 <style lang="less">
