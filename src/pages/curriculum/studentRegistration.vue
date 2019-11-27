@@ -4,15 +4,17 @@
     
         <div class="content" v-if="active === 1">
             <div class="sd-item" :class="{ 'check': item.check }" v-for="(item,i) in list" :key="i" @click="check(item)">
-                <i v-if="!item.hasSignIn" class="iconfont iconxuanze" :class="{ 'check': item.check }"></i> {{ item.name }}
-                <span v-if="item.hasSignIn" class="tip">（已签到）</span>
+                <i v-if="item.state === 0" class="iconfont iconxuanze" :class="{ 'check': item.check }"></i> {{ item.studentName }}
+                <span v-if="item.isSign === 1" class="tip">已签到</span>
+				<span v-if="item.state === 2" class="tip">已请假</span>
+				<span v-if="item.state === 3" class="tip">已旷课</span>
             </div>
     
             <div class="fix-btottom">
                 <div class="select-all sd-item b" @click="setAllCheck">
                     <i class="iconfont iconxuanze" :class="{ 'check': checkAll }"></i> {{ checkAll ? '取消全选' : '全选' }}
                 </div>
-                <div class="btn">提交</div>
+                <div class="btn" @click="signForBatch">提交</div>
             </div>
         </div>
     
@@ -41,19 +43,21 @@ export default {
             tabs: [{
                     label: '批量签到',
                     value: 1
-                },
+                }/*,
                 {
                     label: '扫码签到',
                     value: 2
-                }
+                }*/
             ],
-            active: 2,
-            list: []
+            active: 1,
+            list: [],
+			lessonId:0,
+			studentIds:''
         }
     },
     computed: {
         checkAll() {
-            return this.list.filter(item => !item.hasSignIn).every(item => item.check)
+            return this.list.filter(item => !item.state).every(item => item.check)
         }
     },
     methods: {
@@ -61,37 +65,94 @@ export default {
             this.active = tab.value;
         },
         check(item) {
-            if (item.hasSignIn) return
+            if (item.state != 0) return
             item.check = !item.check;
+			this.studentIds += item.studentId+",";
         },
         setAllCheck() {
             let checkAll = this.checkAll;
             this.list.forEach(item => {
-                item.check = !checkAll
+                item.check = !checkAll;
             })
         },
         getList() {
-            this.list = [{
-                name: '张三',
-                value: 1,
-                hasSignIn: false
-            }, {
-                name: '张三san ',
-                value: 2,
-                hasSignIn: false
-            }, {
-                name: '张三si',
-                value: 3,
-                hasSignIn: true
-            }].map(item => {
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/lessonStudent/list`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { lessonId: this.lessonId},
+			    success: res => {
+					console.info(res.data);
+			        if (res.data.code === 0) {
+			            this.list = res.data.data;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+            this.list.map(item => {
                 item.check = false;
                 return item
             })
-        }
+        },
+		signForBatch(){			  
+			let studentIds = '';
+			this.list.forEach(item => {
+				if(item.check){
+					studentIds += item.studentId+",";
+				}
+			})
+			if(studentIds == ''){
+				uni.showToast({
+					title:'请选择学生',
+					icon: 'none',
+					duration: 1000
+				})
+				return;
+			}
+	
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/student/qianDaoBatch`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { lessonId: this.lessonId , studentIds: studentIds},
+			    success: res => {
+					console.info(res.data);
+			        if (res.data.code === 0) {
+			            uni.showToast({
+			            	title:'签到成功',
+			            	icon: 'none',
+			            	duration: 1000
+			            })
+						this.isSign = 1;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+					this.getList()
+			    }
+			});
+		}
     },
     created() {
         this.getList()
-    }
+    }, 
+	onLoad(e) {
+		this.lessonId = e.lessonId;
+		this.getList()
+	},
+	
 }
 </script>
 

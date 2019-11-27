@@ -27,19 +27,26 @@
         <div class="student-list">
             <zxTabs :options="tabs" @tabChange="tabChange" :labelFormat="labelFormat"></zxTabs>
             <div class="item-content">
-                <div class="item" v-for="(item,i) in list" :key="i">{{  item.studentName }}</div>
+                <div class="item" v-for="(item,i) in list" :key="i">{{item.studentName }}
+					<span v-if="item.isSign == 1" class="tip">已签到</span>
+					<span v-if="item.state == 2" class="tip">已请假</span>
+					<span v-if="item.state == 3" class="tip">已旷课</span>
+				</div>
+				
             </div>
         </div>
 
         <div class="bottom-btn">
             <div class="btn orange">添加试听学员</div>
-            <div class="btn green">学员签到</div>
+            <div class="btn green" v-if="isSign === 0" @click="teacherSign">老师签到</div>
+			<div class="btn green" v-if="isSign === 1" @click="openToStudentSign">学员签到</div>
         </div>
     </div>
 </template>
 
 <script>
 import zxTabs from '@/components/tabs.vue'
+import { mapGetters } from 'vuex'
 export default {
     components: {zxTabs},
     data() {
@@ -66,18 +73,23 @@ export default {
 			shiTingStudentLessonList:[],
 			normalStudentLessonList:[],
 			studentNum:0,
+			isSign:0,
 			
 			
         }
     },
     computed: {
-
+		...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
     },
     methods: {
         tabChange(tab){
             console.log(tab)
-            // 根据值去请求接口 重新赋值List
-            // this.list = []
+            if(tab.num == 1){
+				this.list = this.normalStudentLessonList;
+			}else{
+				this.list = this.shiTingStudentLessonList;
+			}
         },
         labelFormat(tab){
             return `${tab.label}${tab.num}`
@@ -85,11 +97,11 @@ export default {
 		getCourseDetail(){
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/courseLesson/view`,
+			    url: `${this.doMain}/course/courseLesson/viewV2`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { lessonId: this.lessonId },
+			    data: { lessonId: this.lessonId , teacherId: this.userinfo.teacherId},
 			    success: res => {
 					console.info(res.data);
 			        if (res.data.code === 0) {
@@ -105,6 +117,7 @@ export default {
 						this.shiTingStudentLessonList = resData.shiTingStudentLessonList;
 						this.normalStudentLessonList = resData.normalStudentLessonList;
 						this.list = this.normalStudentLessonList;
+						this.isSign = resData.sign.state;
 						this.tabs =[{
 						    label: '正式学员',
 						    value: 1,
@@ -117,6 +130,38 @@ export default {
 						this.studentNum = this.shiTingStudentLessonList.length+this.normalStudentLessonList.length;
 			        }
 			    }
+			});
+		},
+		teacherSign(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/teacher/sign`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { lessonId: this.lessonId , teacherId: this.userinfo.teacherId},
+			    success: res => {
+					console.info(res.data);
+			        if (res.data.code === 0) {
+			            uni.showToast({
+			            	title:'老师签到成功',
+			            	icon: 'none',
+			            	duration: 1000
+			            })
+						this.isSign = 1;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		},
+		openToStudentSign(){
+			uni.navigateTo({
+				url: '../curriculum/studentRegistration?lessonId='+this.lessonId
 			});
 		}
     },
@@ -225,6 +270,7 @@ page {
                 line-height: 20upx;
             }
         }
+		
     }
     .student-list {
         width: 100%;
@@ -248,6 +294,10 @@ page {
             }
         }
     }
+	.tip {
+	    float: right;
+	    color: #7FBCB4;
+	}
 
     .bottom-btn{
         position: fixed;
