@@ -6,20 +6,20 @@
         </div>
     
         <div class="login-form">
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">姓名</div>
                 <div class="value">
                     <input v-model="form.mobile" placeholder="请填写姓名" type="text">
                 </div>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">生日</div>
                 <div class="value">
                     <span class="placeholder">请选择</span>
                 </div>
                 <i class="iconfont iconarrow"></i>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">性别</div>
                 <div class="value">
                     <div class="sex-switch">
@@ -30,21 +30,21 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">城市</div>
                 <div class="value">
                     <span class="placeholder">请选择城市</span>
                 </div>
                 <i class="iconfont iconarrow"></i>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">手机号</div>
                 <div class="value">
                     <input v-model="form.mobile" placeholder="请输入关联手机号" type="number">
                 </div>
                 <getCode class="get-code" :phone="form.mobile"></getCode>
             </div>
-            <div class="form-group">
+            <div class="login-form-group">
                 <div class="label">短信验证</div>
                 <div class="value">
                     <input v-model="form.mobile" placeholder="请填写收到的短信验证码" type="number">
