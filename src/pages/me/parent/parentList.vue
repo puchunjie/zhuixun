@@ -65,8 +65,9 @@ page {
 	border-radius: 8upx;
 	.top {
 		background:#FFFFFF;
-		border-bottom: 20upx;
 		width: 100%;
+		padding: 20upx 30upx 30upx;
+		margin-bottom: 20upx;
 	}
     .item {
 		background:#FFFFFF;
