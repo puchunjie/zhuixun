@@ -30,7 +30,6 @@ export default {
     },
 	onLoad() {
 		this.getClassList();
-		
 	},
     methods: {
 		getClassList() {
@@ -43,7 +42,6 @@ export default {
 			    data: { teacherId: this.userinfo.teacherId},
 			    success: res => {
 			        if (res.data.code === 0) {
-						console.info(res.data.data);
 			            this.courseClassList = res.data.data;
 			        }else{
 						uni.showToast({
@@ -55,7 +53,6 @@ export default {
 			    }
 			});
 		}
-			
     },
 }
 </script>
