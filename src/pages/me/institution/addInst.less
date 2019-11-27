@@ -1,0 +1,127 @@
+@import url("../../../styles/base.less");
+
+page {
+    background: #fff;
+}
+
+.login-container {
+    .holder {
+        height: 90upx;
+    }
+
+    .switch-bar {
+        display      : flex;
+        width        : 640upx;
+        height       : 90upx;
+        line-height  : 90upx;
+        line-height  : 88upx;
+        font-size    : 30upx;
+        color        : @dark_green;
+        text-align   : center;
+        border       : 1upx solid @dark_green;
+        border-radius: 20upx;
+        overflow     : hidden;
+        margin       : 0 auto;
+
+        .sw-item {
+            width : 50%;
+            height: 100%;
+
+            &.active {
+                color     : #fff;
+                background: @dark_green;
+            }
+        }
+    }
+
+    .login-form {
+        width  : 100%;
+        padding: 0 55upx;
+
+        .iconarrow {
+            font-size: 40upx;
+        }
+
+        .placeholder {
+            color: @gray;
+        }
+
+        .form-group {
+            display      : flex;
+            flex-wrap    : nowrap;
+            width        : 100%;
+            min-height   : 128upx;
+            padding      : 42upx 0;
+            border-bottom: 1px solid @line_gray;
+            font-size    : 30upx;
+            color        : @base_black;
+
+            .label {
+                width      : 150upx;
+                height     : 44upx;
+                line-height: 44upx;
+            }
+
+            .value {
+                flex       : 1;
+                line-height: 44upx;
+
+                input {
+                    display  : block;
+                    border   : none;
+                    margin   : 0;
+                    padding  : 0;
+                    font-size: 30upx;
+                }
+            }
+
+            .get-code {
+                width        : 170upx;
+                height       : 60upx;
+                line-height  : 60upx;
+                text-align   : center;
+                border       : 1upx solid @base_green;
+                border-radius: 8upx;
+                font-size    : 26upx;
+                color        : @base_green;
+            }
+
+            .sex-switch{
+                display: flex;
+                .item{
+                    width: 106upx;
+                    text-align: center;
+                    .img{
+                        display: block;
+                        width: 106upx;
+                        height: 106upx;
+                    }
+
+                    .sw-label{
+                        color: @gray_black;
+                        font-size: 30upx;
+                        line-height: 27upx;
+                        margin-top: 22upx;
+                    }
+                    &:not(:last-child){
+                        margin-right: 200upx;
+                    }
+
+                    &.active .sw-label{
+                        color: @dark_green;
+                    }
+                }
+            }
+        }
+    }
+
+    .link {
+        height     : 28upx;
+        line-height: 28upx;
+        font-size  : 30upx;
+        font-weight: 500;
+        color      : @dark_green;
+        text-align : center;
+        margin-top : 40upx;
+    }
+}
