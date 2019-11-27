@@ -28,7 +28,9 @@
 
         <teacherMenu v-if="isTeacher"></teacherMenu>
         <parentMenu v-else></parentMenu>
-        
+        <div class="fix-btottom">
+            <div class="btn" @click="quitToIndex">退出</div>
+        </div>
     </div>
 </template>
 
@@ -64,7 +66,7 @@ export default {
 		...mapGetters(['userinfo']),
     },
     methods: {
-		...mapActions(['setUserInfo']),
+		...mapActions(['setUserInfo', 'setTeacher']),
         goSwitch(){
             uni.navigateTo({url: '/pages/me/institution/switchInst'})
         },
@@ -140,6 +142,11 @@ export default {
 					}
 				}
 			})
+		},
+		quitToIndex(){
+			this.setUserInfo({});
+			this.setTeacher(null);
+			uni.navigateTo({url: '/pages/transfer/index'});
 		}
     },
 	onLoad() {
@@ -240,6 +247,22 @@ page{
             }
         }
     }
-    
+    .fix-btottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        .btn {
+            width: 711upx;
+            height: 99upx;
+            background: rgba(29, 92, 84, 1);
+            margin: 17upx auto;
+            text-align: center;
+            color: #fff;
+            line-height: 99upx;
+            font-size: 34upx;
+        }
+    }
 }
 </style>
