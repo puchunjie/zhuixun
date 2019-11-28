@@ -101,8 +101,8 @@ export default {
     },
 	onShow() {
 		this.startTime = this.getNowFormatDate();
-		this.setUserInfo({teacherId:14,shopId:6});
-		this.setTeacher(true);
+		/* this.setUserInfo({parentId:4,shopId:6});
+		this.setTeacher(false); */
 		if(this.isTeacher){
 			this.getCourseLessonList();
 		}else{
