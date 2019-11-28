@@ -1,14 +1,13 @@
 export const ScEnumKeys = {
-  orderTypeEnum: "orderTypeEnum",
+  leaveTypeEnum: "leaveTypeEnum",
   sceneTypeEnum: "sceneTypeEnum",
 };
 export const ScEnums = {
 
-  orderTypeEnum: [
-    {value: 0, label: '空调系统'},
-    {value: 1, label: '装饰贴膜'},
-    {value: 2, label: '空气治理'},
-    {value: 3, label: '家政保洁'},
+  leaveTypeEnum: [
+    {value: 1, label: '事假'},
+    {value: 2, label: '病假'},
+    {value: 3, label: '其他'},
   ] ,
   sceneTypeEnum: [
     {value: 0, label: '家装'},

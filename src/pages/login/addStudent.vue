@@ -2,7 +2,7 @@
     <view class="login-container">
         <div class="switch-bar">
             <div class="sw-item active">添加未报名学员</div>
-            <div class="sw-item" @click="goLogin">已有追寻账户登录</div>
+            <div class="sw-item " @click="goLogin">已有追寻账户登录</div>
         </div>
     
         <div class="login-form">

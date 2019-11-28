@@ -28,6 +28,10 @@
 
         <teacherMenu v-if="isTeacher"></teacherMenu>
         <parentMenu v-else></parentMenu>
+		<!-- <div>
+			<button open-type="contact"></button>
+		</div> -->
+		
         <div class="fix-btottom">
             <div class="btn" @click="quitToIndex">退出</div>
         </div>

@@ -14,7 +14,7 @@ export default {
 			enters: [{
 				label: '我是家长/学生',
 				icon: '/static/head1.png',
-				url: '/pages/login/addStudent'
+				url: '/pages/login/parent'
 			},{
 				label: '我是老师',
 				icon: '/static/head2.png',

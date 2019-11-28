@@ -82,7 +82,7 @@ export default {
 			}, {
 				label: '我要请假',
 				icon: '/static/home/qingjia.png',
-				url:''
+				url:'../me/leave/teacher'
 			}, {
 				label: '课程调整',
 				icon: '/static/home/pingjia.png',
