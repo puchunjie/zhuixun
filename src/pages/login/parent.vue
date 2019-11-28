@@ -21,7 +21,7 @@
         </div>
     
         <div class="submit-btn" @click="submit">登录</div>
-        <p class="link">用验证码登录</p>
+        <p class="link" @click="goLoginYZM">用验证码登录</p>
     
     </view>
 </template>
@@ -42,6 +42,9 @@ export default {
         goAdd(){
             uni.redirectTo({ url: '/pages/login/addStudent' })
         },
+		goLoginYZM(){
+		    uni.redirectTo({ url: '/pages/login/parentYZM' })
+		},
         submit() {
 			if(this.form.mobilePhone == ''){
 				uni.showToast({

@@ -51,7 +51,7 @@ export default {
             this.codeSend = true;
             uni.request({
                 method: 'POST',
-                url: `${this.doMain}/shop/sendAuthCode`,
+                url: `${this.doMain}/parent/sendAuthCode`,
                 header: {
                     'content-type': 'application/x-www-form-urlencoded'
                 },
@@ -74,7 +74,7 @@ export default {
                             title: '验证码已发送到您的手机,请注意查收!',
                             duration: 1000
                         });
-                        this.$emit('onSuccess', '')
+                        this.$emit('onSuccess', res.data.data);
                     } else {
                         uni.showToast(res.data.msg)
                     }

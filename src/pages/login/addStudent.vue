@@ -47,7 +47,7 @@
             <div class="login-form-group">
                 <div class="label">短信验证</div>
                 <div class="value">
-                    <input v-model="form.mobile" placeholder="请填写收到的短信验证码" type="number">
+                    <input v-model="form.yzm" placeholder="请填写收到的短信验证码" type="number">
                 </div>
             </div>
         </div>
