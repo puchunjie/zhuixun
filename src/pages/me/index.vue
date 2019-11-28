@@ -28,10 +28,6 @@
 
         <teacherMenu v-if="isTeacher"></teacherMenu>
         <parentMenu v-else></parentMenu>
-		<view class="kefu">
-			<contact-button>客服帮助</contact-button>
-		</view>
-		
         <div class="fix-btottom">
             <div class="btn" @click="quitToIndex">退出</div>
         </div>
@@ -269,11 +265,5 @@ page{
             font-size: 34upx;
         }
     }
-}
-.kefu{
-	position: relative;
-	margin-top: 12%;
-	margin-left: 76%;
-
 }
 </style>

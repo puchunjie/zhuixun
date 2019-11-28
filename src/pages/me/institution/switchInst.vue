@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="submit-btn large">+加入机构</div>
+        <div class="submit-btn large" @click="openToEnterInst">+加入机构</div>
     </div>
 </template>
 
@@ -34,6 +34,11 @@ export default {
 		this.getShopList();
 	}, 
 	methods:{
+		openToEnterInst(){
+			uni.navigateTo({
+				url: '../../me/institution/enterInstForSearch'
+			});
+		},
 		getShopList(){
 			uni.request({
 				method: 'POST',

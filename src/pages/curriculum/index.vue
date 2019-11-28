@@ -120,7 +120,11 @@ page {
     padding: 18upx 20upx 20upx;
     background: #fff;
 }
-
+button{
+	width: 25%;
+	text-align: center;
+	padding: 28rpx 0 50rpx 0;
+}
 .curriculum-container {
     
 }

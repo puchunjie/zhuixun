@@ -131,6 +131,12 @@
 			"style": {
 				"navigationBarTitleText": "家长验证码登录"
 			}
+		},
+		{
+			"path": "pages/me/institution/enterInstForSearch",
+			"style": {
+				"navigationBarTitleText": "搜索加入机构"
+			}
 		}
 	],
 	"globalStyle": {
