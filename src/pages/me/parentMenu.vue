@@ -12,39 +12,39 @@ export default {
     data() {
         return {
             menus: [{
-                icon: 'iconico',
+                icon: 'iconjiachang_kechengpingjia',
                 label: '课程评价',
-                color: '#5BDBB4',
+                color: '#5bdbb4',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_goukeqingdan',
                 label: '购课清单',
-                color: '#5BDBB4',
+                color: '#ec8872',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_xitongtongzhi',
                 label: '系统通知',
-                color: '#EC8873',
+                color: '#ec8872',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconkefutouxiang',
                 label: '客服帮助',
-                color: '#55D0F8',
+                color: '#0a9186',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_shangkeqiandao',
                 label: '上课签到',
-                color: '#5BDBB4',
+                color: '#80d5f1',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_shangkelishi',
                 label: '上课历史',
-                color: '#FDC44A',
+                color: '#ec8872',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_woyaoqingjia',
                 label: '我要请假',
-                color: '#5BDBB4',
+                color: '#6dc829',
                 path: '/pages/me/leave/student'
             }, {
                 icon: 'iconico',

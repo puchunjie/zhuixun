@@ -12,22 +12,22 @@ export default {
     data() {
         return {
             menus: [{
-                icon: 'iconico',
+                icon: 'iconjiachang_shangkeqiandao',
                 label: '上课签到',
-                color: '#5BDBB4',
+                color: '#80d5f1',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_woyaoqingjia',
                 label: '我要请假',
-                color: '#5BDBB4',
+                color: '#6dc829',
                 path: '/pages/me/leave/teacher'
             }, {
-                icon: 'iconico',
+                icon: 'iconlaoshi_jiachangliebiao',
                 label: '家长列表',
                 color: '#EC8873',
                 path: '/pages/me/parent/parentList'
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_goukeqingdan',
                 label: '试听排课',
                 color: '#55D0F8',
                 path: ''
@@ -37,19 +37,19 @@ export default {
                 color: '#5BDBB4',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconlaoshi_banjiguanli',
                 label: '班级管理',
-                color: '#FDC44A',
+                color: '#6dc829',
                 path: '/pages/course/classList'
             }, {
-                icon: 'iconico',
+                icon: 'iconjiachang_kechengpingjia',
                 label: '学员评价',
-                color: '#5BDBB4',
+                color: '#5bdbb4',
                 path: ''
             }, {
-                icon: 'iconico',
+                icon: 'iconlaoshi_xufeitixing',
                 label: '续费提醒',
-                color: '#6EC828',
+                color: '#6dc829',
                 path: ''
             }]
         }
