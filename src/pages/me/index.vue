@@ -46,7 +46,7 @@ export default {
     },
     data() {
         return {
-            userName:'',
+            userName:'xxxx',
 			portrait:'',
 			fuWuJiGouNum:'',
 			banJiShouKeNum:'',
