@@ -2,7 +2,8 @@
     <div class="form-group" :class="required && 'required'">
         <div class="label">{{ title }}</div>
         <div class="value" @click="showPicker">
-            <div class="select" :class="{ 'vvv': label!=='' }">{{ pickerValueDefault.length == 0 ? '请选择' : label }}<i class="iconfont arrow icondibudaohanglan"></i></div>
+            <div class="select" :class="{ 'vvv': label!=='' }">{{ pickerValueDefault.length == 0 ? '请选择' : label }}
+                <i class="iconfont arrow iconarrow"></i></div>
         </div>
     
         <mpvue-picker v-if="listData.length > 0" ref="mpvuePicker" mode="selector" :pickerValueDefault="pickerValueDefault" :pickerValueArray="listData" @onConfirm="onConfirm">
