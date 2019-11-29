@@ -8,6 +8,13 @@
             <div class="info">
                 <h3 class="name">{{ item.realName}}</h3>
 				<p v-show="shop.showParentTel == 1" class="phone" >{{ item.mobilePhone}}</p>
+				<div class="ac-btn" v-show="item.state ==1">新增</div>
+				<div class="ac-btn" v-show="item.state ==2">跟进</div>
+				<div class="ac-btn" v-show="item.state ==3">到访</div>
+				<div class="ac-btn" v-show="item.state ==4">试听</div>
+				<div class="ac-btn" v-show="item.state ==5">签约</div>
+				<div class="ac-btn" v-show="item.state ==8">禁用</div>
+				<div class="ac-btn" v-show="item.state ==9">删除</div>
             </div>
         </div>
     </div>
@@ -29,27 +36,6 @@ export default {
 		this.getShop();
 	},
 	methods: {
-		getParentList() {
-			uni.request({
-			    method: 'POST',
-			    url: `${this.doMain}/parent/list`,
-			    header: {
-			        'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    data: { shopId: this.userinfo.shopId,pageNo:0,pageSize:1000},
-			    success: res => {
-			        if (res.data.code === 0) {
-			            this.parentList = res.data.data;
-			        }else{
-						uni.showToast({
-							title:res.data.fieldErrors[0].message,
-							icon: 'none',
-							duration: 1000
-						})
-					}
-			    }
-			});
-		},
 		getShop() {
 			uni.request({
 			    method: 'POST',
@@ -72,7 +58,28 @@ export default {
 					this.getParentList();
 			    }
 			});
-		}
+		},
+		getParentList() {
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/parent/list`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { shopId: this.userinfo.shopId,pageNo:0,pageSize:1000},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            this.parentList = res.data.data;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		},
 	},
 }
 </script>
@@ -128,17 +135,10 @@ page {
             height: 44upx;
             line-height: 44upx;
             text-align: center;
-            font-size: 24upx;
-            color: #fff;
-            background: rgba(118, 189, 212, 1);
-            border-radius: 8upx 0 8upx 8upx;
+            font-size: 28upx;
+            color: #1C5C54;
             right: 0;
-            top: 0;
-        }
-        &.active {
-            .ac-btn {
-                background: @base_green;
-            }
+            top: 46upx;
         }
     }
 }
