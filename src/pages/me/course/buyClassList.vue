@@ -4,7 +4,7 @@
     		<p class="p1">{{item.createdTimestamp | dateformat}}</p>
     		<p class="p2">
 				<span class="span1">{{item.className}}</span>
-				<span class="span2">￥{{item.payedAmount}}</span>
+				<span class="span2">￥{{item.payedAmount | priceFilter}}</span>
 			</p>
     	</div>
     	<p v-if="orderList.length === 0" class="no-order">暂无记录~</p>
@@ -71,13 +71,15 @@ page {
 		border:1upx solid rgba(204,204,204,1);
 		border-radius:8upx;
 		margin-bottom: 20upx;
-		padding:20upx 20upx 20upx 20upx;
 		.p1 {
 			font-size:30upx;
 			line-height:46upx;
 			color:#666666;
+			padding:20upx 20upx 20upx 20upx;
 		}
 		.p2 {
+			border-top: 1px solid #E5E5E5;
+			padding:20upx 20upx 20upx 20upx;
 			.span1{
 				font-size:30upx;
 				line-height:49upx;
@@ -85,7 +87,11 @@ page {
 				color:#242039;
 			}
 			.span2{
-				
+				line-height:49upx;
+				font-size:30upx;
+				font-weight:bold;
+				color:#0A9187;
+				float: right;
 			}
 		}
 	}

@@ -42,3 +42,9 @@ export const enumFilter = (value, key) => {
     const find = en.find((a) => a.value.toString() === value.toString());
     return find ? find.label : '';
 }
+
+export const priceFilter = (value) => {
+    if (!value) return "";
+    value = parseFloat(value/100).toFixed(2);
+	return value;
+};
