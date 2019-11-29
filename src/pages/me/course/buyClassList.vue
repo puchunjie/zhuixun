@@ -1,19 +1,13 @@
 <template>
-    <div class="clsaa-module">
-		<div class="item">
-			<div class="top">
-				<p>班级总数：{{ courseClassList.length }}</p>
-			</div>
-		</div>
-        <div class="item"  v-for="item in courseClassList" :key="item.classId">
-            <div class="top">
-                <p>班级：{{ item.className }}</p>
-            </div>
-            <div class="person-nums">
-                <p>老师：{{ item.teacherName }}</p>
-            </div>
-        </div>
-        <p v-if="courseClassList.length === 0" class="no-class">暂无班级~</p>
+    <div class="order-module">
+    	<div class="item"  v-for="item in orderList" :key="item.orderId">
+    		<p class="p1">{{item.createdTimestamp | dateformat}}</p>
+    		<p class="p2">
+				<span class="span1">{{item.className}}</span>
+				<span class="span2">￥{{item.payedAmount}}</span>
+			</p>
+    	</div>
+    	<p v-if="orderList.length === 0" class="no-order">暂无记录~</p>
     </div>
 </template>
 
@@ -22,27 +16,27 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            courseClassList: []
+            orderList: []
         }
     },
     computed: {
         ...mapGetters(['userinfo'])
     },
 	onLoad() {
-		this.getClassList();
+		this.getOrderList();
 	},
     methods: {
-		getClassList() {
+		getOrderList() {
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/listCourseClass`,
+			    url: `${this.doMain}/order/listPaidEdOrder`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { teacherId: this.userinfo.teacherId},
+			    data: { parentId: this.userinfo.parentId},
 			    success: res => {
 			        if (res.data.code === 0) {
-			            this.courseClassList = res.data.data;
+			            this.orderList = res.data.data;
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -63,43 +57,37 @@ page {
 	padding: 18upx 20upx 20upx;
 	background:#F2F2F2;
 }
-.clsaa-module {
-    margin-top: 30upx;
-    min-height: 280upx;
-    .no-class {
-        line-height: 280upx;
-        color: #999;
-        font-size: 26upx;
-        text-align: center;
-    }
-    .item {
-        width: 100%;
-        background: rgba(255,255,255,1);
-        border: 1px solid rgba(230, 230, 230, 1);
-        border-radius: 8upx;
-        margin-top: 20upx;
-        .top {
-			width: 100%;
-			height: 80upx;
-			line-height: 80upx;
-			font-size: 30upx;
-			color: #242039;
-			padding: 0 30upx 0 28upx;
-			text-indent: 14upx;
-			font-weight:bold;
-        }
-        .person-nums {
-            width: 100%;
-            height: 80upx;
-			line-height: 80upx;
-            font-size: 26upx;
-            color: rgba(102,102,102,1);
-            border-top: 1px solid rgba(229,229,229,1);
-            padding: 0 30upx 0 28upx;
-            text-indent: 14upx;
-			font-weight:500;
-        }
-    }
+.order-module {
+	.no-order {
+	    line-height: 280upx;
+	    color: #999;
+	    font-size: 26upx;
+	    text-align: center;
+	}
+	.item{
+		width: 100%;
+		height: auto;
+		background-color: #fff;
+		border:1upx solid rgba(204,204,204,1);
+		border-radius:8upx;
+		margin-bottom: 20upx;
+		padding:20upx 20upx 20upx 20upx;
+		.p1 {
+			font-size:30upx;
+			line-height:46upx;
+			color:#666666;
+		}
+		.p2 {
+			.span1{
+				font-size:30upx;
+				line-height:49upx;
+				font-weight:bold;
+				color:#242039;
+			}
+			.span2{
+				
+			}
+		}
+	}
 }
-		
 </style>
