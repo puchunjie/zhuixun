@@ -179,6 +179,12 @@
 			"style": {
 				"navigationBarTitleText": "评价单个学生"
 			}
+		},
+		{
+			"path": "pages/me/course/remindBuyList",
+			"style": {
+				"navigationBarTitleText": "续费提醒"
+			}
 		}
 	],
 	"globalStyle": {

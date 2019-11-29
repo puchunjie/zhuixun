@@ -50,7 +50,7 @@ export default {
                 icon: 'iconlaoshi_xufeitixing',
                 label: '续费提醒',
                 color: '#6dc829',
-                path: ''
+                path: '/pages/me/course/remindBuyList'
             }]
         }
     },
