@@ -30,13 +30,16 @@
 		</div>
 	
 		<!-- 老师 -->
-		<div   v-if="teacherShopId == '' && isTeacher==true">
+		<div v-if="isTeacher && teacherShopId == ''">
 			<h3 class="title mt70">
-				我的课程
+				加入机构
 				<div class="right">
-					<span class="tip-word">添加机构<i class="iconfont iconjiantou1"></i></span>
+					<span class="tip-word" @click="openToAddInstTeacher">加入机构<i class="iconfont iconjiantou1"></i></span>
 				</div>
 			</h3>
+			<!-- <div class="empty" v-if="teacherShopId == ''">
+			     <image class="add-icon" src="/static/home/add.png"></image>请添加机构
+			 </div> -->
 		</div>
 		<!-- 家长 -->
 		<div   v-if="isTeacher == false">
@@ -156,13 +159,6 @@ export default {
 				url: '../message/list'
 			});
 		},
-		openToAd(e){
-			console.info(e)
-			//var newsid = e.currentTarget.dataset.newsid;
-			// uni.navigateTo({
-			// 	url: '../info/info?newsid='+newsid
-			// });
-		},
 		getTeacherIndexInfo(){
 			uni.request({
 				method: 'POST',
@@ -256,6 +252,11 @@ export default {
 		openToAddInst(){
 			uni.navigateTo({
 				url: '../me/institution/enterInstForSearchParent'
+			});
+		},
+		openToAddInstTeacher(){
+			uni.navigateTo({
+				url: '../me/institution/enterInstForSearchTeacher'
 			});
 		}
 		

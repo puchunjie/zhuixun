@@ -39,6 +39,11 @@ export default {
 		goLoginYZM(){
 		    uni.redirectTo({ url: '/pages/login/teacherYZM' })
 		},
+		onShow(){
+			//从本地取家长端的账号和密码
+			this.form.mobilePhone = uni.getStorageSync('teacherLoginName');
+			this.form.pwd = uni.getStorageSync('teacherPwd');
+		},
         submit() {
 			if(this.form.mobilePhone == ''){
 				uni.showToast({
@@ -56,6 +61,9 @@ export default {
 				})
 				return false;
 			}
+			//保存家长端的账号和密码进本地
+			uni.setStorageSync('teacherLoginName',this.form.mobilePhone);
+			uni.setStorageSync('teacherPwd',this.form.pwd);
             uni.request({
                 method: 'POST',
                 url: `${this.doMain}/teacher/loginByPwd`,

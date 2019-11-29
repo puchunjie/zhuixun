@@ -1,9 +1,5 @@
 <template>
     <div class="jigou-list-container">
-        <div class="empty" v-if="list.length === 0">
-            <image class="add-icon" src="/static/home/add.png"></image>请添加机构
-        </div>
-    
         <div class="item" v-for="(item,i) in list" :key="i">
             <image class="icon" mode="aspectFill" :src="item.icon"></image>
             <div class="info">

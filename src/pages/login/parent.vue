@@ -28,6 +28,7 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -37,6 +38,10 @@ export default {
             }
         }
     },
+    computed: {
+        ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
+    },
     methods: {
         ...mapActions(['setUserInfo', 'setTeacher']),
         goAdd(){
@@ -44,6 +49,11 @@ export default {
         },
 		goLoginYZM(){
 		    uni.redirectTo({ url: '/pages/login/parentYZM' })
+		},
+		onShow(){
+			//从本地取家长端的账号和密码
+			this.form.mobilePhone = uni.getStorageSync('parentLoginName');
+			this.form.pwd = uni.getStorageSync('parentPwd');
 		},
         submit() {
 			if(this.form.mobilePhone == ''){
@@ -62,6 +72,9 @@ export default {
 				})
 				return false;
 			}
+			//保存家长端的账号和密码进本地
+			uni.setStorageSync('parentLoginName',this.form.mobilePhone);
+			uni.setStorageSync('parentPwd',this.form.pwd);
             uni.request({
                 method: 'POST',
                 url: `${this.doMain}/parent/loginByPwd`,
