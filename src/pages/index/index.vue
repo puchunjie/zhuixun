@@ -43,7 +43,7 @@
 			<h3 class="title mt70">
 				我的课程
 				<div class="right">
-					<span class="tip-word">加入机构<i class="iconfont iconjiantou1"></i></span>
+					<span class="tip-word" @click="openToAddInst">加入机构<i class="iconfont iconjiantou1"></i></span>
 				</div>
 			</h3>
 			<institutionList :list="lessonList"></institutionList>
@@ -252,6 +252,11 @@ export default {
 					url: url
 				});
 			}
+		},
+		openToAddInst(){
+			uni.navigateTo({
+				url: '../me/institution/enterInstForSearchParent'
+			});
 		}
 		
 	}

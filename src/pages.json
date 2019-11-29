@@ -143,6 +143,12 @@
 			"style": {
 				"navigationBarTitleText": "课程详情"
 			}
+		},
+		{
+			"path": "pages/me/institution/enterInstForSearchParent",
+			"style": {
+				"navigationBarTitleText": "搜索加入机构"
+			}
 		}
 	],
 	"globalStyle": {
