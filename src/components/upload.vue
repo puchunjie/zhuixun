@@ -46,7 +46,7 @@ export default {
                     // 上传文件
                     uni.showLoading({ title: '上传中...' });
                     uni.uploadFile({
-                        url: `${this.doMain}/order/uploadImg`, //仅为示例，非真实的接口地址
+                        url: `${this.doMain}/evaluation/uploadImg`, //仅为示例，非真实的接口地址
                         filePath: res.tempFilePaths[0],
                         name: 'file',
                         success: (res1) => {
