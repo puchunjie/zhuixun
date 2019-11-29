@@ -19,7 +19,7 @@ export default {
                 icon: 'iconjiachang_kechengpingjia',
                 label: '课程评价',
                 color: '#5bdbb4',
-                path: ''
+                path: '../me/index'
             }, {
                 icon: 'iconjiachang_goukeqingdan',
                 label: '购课清单',
@@ -97,8 +97,9 @@ export default {
 .kefu{
 	display:none
 }
+button::after{ border: none; }
 button{
-	position: static;
+	position: relative;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;

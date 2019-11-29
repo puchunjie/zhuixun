@@ -2,21 +2,21 @@
     <div class="class-detail-teacher">
         <div class="class-info">
             <div class="body">
-                <div class="class-name">当前班级：{{courseLesson.className }}</div>
+                <div class="class-name">当前班级：{{courseClassStudentLesson.className }}</div>
                 <div class="gp">
                     <div class="left">时间：</div>
-                    <div class="right"></div>
+                    <div class="right">{{courseClassStudentLesson.startTime | dateformat }} - {{courseClassStudentLesson.endTime | dateformatHM }}</div>
                 </div>
                 <div class="gp">
                     <div class="left">地址：</div>
-                    <div class="right">{{courseLesson.districtFullName}}</div>
+                    <div class="right">{{shop.districtFullName}}</div>
                 </div>
                 <div class="gp">
                     <div class="left">耗费课时：</div>
-                    <div class="right">{{course.lessonMinutes}}人</div>
+                    <div class="right">{{course.lessonMinutes}}</div>
                 </div>
 				<div class="bottom-btn">
-				    <div class="btn orange">签到</div>
+				    <div class="btn orange" @click="creatQr">签到</div>
 				    <div class="btn green">请假</div>
 				</div>
             </div>
@@ -36,47 +36,36 @@
 		</div>
 		<div class="class-info">
 		    <p class="p5">
-				<!-- <image src="{{shop.logoPic }}"></image> --> 
-				{{courseLesson.shopName }}
+				<image class="logo" :src="shop.logoPic"></image>
+				{{shop.shopName }}
 			</p>
-			<p class="p6" onclick="jiGouXiangQing(${courseClassStudentLesson.shopId });">
+			<p class="p6" @click="openToInstDetail">
 				查看机构
 			</p>
 		</div>
-       
     </div>
+	<!-- <div class="erweima-warp">
+	    <tki-qrcode style="display:inline-block" ref="qrcode" cid="cid" :val="'xxxxxxxxxxxxxx'" :size="200" unit="upx" loadMake onval/>
+	</div> -->
 </template>
 
 <script>
-import zxTabs from '@/components/tabs.vue'
+import tkiQrcode from 'tki-qrcode/components/tki-qrcode/tki-qrcode.vue'
 import { mapGetters } from 'vuex'
 export default {
-    components: {zxTabs},
+    components: {tkiQrcode},
+	props: {
+		 studentId: {// 要生成的二维码值
+			type: String
+		} 
+	}, 
     data() {
         return {
-            tabs: [{
-                label: '正式学员',
-                value: 1,
-                num: 5
-            },{
-                label: '试听学员',
-                value: 2,
-                num: 0
-            }],
-            list: [],
-			lessonId:null,
-			courseLesson:"",
+			studentLessonId:null,
+			courseClassStudentLesson:"",
 			course:null,
 			shop:null,
-			unSignNum:null,
-			signNum:0,
-			qingJiaNum:0,
-			shiTingStudentNum:0,
-			normalStudentNum:0,
-			shiTingStudentLessonList:[],
-			normalStudentLessonList:[],
-			studentNum:0,
-			isSign:0,
+			qrsize: 120, // 二维码大小
         }
     },
     computed: {
@@ -84,51 +73,23 @@ export default {
 		...mapGetters(['userinfo']),
     },
     methods: {
-        tabChange(tab){
-            console.log(tab)
-            if(tab.num == 1){
-				this.list = this.normalStudentLessonList;
-			}else{
-				this.list = this.shiTingStudentLessonList;
-			}
-        },
-        labelFormat(tab){
-            return `${tab.label}${tab.num}`
-        },
 		getCourseDetail(){
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/courseLesson/view`,
+			    url: `${this.doMain}/course/studentLesson/view`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { lessonId: this.lessonId},
+			    data: { studentLessonId: this.studentLessonId},
 			    success: res => {
 					console.info(res.data);
 			        if (res.data.code === 0) {
 			            var resData = res.data.data;
-						this.courseLesson = resData.courseLesson;
 						this.course = resData.course;
 						this.shop = resData.shop;
-						this.unSignNum = resData.unSignNum;
-						this.signNum = resData.signNum;
-						this.qingJiaNum = resData.qingJiaNum;
-						this.shiTingStudentNum = resData.shiTingStudentNum;
-						this.normalStudentNum = resData.normalStudentNum;
-						this.shiTingStudentLessonList = resData.shiTingStudentLessonList;
-						this.normalStudentLessonList = resData.normalStudentLessonList;
-						this.list = this.normalStudentLessonList;
-						this.isSign = resData.sign.state;
-						this.tabs =[{
-						    label: '正式学员',
-						    value: 1,
-						    num: this.shiTingStudentNum
-						},{
-						    label: '试听学员',
-						    value: 2,
-						    num: this.shiTingStudentNum
-						}];
-						this.studentNum = this.shiTingStudentLessonList.length+this.normalStudentLessonList.length;
+						this.courseClassStudentLesson = resData.courseClassStudentLesson;
+						this.shop.logoPic = this.imgUrl + this.shop.logoPic;
+						this.studentId = this.courseClassStudentLesson.studentId;
 			        }
 			    }
 			});
@@ -162,12 +123,15 @@ export default {
 		},
 		openToStudentSign(){
 			uni.navigateTo({
-				url: '../curriculum/studentRegistration?lessonId='+this.lessonId
+				url: '../curriculum/studentRegistration?lessonId='+this.studentLessonId
 			});
+		},
+		creatQr(){
+			this.$refs.qrcode._makeCode()
 		}
     },
 	onLoad(e) {
-		this.lessonId = e.lessonId;
+		this.studentLessonId = e.studentLessonId;
 		this.getCourseDetail();
 	}
 }
@@ -272,8 +236,19 @@ page {
                 line-height: 20upx;
             }
         }
-		
+		.bottom-btn .btn {
+			width: 260rpx;
+			height: 60rpx;
+			line-height: 60rpx;
+			border-right: 8rpx;
+			border: 1px solid transparent;
+			color: #fff;
+			text-align: center;
+			font-size: 34rpx;
+			border-radius: 8rpx;
+		}
     }
+	
     .student-list {
         width: 100%;
         background: #fff;
@@ -302,7 +277,6 @@ page {
 	}
 
     .bottom-btn{
-        position: fixed;
         width: 100%;
         height: 135upx;
         background: #fff;
@@ -324,8 +298,8 @@ page {
             font-size: 34upx;
             border-radius: 8upx;
             &.orange{
-                background-color: #FA8D45;
-                border-color: #FA8D45;
+                background-color: #1E9FFF;
+                border-color: #1E9FFF;
             }
             &.green{
                 background-color: #0B9186;
@@ -333,5 +307,59 @@ page {
             }
         }
     }
-}
+}	.p1{
+		height:72upx;
+		line-height: 72upx;
+		font-size:32upx;
+		font-family: "微软雅黑";
+		color: #333333;
+	}
+	.p2{
+		height:44upx;
+		line-height: 44upx;
+		font-size:28upx;
+		font-family: "微软雅黑";
+		color: #8E8E8E;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.p2 img{
+		margin-left:60upx;
+		width:28upx;
+		height:28upx;
+	}
+	.p3{
+		padding-top: 20upx;
+		padding-bottom: 20upx;
+	}
+	.p4{
+		color:#333333;
+		height:72upx;
+		line-height: 72upx;
+		font-size:32upx;
+		font-family: "微软雅黑";
+		font-weight: bolder;
+	}
+	.p5{
+		height:120upx;
+		line-height: 120upx;
+		font-size:36upx;
+		text-align: center;
+		color: #333333;
+	}
+	.p6{
+		text-align: center;
+		color: #fff;
+		background:#1ABC9C;
+		padding-top: 16upx;
+		padding-bottom: 16upx;
+		border-radius: 10upx;
+		font-size: 32upx;
+	}
+	.logo{
+		width:80upx;
+		height: 80upx;
+		vertical-align: middle;
+	}
 </style>

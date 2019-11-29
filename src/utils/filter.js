@@ -5,7 +5,7 @@ import { ScEnumKeys, ScEnums } from '@/utils/enums';
 
 export const dateformat = (value, formatStr = 'yyyy-MM-dd hh:mm') => {
     if (!value) return "";
-    let d = isDate(value) ? value : new Date(value);
+    let d = isDate(value) ? value : new Date(value*1000);
     return df.format(d, formatStr)
 };
 
