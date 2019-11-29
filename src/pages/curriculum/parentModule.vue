@@ -2,7 +2,7 @@
     <div class="parent-module">
         <div class="jigou-list-container mt30">
 			<label>课日程总数 {{list.length}}</label>
-            <div class="item" v-for="(item,i) in list" :key="i" @click="openToCourse" :data-lessonid="item.lessonId">
+            <div class="item" v-for="(item,i) in list" :key="i" @click="openToCourse" :data-studentlessonid="item.studentLessonId">
                 <div class="info">
                     <h3 class="time">课程：{{ item.courseName }}
 						<span class="name lessontype" v-if="item.lessonType === 0">正式课</span>
@@ -45,9 +45,9 @@ export default {
     },
 	methods:{
 		openToCourse(e){
-			var lessonId = e.currentTarget.dataset.lessonid;
+			var studentLessonId = e.currentTarget.dataset.studentlessonid;
 			uni.navigateTo({
-				url: '../curriculum/classDetail_parent?lessonId='+lessonId
+				url: '../curriculum/classDetail_parent?studentLessonId='+studentLessonId
 			});
 		}
 	}
