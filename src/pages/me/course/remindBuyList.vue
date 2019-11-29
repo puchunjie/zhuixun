@@ -11,9 +11,9 @@
 				<span  v-show="item.orderAgainState ==0" class="span2"> 提醒次数：{{item.orderAgainMsgNum}}</span>
 			</p>
 			<div class="bottom"> 
-				<div class="ac-btn">排课</div>
-				<div class="ac-btn">提醒</div>
-				<div class="ac-btn">缴费</div>
+				<div class="ac-btn" v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div>
+				<div class="ac-btn" v-show="item.orderAgainState == 0">缴费</div>
+				<div class="ac-btn2" v-show="item.orderAgainState == 0">提醒</div>
 			</div>
     	</div>
     	<p v-if="orderList.length === 0" class="no-order">暂无记录~</p>
@@ -133,8 +133,21 @@ page {
 			font-size: 26upx;
 			color: #fff;
 			background: #0A9187;
-			right: 10upx;
-			top: 10upx;
+			right: 20upx;
+			top: 17upx;
+		}
+		.ac-btn2{
+			position: absolute;
+			float: right;
+			width: 140upx;
+			height: 47upx;
+			line-height: 44upx;
+			text-align: center;
+			font-size: 26upx;
+			color: #fff;
+			background: #0A9187;
+			right: 190upx;
+			top: 17upx;
 		}
 	}
 }
