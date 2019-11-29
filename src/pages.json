@@ -148,6 +148,24 @@
 			"path": "pages/me/institution/enterInstForSearchParent",
 			"style": {
 				"navigationBarTitleText": "搜索加入机构"
+				}
+		},
+		{
+			"path": "pages/me/course/buyClassList",
+			"style": {
+				"navigationBarTitleText": "购课清单"
+			}
+		},
+		{
+			"path": "pages/me/course/learnedLessonList",
+			"style": {
+				"navigationBarTitleText": "上课历史"
+			}
+		},
+		{
+			"path": "pages/me/message/parentMessageList",
+			"style": {
+				"navigationBarTitleText": "系统通知"
 			}
 		}
 	],
