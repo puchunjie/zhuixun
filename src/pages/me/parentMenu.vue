@@ -1,6 +1,6 @@
 <template>
     <div class="menu-panel">
-        <div class="menu-item" v-for="(menu,i) in menus" :key="i" @click="openToPage" :data-url="item.path">
+        <div class="menu-item" v-for="(menu,i) in menus" :key="i" @click="openToPage" :data-url="menu.path">
             <i class="iconfont icon" :class="menu.icon" :style="{color: menu.color}"></i>
             <p class="label">{{ menu.label }}</p>
         </div>
@@ -24,12 +24,12 @@ export default {
                 icon: 'iconjiachang_goukeqingdan',
                 label: '购课清单',
                 color: '#ec8872',
-                path: ''
+                path: '../me/course/buyClassList'
             }, {
                 icon: 'iconjiachang_xitongtongzhi',
                 label: '系统通知',
                 color: '#ec8872',
-                path: ''
+                path: '../me/message/parentMessageList'
             },{
                 icon: 'iconjiachang_shangkeqiandao',
                 label: '上课签到',
@@ -39,12 +39,12 @@ export default {
                 icon: 'iconjiachang_shangkelishi',
                 label: '上课历史',
                 color: '#ec8872',
-                path: ''
+                path: '../me/course/learnedLessonList'
             }, {
                 icon: 'iconjiachang_woyaoqingjia',
                 label: '我要请假',
                 color: '#6dc829',
-                path: '/pages/me/leave/student'
+                path: '../me/leave/student'
             }, {
                 icon: 'iconico',
                 label: '课程购买',

@@ -143,6 +143,24 @@
 			"style": {
 				"navigationBarTitleText": "课程详情"
 			}
+		},
+		{
+			"path": "pages/me/course/buyClassList",
+			"style": {
+				"navigationBarTitleText": "购课清单"
+			}
+		},
+		{
+			"path": "pages/me/course/learnedLessonList",
+			"style": {
+				"navigationBarTitleText": "上课历史"
+			}
+		},
+		{
+			"path": "pages/me/message/parentMessageList",
+			"style": {
+				"navigationBarTitleText": "系统通知"
+			}
 		}
 	],
 	"globalStyle": {
