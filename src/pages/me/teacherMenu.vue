@@ -45,7 +45,7 @@ export default {
                 icon: 'iconjiachang_kechengpingjia',
                 label: '学员评价',
                 color: '#5bdbb4',
-                path: ''
+                path: '/pages/me/evaluate/chooseCourse'
             }, {
                 icon: 'iconlaoshi_xufeitixing',
                 label: '续费提醒',

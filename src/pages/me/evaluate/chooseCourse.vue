@@ -10,8 +10,8 @@
 import { mapGetters } from 'vuex'
 import { mapActions } from 'vuex'
 import calendar from '@/components/calendar.vue'
-import parentModule from './parentModule'
-import teacherModule from './teacherModule'
+import parentModule from './courseListParentModule'
+import teacherModule from './courseListTeacherModule'
 export default {
     components: {
         calendar,
@@ -102,8 +102,8 @@ export default {
 	onShow() {
 		this.startTime = this.getNowFormatDate();
 		/*this.setUserInfo({parentId:4,shopId:6});*/
-		/*this.setUserInfo({teacherId:14,shopId:6,userName:'梁慧'});
-		this.setTeacher(true);*/
+		this.setUserInfo({teacherId:14,shopId:6});
+		this.setTeacher(true);
 		if(this.isTeacher){
 			this.getCourseLessonList();
 		}else{
@@ -115,8 +115,8 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../../styles/base.less');
-@import url('../../styles/institutionslIst.less');
+@import url('../../../styles/base.less');
+@import url('../../../styles/institutionslIst.less');
 page {
     padding: 18upx 20upx 20upx;
     background: #fff;

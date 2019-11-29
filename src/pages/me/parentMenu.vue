@@ -19,7 +19,7 @@ export default {
                 icon: 'iconjiachang_kechengpingjia',
                 label: '课程评价',
                 color: '#5bdbb4',
-                path: '../me/index'
+                path: '../me/evaluate/chooseCourse'
             }, {
                 icon: 'iconjiachang_goukeqingdan',
                 label: '购课清单',

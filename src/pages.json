@@ -179,6 +179,24 @@
 			"style": {
 				"navigationBarTitleText": "评价单个学生"
 			}
+		},
+		{
+			"path": "pages/me/evaluate/allStudent",
+			"style": {
+				"navigationBarTitleText": "评价班级学生"
+			}
+		},
+		{
+			"path": "pages/me/evaluate/chooseCourse",
+			"style": {
+				"navigationBarTitleText": "选择课程"
+			}
+		},
+		{
+			"path": "pages/me/evaluate/chooseStudent",
+			"style": {
+				"navigationBarTitleText": "选择学生"
+			}
 		}
 	],
 	"globalStyle": {
