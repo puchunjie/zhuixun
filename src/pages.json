@@ -85,7 +85,7 @@
 			}
 		},
 		{
-			"path": "pages/course/classList",
+			"path": "pages/me/course/classList",
 			"style": {
 				"navigationBarTitleText": "班级管理"
 			}

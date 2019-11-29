@@ -7,7 +7,7 @@
             <image class="gender-img" :src="'/static/head2.png'"></image>
             <div class="info">
                 <h3 class="name">{{ item.realName}}</h3>
-				<p class="phone">{{ item.mobilePhone}}</p>
+				<p v-show="shop.showParentTel == 1" class="phone" >{{ item.mobilePhone}}</p>
             </div>
         </div>
     </div>
@@ -19,13 +19,14 @@ export default {
     data() {
         return {
             parentList: [],
+			shop:'',
         }
     },
 	computed: {
 	    ...mapGetters(['userinfo'])
 	},
 	onLoad() {
-		this.getParentList();
+		this.getShop();
 	},
 	methods: {
 		getParentList() {
@@ -46,6 +47,29 @@ export default {
 							duration: 1000
 						})
 					}
+			    }
+			});
+		},
+		getShop() {
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/shop/view`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { shopId: this.userinfo.shopId},
+			    success: res => {
+					console.info(this.userinfo.shopId);
+			        if (res.data.code === 0) {
+			            this.shop = res.data.data;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+					this.getParentList();
 			    }
 			});
 		}

@@ -40,7 +40,7 @@ export default {
                 icon: 'iconlaoshi_banjiguanli',
                 label: '班级管理',
                 color: '#6dc829',
-                path: '/pages/course/classList'
+                path: '/pages/me/course/classList'
             }, {
                 icon: 'iconjiachang_kechengpingjia',
                 label: '学员评价',
