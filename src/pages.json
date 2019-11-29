@@ -167,6 +167,18 @@
 			"style": {
 				"navigationBarTitleText": "系统通知"
 			}
+		},
+		{
+			"path": "pages/me/userInfo/teacher",
+			"style": {
+				"navigationBarTitleText": "老师-个人信息"
+			}
+		},
+		{
+			"path": "pages/me/evaluate/singleStudent",
+			"style": {
+				"navigationBarTitleText": "评价单个学生"
+			}
 		}
 	],
 	"globalStyle": {
