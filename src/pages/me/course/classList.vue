@@ -28,7 +28,7 @@ export default {
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onLoad() {
+	onShow() {
 		this.getClassList();
 	},
     methods: {

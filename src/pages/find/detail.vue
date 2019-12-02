@@ -56,8 +56,10 @@ export default {
 	},
 	onLoad:function(e) {
 		this.articleId = e.articleId;
-	    this.getArticleDetail();
 	},
+	onShow() {
+	    this.getArticleDetail();
+	}
 }
 </script>
 

@@ -141,13 +141,12 @@ export default {
 			return this.isTeacher ? this.teacherEnters : this.parentEnters
 		}
 	},
-	onLoad() {
+	onShow() {
 		if(this.isTeacher){
 			this.getTeacherIndexInfo();
 		}else{
 			this.getParentIndexInfo();
 		}
-		
 	},
 	methods: {
 		swiperChange(e) {

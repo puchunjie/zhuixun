@@ -135,6 +135,8 @@ export default {
     },
 	onLoad(e) {
 		this.studentLessonId = e.studentLessonId;
+	},
+	onShow() {
 		this.getCourseDetail();
 	}
 }

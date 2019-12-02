@@ -40,7 +40,7 @@ export default {
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onLoad() {
+	onShow() {
 		this.getLessonList();
 	},
     methods: {

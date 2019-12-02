@@ -150,8 +150,10 @@ export default {
     }, 
 	onLoad(e) {
 		this.lessonId = e.lessonId;
-		this.getList()
 	},
+	onShow(){
+		this.getList()
+	}
 	
 }
 </script>

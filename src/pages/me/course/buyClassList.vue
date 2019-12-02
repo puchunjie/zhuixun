@@ -22,7 +22,7 @@ export default {
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onLoad() {
+	onShow() {
 		this.getOrderList();
 	},
     methods: {

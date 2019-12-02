@@ -32,7 +32,7 @@ export default {
 	computed: {
 	    ...mapGetters(['userinfo'])
 	},
-	onLoad() {
+	onShow() {
 		this.getShop();
 	},
 	methods: {

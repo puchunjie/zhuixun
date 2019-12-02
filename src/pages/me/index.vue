@@ -149,7 +149,7 @@ export default {
 			uni.navigateTo({url: '/pages/transfer/index'});
 		}
     },
-	onLoad() {
+	onShow() {
 		if(this.isTeacher){
 			this.getTeacherCenter();
 		}else{

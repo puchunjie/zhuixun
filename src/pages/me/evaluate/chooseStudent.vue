@@ -120,6 +120,8 @@ export default {
     },
 	onLoad(e) {
 		this.lessonId = e.lessonId;
+	},
+	onShow() {
 		this.getLessonDetail();
 	}
 }

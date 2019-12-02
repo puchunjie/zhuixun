@@ -20,7 +20,7 @@ export default {
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onLoad() {
+	onShow() {
 		this.getMessageList();
 	},
     methods: {
