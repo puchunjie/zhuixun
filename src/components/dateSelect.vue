@@ -1,23 +1,23 @@
 <template>
     <div class="form-group" :class="required && 'required'">
         <div class="label">{{ title }}</div>
-        <div class="value" @click="showPicker">
-            <div class="select" :class="{ 'vvv': label!=='' }">
-                {{ pickerValueDefault.length == 0 ? '请选择' : label }}
-                <i class="iconfont arrow iconarrow"></i></div>
-        </div>
-    
-        <mpvue-picker ref="mpvuePicker" mode="dateSelector" :pickerValueDefault="pickerValueDefault" :pickerValueArray="listData" @onConfirm="onConfirm">
-        </mpvue-picker>
+        <div class="value">
+            <div class="select" :class="{ 'vvv': inValue !=='' }">
+                <ruiDatePicker class="test" :start="start" :end="end" :fields="fields" :value="inValue" @change="bindChange">
+                    {{ inValue == '' ? '请选择' : inValue }}
+                    <i class="iconfont arrow iconarrow"></i>
+                </ruiDatePicker>
+            </div>
+        </div>    
     </div>
 </template>
 
 <script>
-import mpvuePicker from 'mpvue-picker';
+import ruiDatePicker from '@/components/rattenking-dtpicker/rattenking-dtpicker.vue';
 import { dateformat } from '@/utils/filter.js';
 export default {
     components: {
-        mpvuePicker
+        ruiDatePicker
     },
     props: {
         required: {
@@ -31,41 +31,74 @@ export default {
         value: {
             type: [String, Number],
             default: ''
+        },
+        // year	String	选择器粒度为年
+        // month	String	选择器粒度为月份
+        // day	String	选择器粒度为天
+        // hour	String	选择器粒度为小时
+        // minute	String	选择器粒度为分钟
+        // second	String	选择器粒度为秒
+        fields: {
+            type: String,
+            default: 'day'
         }
     },
     data() {
         return {
-            label: '',
-            pickerValueDefault: []
-        }
-    },
-    computed: {
-        listData() {
-            if (this.ScEnumKey) return this.ScEnums[this.ScEnumKey]
-            if (this.data) return this.data
-            return []
+            start: '',
+            end: '',
+            inValue: ''
         }
     },
     watch: {
-        pickerValueDefault(val) {
+        fields: {
+            handler: function(val) {
+                switch (val){
+				case 'year':
+                  this.start = '1900';
+                  this.end = '2500';
+				  break;
+				case 'month':
+				  this.start = '1900-00';
+                  this.end = '2500-12';
+				  break;
+				case 'day':
+				  this.start = '1900-00-00';
+                  this.end = '2500-12-31';
+				  break;
+				case 'hour':
+				  this.start = '1900-00-00 00';
+                  this.end = '2500-12-31 23';
+				  break;
+				case 'minute':
+				  this.start = '1900-00-00 00:00';
+                  this.end = '2500-12-31 23:59';
+				  break;
+				case 'second':
+				  this.start = '1900-00-00 00:00:00';
+                  this.end = '2500-12-31 23:59:59';
+				  break;
+				default: 
+				  this.start = '1900-00-00 00:00:00';
+                  this.end = '2500-12-31 23:59:59';
+				  break;
+			  }
+            },
+            immediate: true
+        },
+        inValue(val) {
             this.$emit('input', val)
         },
         value: {
             handler: function(val) {
-                this.pickerValueDefault = val
+                this.inValue = val
             },
             immediate: true
         }
     },
     methods: {
-        showPicker() {
-            this.$refs.mpvuePicker.show();
-        },
-        onConfirm(e) {
-            let date = dateformat(e.value.join('-'), 'yyyy-MM-dd')
-            this.$emit('onConfirm', date)
-            this.label = date;
-            this.pickerValueDefault = date;
+        bindChange(e){
+            this.inValue = e;
         }
     }
 }

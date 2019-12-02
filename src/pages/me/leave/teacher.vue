@@ -3,7 +3,7 @@
         <div class="form-div">
             <!-- ScEnumKey在utils/enums.js中维护 用于静态枚举值 动态值传入data : [value:1,label:'xxx'] -->
             <singleElection title="请假类型" v-model="form.leaveType" ScEnumKey="leaveTypeEnum"></singleElection>
-            <dateSelect title="开始时间" v-model="form.leaveStartTimeStr"></dateSelect>
+            <dateSelect title="开始时间" fields="second" v-model="form.leaveStartTimeStr"></dateSelect>
             <dateSelect title="结束时间" v-model="form.leaveEndTimeStr"></dateSelect>
         </div>
     
