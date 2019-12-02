@@ -11,7 +11,7 @@
 	        <div class="body">
 	            <div class="class-name">当前班级：{{courseClassStudentLesson.className }}</div>
 	            <div class="gp">
-	                <div class="left">时间：{{courseClassStudentLesson.startTime | dateformat }} - {{courseClassStudentLesson.endTime | dateformatHM }}</div>
+	                <div class="left">时间：{{courseClassStudentLesson.startTime | dateformatYMDHM }} - {{courseClassStudentLesson.endTime | dateformatHM }}</div>
 	            </div>
 	            <div class="gp">
 	                <div class="left">地址：{{shop.districtFullName}}</div>

@@ -1,7 +1,7 @@
 <template>
     <div class="order-module">
     	<div class="item"  v-for="item in orderList" :key="item.orderId">
-    		<p class="p1">{{item.createdTimestamp | dateformat}}</p>
+    		<p class="p1">{{item.createdTimestamp | dateformatYMDHM}}</p>
     		<p class="p2">
 				<span class="span1">{{item.className}}</span>
 				<span class="span2">￥{{item.payedAmount | priceFilter}}</span>

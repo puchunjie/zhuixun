@@ -1,7 +1,7 @@
 <template>
     <div class="me-container">
         <div class="green-bg">
-            <i class="iconfont iconziyuan setting"></i>
+            <i @click="openToModify" class="iconfont iconziyuan setting"></i>
         </div>
         <div class="jigou-ll">
             <div class="info-panel">
@@ -147,6 +147,9 @@ export default {
 			this.setUserInfo({});
 			this.setTeacher(null);
 			uni.navigateTo({url: '/pages/transfer/index'});
+		}, 
+		openToModify(){
+			uni.navigateTo({url: '/pages/me/userInfo/teacher'});
 		}
     },
 	onShow() {

@@ -2,8 +2,13 @@ import { isDate, isUndefined, isNull } from 'lodash';
 import df from 'dateformat-util'
 import { ScEnumKeys, ScEnums } from '@/utils/enums';
 
+export const dateformat = (value, formatStr = 'yyyy-MM-dd') => {
+    if (!value) return "";
+    let d = isDate(value) ? value : new Date(value);
+    return df.format(d, formatStr)
+};
 
-export const dateformat = (value, formatStr = 'yyyy-MM-dd hh:mm') => {
+export const dateformatYMDHM = (value, formatStr = 'yyyy-MM-dd hh:mm') => {
     if (!value) return "";
     let d = isDate(value) ? value : new Date(value*1000);
     return df.format(d, formatStr)

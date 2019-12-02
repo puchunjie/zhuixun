@@ -21,7 +21,7 @@
             </div>
             <div class="bottom">
 				签到时间：
-				<span  v-show="item.state !=3">{{item.signTime | dateformat}} </span>
+				<span  v-show="item.state !=3">{{item.signTime | dateformatYMDHM}} </span>
 				<span  v-show="item.state ==3">旷课未签到 </span>
 			</div>
         </div>

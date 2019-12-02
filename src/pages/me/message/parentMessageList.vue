@@ -2,7 +2,7 @@
 	<div class="message-module">
 		<div class="item"  v-for="item in messageList" :key="item.messageId">
 			<p class="p1">{{item.messageTitle}}</p>
-			<p class="p2">{{item.createdTimestamp | dateformat}}</p>
+			<p class="p2">{{item.createdTimestamp | dateformatYMDHM}}</p>
 			<p class="p3">{{item.messageContent}}</p>
 		</div>
 		<p v-if="messageList.length === 0" class="no-message">暂无记录~</p>
