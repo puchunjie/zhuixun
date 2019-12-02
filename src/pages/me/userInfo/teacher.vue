@@ -27,7 +27,7 @@
                     <input v-model="form.mobilePhone" placeholder="填写请" />
                 </div>
             </div>
-            <dateSelect title="生日" v-model="form.birthdayStr" :value="form.birthdayStr"></dateSelect>
+            <dateSelect title="生日" v-model="form.birthdayStr"></dateSelect>
             <singleElection title="性别" v-model="form.gender" :data="[{value: 1,label: '男'},{value: 2,label: '女'}]"></singleElection>
         </div>
     
@@ -35,8 +35,7 @@
 			<div class="form-group">
 			    <div class="label">教龄(年)</div>
 			    <div class="value">
-			        <input v-model="form.teachYear" style="width:68%;display: inline-block;padding-right:0px;" placeholder="填写请" />
-					<!-- <input style="width:16%;display: inline-block;" value="年"/> -->
+			        <input v-model="form.teachYear"  placeholder="填写请" />
 			    </div>
 			</div>
             <singleElection v-model="form.degree" title="学历" :data="[{value: 1,label: '高中'},{value: 2,label: '中专'},{value: 3,label: '大专'},{value: 4,label: '本科'},{value: 5,label: '硕士'},{value: 6,label: '博士'},{value: 7,label: '博士后'}]"></singleElection>
@@ -60,6 +59,7 @@
 
 <script>
 import Vue from "vue";
+import df from 'dateformat-util'
 import upload from '@/components/uploadPortrait.vue'
 import dateSelect from '~/dateSelect.vue'
 import singleElection from '~/singleElection.vue'
@@ -101,7 +101,8 @@ export default  Vue.extend({
 				this.portrait = this.imgUrl+this.userinfo.portrait;
 			}
 			this.form.teacherId = this.userinfo.teacherId;
-			this.form.birthdayStr = this.userinfo.birthday;
+			
+			this.form.birthdayStr =  df.format(new Date(this.userinfo.birthday*1000),"yyyy-MM-dd");
 			this.form.gender = this.userinfo.gender;
 			this.form.teachYear = this.userinfo.teachYear;
 			this.form.degree = this.userinfo.degree;
