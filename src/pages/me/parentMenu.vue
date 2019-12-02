@@ -4,7 +4,7 @@
             <i class="iconfont icon" :class="menu.icon" :style="{color: menu.color}"></i>
             <p class="label">{{ menu.label }}</p>
         </div>
-		<button open-type="contact" class="menu-item">
+		<button open-type="contact" class="menu-item" style="background:#FFFFFF">
 		    <i class="iconfont icon iconkefutouxiang" style="#0a9186"></i>
 		    <p class="label">客服帮助</p>
 		</button>
