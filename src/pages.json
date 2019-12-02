@@ -203,6 +203,36 @@
 			"style": {
 				"navigationBarTitleText": "选择学生"
 			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseStu",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择学生"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseClass",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择班级"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseClassCourse",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择课程"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkCreatOrder",
+			"style": {
+				"navigationBarTitleText": "签约购课-下单"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkCreatOrderSuccess",
+			"style": {
+				"navigationBarTitleText": "签约购课-下单成功"
+			}
 		}
 	],
 	"globalStyle": {
