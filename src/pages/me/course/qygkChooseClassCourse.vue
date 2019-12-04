@@ -1,13 +1,23 @@
 <template>
     <div class="order-module">
-    	<div class="item" @click="openToCreatOrder"  v-for="item in classCourseList" :key="item.classId">
+    	<div class="item" >
 			<span class="dian"></span>
     		<p class="p1">
-				<span class="span1">班级：{{item.className}}</span>
+				<span class="span1">班级：{{courseClass.className}}</span>
 			</p>
-    		<p class="p2" v-for="subitem in item.classCourseList" :key="item.courseClassCourseId">
-				<!-- <span class="span1"> 剩余课时：{{subitem.remainClassHour}}</span>
-				<span  v-show="item.orderAgainState ==0" class="span2"> 提醒次数：{{item.orderAgainMsgNum}}</span> -->
+    		<p class="p2" v-for="(item,index) in classCourseList" :key="item.courseId">
+				<span class="span1"> 课程：{{item.courseName}}</span>
+				<span class="span1"> 时间：{{item.weekday}}({{item.startTimeStr}}-{{item.endTimeStr}})</span>
+				<span class="span1"> 老师：{{item.teacherName}} | {{item.lessonMinutes}}分钟</span>
+				<span class="span1">
+					<span class="span2">单价：{{item.lessonPrice/100}}元 |</span>
+					<input class="span2" style="width:60upx;border:1upx solid #0A9187" :value="item.lessonNum" @input="modifyLessonNum" :data-index="index"/>
+					节
+				</span>
+				<span class="span1"> 总价：{{item.totalPrice/100}}元</span>
+			</p>
+			<p class="p2">
+				<span class="span1">总价：{{courseClass.totalPrice/100}}/元</span>
 			</p>
 			<div class="bottom"> 
 				<div class="ac-btn2" @click="submit">下一步</div>
@@ -26,7 +36,8 @@ export default {
 			studentId:0,
 			classId:0,
 			courseIds:'',
-			lessonNums:''
+			lessonNums:'',
+			courseClass:null
         }
     },
     computed: {
@@ -50,7 +61,10 @@ export default {
 			    data: { teacherId: this.userinfo.teacherId,classId:this.classId},
 			    success: res => {
 			        if (res.data.code === 0) {
-			            this.classCourseList = res.data.data;
+						this.courseClass = res.data.data;
+						if(this.courseClass != null){
+							this.classCourseList = this.courseClass.classCourseList;
+						}
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -67,6 +81,48 @@ export default {
 				url: url
 			}) */
 		},
+		modifyLessonNum(e){
+			var index = e.currentTarget.dataset.index;
+			var newLessonNum = e.detail.value;
+			this.classCourseList[index].lessonNums = newLessonNum;
+			let oldNum = this.classCourseList[index].lessonNums;
+			let oldPrice = this.classCourseList[index].totalPrice;
+			let newPrice = this.classCourseList[index].lessonNums*this.classCourseList[index].lessonPrice;
+			this.classCourseList[index].totalPrice = newPrice;
+			this.courseClass.totalPrice = this.courseClass.totalPrice-oldPrice+newPrice;
+		},
+		submit(){
+			let courseIds = '';
+			let lessonNums = '';
+			for (var i = 0; i < this.classCourseList.length; i++) {
+				if(this.classCourseList[i].lessonNum == ''){
+					uni.showToast({
+						title:"请填写购买课时，不买请填0",
+						icon: 'none',
+						duration: 1000
+					})
+					return
+				}
+				if(this.classCourseList[i].lessonNum < 0){
+					uni.showToast({
+						title:"课时必须大于等于零",
+						icon: 'none',
+						duration: 1000
+					})
+					return
+				}
+				courseIds += this.classCourseList[i].courseId+',';
+				lessonNums += this.classCourseList[i].lessonNum+',';
+			}
+			
+			uni.navigateTo({
+				 url: '../../me/course/qygkCreatOrder?studentId='+this.studentId+'&classId='+this.classId
+				 +'&courseIds='+courseIds
+				 +'&lessonNums='+lessonNums
+				 +'&totalAmount='+this.courseClass.totalPrice
+				 +'&className='+this.courseClass.className
+			});
+		}
     }
 }
 </script>
@@ -125,7 +181,7 @@ page {
 			.span1{
 			}
 			.span2{
-				float: right;
+				float: left;
 			}
 		}
 	}
@@ -157,9 +213,14 @@ page {
 			font-size: 26upx;
 			color: #fff;
 			background: #0A9187;
-			right: 190upx;
-			top: 17upx;
+			right: 40upx;
 		}
 	}
+}
+.span1{
+		display: block;
+	}
+.span2{
+	display:inline;
 }
 </style>

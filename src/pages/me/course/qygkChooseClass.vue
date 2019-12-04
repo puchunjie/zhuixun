@@ -57,7 +57,7 @@ export default {
 		openToClassCourse(e){
 			let classId = e.currentTarget.dataset.classid;
 			uni.navigateTo({
-				 url: '../../me/course/qygkChooseClassCourse?studentId='+this.studentId+'&classId'+classId
+				 url: '../../me/course/qygkChooseClassCourse?studentId='+this.studentId+'&classId='+classId
 			});
 		}
     },
@@ -102,8 +102,7 @@ page {
 			font-weight:bold;
 			line-height:49upx;
 			padding:20upx 20upx 20upx 20upx;
-			.span1{
-			}
+			
 			.span2{
 				float: right;
 			}
@@ -159,5 +158,6 @@ page {
 			padding-left: 20upx;
 		}
 	}
+	
 }
 </style>
