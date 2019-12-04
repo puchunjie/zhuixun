@@ -102,6 +102,8 @@ export default {
 			console.log('获取信息')
 		},
 		start() {
+			//避免重复多次轮询
+			if(this.interval) return
 			console.log('开始')
 			this.interval = setInterval(() => {
 				//do something
