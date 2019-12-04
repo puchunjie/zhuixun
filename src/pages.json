@@ -203,6 +203,36 @@
 			"style": {
 				"navigationBarTitleText": "选择学生"
 			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseStu",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择学生"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseClass",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择班级"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkChooseClassCourse",
+			"style": {
+				"navigationBarTitleText": "签约购课-选择课程"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkCreatOrder",
+			"style": {
+				"navigationBarTitleText": "签约购课-下单"
+			}
+		},
+		{
+			"path": "pages/me/course/qygkCreatOrderSuccess",
+			"style": {
+				"navigationBarTitleText": "签约购课-下单成功"
+			}
 		}
 	],
 	"globalStyle": {
@@ -240,7 +270,7 @@
 				"selectedIconPath": "static/tab/tab_18.png"
 			}
 		]
-	},
+	}/*,
 	"condition": { //模式配置，仅开发期间生效
 	    "current": 0, //当前激活的模式（list 的索引项）
 	    "list": [
@@ -250,5 +280,5 @@
 	            "query": "" //启动参数，在页面的onLoad函数里面得到。
 	        }
 	    ]
-	}
+	}*/
 }

@@ -28,6 +28,9 @@
 
         <teacherMenu v-if="isTeacher"></teacherMenu>
         <parentMenu v-else></parentMenu>
+		<div class="version">
+		            <p class="number">版本号：{{nowversion}}</p>
+		</div>
         <div class="fix-btottom">
             <div class="btn" @click="quitToIndex">退出</div>
         </div>
@@ -57,7 +60,7 @@ export default {
 			unLearnNum:0,
 			studentcode:'',
 			shopNums:0,
-			
+			nowversion:''
 			
         }
     },
@@ -149,10 +152,16 @@ export default {
 			uni.navigateTo({url: '/pages/transfer/index'});
 		}, 
 		openToModify(){
-			uni.navigateTo({url: '/pages/me/userInfo/teacher'});
+			if(this.isTeacher){
+				//老师编辑
+				uni.navigateTo({url: '/pages/me/userInfo/teacher'});
+			}else{
+				//家长编辑
+			}
 		}
     },
 	onShow() {
+		this.nowversion = this.version;
 		if(this.isTeacher){
 			this.getTeacherCenter();
 		}else{
@@ -269,4 +278,10 @@ page{
         }
     }
 }
+.version{
+	text-align: center;
+	padding-top: 20%;
+	color: #999;
+}
+
 </style>

@@ -35,7 +35,7 @@ export default {
                 icon: 'iconico',
                 label: '签约购课',
                 color: '#5BDBB4',
-                path: ''
+                path: '/pages/me/course/qygkChooseStu'
             }, {
                 icon: 'iconlaoshi_banjiguanli',
                 label: '班级管理',
