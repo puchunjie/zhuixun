@@ -2,7 +2,7 @@
     <view id="calendar-panel" class="calendar-container">
         <div class="top">
             <view class="calendar-year-month">
-                {{yearMonth}}
+               <div class="prve" @click="prve"></div> {{yearMonth}}<div class="next" @click="next"></div>
             </view>
             <view class="calendar-week">
                 <view class="calendar-week-item">日</view>
@@ -93,7 +93,7 @@ export default {
     created() {
         this.getMonth(1, true);
         // let time = '2019-12-12';
-        console.log(this)
+        // console.log(this)
     },
     // #ifdef H5
     mounted() {
@@ -106,6 +106,22 @@ export default {
     },
     // #endif
     methods: {
+        prve(){
+            let current = this.currentIdx > 0 ? this.currentIdx - 1 : 2;
+            this.currentIdx = current;
+            this.year = this.calendars[current].year;
+            this.month = this.calendars[current].month;
+            this.day = this.calendars[current].selectDay;
+            this.getMonth(current);
+        },
+        next(){
+            let current = this.currentIdx < 2 ? this.currentIdx + 1 : 0;
+            this.currentIdx = current;
+            this.year = this.calendars[current].year;
+            this.month = this.calendars[current].month;
+            this.day = this.calendars[current].selectDay;
+            this.getMonth(current);
+        },
         animationfinish(e) {
             let current = e.detail.current;
             this.currentIdx = current;
@@ -256,7 +272,7 @@ export default {
         selectDate(calendar,index,year, month, date, isClick) {
             if (!isClick) return;
             this.calendars[index].selectDay = year + '/' + month + '/' + date;
-            console.log(this.calendars[index])
+            // console.log(this.calendars[index])
             this.$emit('selected', {
                 fullDate: `${year}-${month}-${date}`
             });
@@ -282,6 +298,7 @@ export default {
         padding: 20upx 0 30upx;
         color: #fff;
         .calendar-year-month {
+            display: flex;
             width: 643upx;
             height: 50upx;
             line-height: 50upx;
@@ -290,6 +307,35 @@ export default {
             background-color: rgba(255, 255, 255, .15);
             border-radius: 25upx;
             font-size: 28upx;
+            justify-content: space-between;
+
+            .prve,.next{
+                position: relative;
+                width: 80upx;
+                height: 100%;
+                &:before{
+                    position: absolute;
+                    content: '';
+                    width: 0; 
+                    height: 0;
+                }
+            }
+
+            .prve:before{
+                border-width: 11upx;
+                border-style: solid;
+                border-color: transparent #fff transparent transparent;
+                right: 40upx;
+                top: 14upx;
+            }
+
+            .next:before{
+                border-width: 11upx;
+                border-style: solid;
+                border-color: transparent transparent transparent #fff;
+                left: 40upx;
+                top: 14upx;
+            }
         }
         .calendar-week {
             width: 100%;
@@ -327,8 +373,9 @@ export default {
                 text-align: center;
                 line-height: 52upx;
                 overflow: hidden;
-                &.disabled{
-                    color: #B3B3B3;
+                &.disabled .day{
+                    color: #B3B3B3!important;
+                    background: none!important;
                 }
 
                 .day.active{
