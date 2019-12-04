@@ -135,9 +135,9 @@ export default {
 			});
 		},
 		openToPage(){
-			uni.navigateTo({
-				 url: '../../me/index'
-			});
+			uni.switchTab({
+				url: '../../me/index'
+			}) 
 		},
 		showQr(){
 			this.isQrShow = true;

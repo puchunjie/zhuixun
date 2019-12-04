@@ -233,6 +233,18 @@
 			"style": {
 				"navigationBarTitleText": "签约购课-下单成功"
 			}
+		},
+		{
+			"path": "pages/me/studentMana/add",
+			"style": {
+				"navigationBarTitleText": "学员添加"
+			}
+		},
+		{
+			"path": "pages/me/studentMana/view",
+			"style": {
+				"navigationBarTitleText": "学员详情"
+			}
 		}
 	],
 	"globalStyle": {

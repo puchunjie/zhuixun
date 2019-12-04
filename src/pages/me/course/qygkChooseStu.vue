@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import singleElection from '~/singleElection.vue'
+import singleElection from '@/components/singleElection.vue'
 import { mapGetters } from 'vuex'
 export default {
    components: {singleElection},

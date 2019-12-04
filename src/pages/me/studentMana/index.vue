@@ -1,45 +1,99 @@
 <template>
     <div class="sutdent-mana-container">
-        <div class="item" :class="{ 'active': active === i }" v-for="(item,i) in list" :key="i">
+        <div class="item"  :class="{ 'active': item.studentId === defaultStudentId }" v-for="(item,i) in list" :key="i">
             <image class="gender-img" :src="item.gender === 1 ? '/static/boy.png' : '/static/girl.png'"></image>
-            <div class="info">
-                <h3 class="name">{{ item.name }}</h3>
-                <p class="desc">{{ item.id }}</p>
-                <p class="desc">{{ item.institutionNum }}2个机构学习 剩余学时：{{ item.time }}</p>
+            <div class="info" @click="viewStu" :data-studentid="item.studentId">
+                <h3 class="name">{{ item.studentName }}</h3>
+                <p class="desc" v-if="item.studentcode == null || item.studentcode != ''">{{ item.studentcode }}</p>
+                <p class="desc" v-if="item.joinShopNum == null || item.joinShopNum != ''">{{ item.joinShopNum }}个机构学习 剩余学时：{{ item.unLearnNum }}</p>
+				<p class="desc" v-else>0个机构学习 剩余学时：0</p>
             </div>
-            <div class="ac-btn">{{ active === i ? '当前登录' : '点击切换' }}</div>
+            <div class="ac-btn" @click="changeStu" :data-studentid="item.studentId">{{ item.studentId === defaultStudentId ? '当前登录' : '点击切换' }}</div>
         </div>
 
-        <div class="submit-btn large">+添加学员</div>
+        <div class="submit-btn large" @click="openToAddStu">+添加学员</div>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
+	computed: {
+	    ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
+	},
     data() {
         return {
-            list: [{
-                name: '张靓颖',
-                gender: 2,
-                id: 'ID： No.1915 1603 7930',
-                institutionNum: 2,
-                time: 1199
-            }, {
-                name: '容祖儿',
-                gender: 2,
-                id: 'ID： No.1915 1603 7930',
-                institutionNum: 2,
-                time: 1199
-            }, {
-                name: '周杰伦',
-                gender: 1,
-                id: 'ID： No.1915 1603 7930',
-                institutionNum: 2,
-                time: 1199
-            }],
-            active: 0
+            list: [],
+			defaultStudentId:0
         }
     },
+	onShow(){
+		this.getStudentList();
+	},
+	methods:{
+		openToAddStu(){
+			uni.navigateTo({url: '/pages/me/studentMana/add'});
+		},
+		getStudentList(){
+			console.info(this.userinfo)
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/student/parent/list`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"parentId":this.userinfo.parentId},
+				success: res => {
+					if (res.data.code === 0) {
+						this.list = res.data.data.studentList;
+						this.defaultStudentId = res.data.data.defaultStudentId;
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
+		},
+		changeStu(e){
+			let studentId = e.currentTarget.dataset.studentid;
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/parent/modifyDefaultStudentId`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				data: {"parentId":this.userinfo.parentId,studentId:studentId},
+				success: res => {
+					if (res.data.code === 0) {
+						uni.showToast({
+							title:'切换成功',
+							icon: 'none',
+							duration: 1000
+						})
+						uni.switchTab({
+							url:'../../index/index'
+						})
+					}else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+				}
+			})
+		},
+		viewStu(e){
+			let studentId = e.currentTarget.dataset.studentid;
+			uni.navigateTo({
+			    url: '../../me/studentMana/view?studentId='+studentId
+			});
+		}
+	}
 }
 </script>
 
@@ -93,7 +147,7 @@ page {
             background: rgba(118, 189, 212, 1);
             border-radius: 8upx 0 8upx 8upx;
             right: 0;
-            top: 0;
+            top: 80rpx;
         }
         &.active {
             .ac-btn {
