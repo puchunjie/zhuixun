@@ -1,84 +1,86 @@
 <template>
 	<div class="class-detail-teacher">
-		<div class="class-info">
+		<div class="class-info" v-for="item in teacherList" @click="openToTeacher" :data-teacherid="item.teacherId">
 		    <p class="p5">
+			<image class="logo" :src="item.portrait"></image>
+				<span>{{item.userName }}</span>
+				<span class="smallfont">{{item.college }}</span>
+				<span class="smallfont" v-if="item.degree == 1">高中</span>
+				<span class="smallfont" v-if="item.degree == 2">中专</span>
+				<span class="smallfont" v-if="item.degree == 3">大专</span>
+				<span class="smallfont" v-if="item.degree == 4">本科</span>
+				<span class="smallfont" v-if="item.degree == 5">硕士</span>
+				<span class="smallfont" v-if="item.degree == 6">博士</span>
+				<span class="smallfont" v-if="item.degree == 7">博士后</span>
+			</p>
+		</div>
+		
+		<div class="class-info">
+			<p class="p5">
 				<image class="logo" :src="shop.logoPic"></image>
 				{{shop.shopName }}
 			</p>
-			<p class="p5">
-				地址：{{shop.districtFullName}}
+			<p class="p6" @click="openToInstDetail">
+				查看机构
 			</p>
-			<p class="p5">
-				电话：{{shop.contactPhone}}
-			</p>
-			<p class="p6" @click="openToTeachers">
-				师资介绍
-			</p>
-		</div>
-		<div class="class-info">
-		    <p class="p4">简介</p>
-		    <rich-text class="rich-text" :nodes="richText"></rich-text>
-		</div>
-		<div class="class-info">
-		    <p class="p4">相册</p>
-			<span v-for="pic in shop.shopPicList">
-				<image class="logo" :src="pic.picUrl"></image>
-			</span>
-		</div>
-		<div class="class-info">
-		    <p class="p4">视频</p>
-			<span v-for="video in shop.shopVideoList">
-				<image class="logo" :src="video.videoUrl"></image>
-			</span>
 		</div>
 	</div>
-	
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { escape2Html } from '@/utils'
 export default {
     data() {
         return {
 			shopId:0,
-			shop:''
+			shop:'',
+			teacherList:''
         }
     },
     computed: {
 		...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
-		richText(){
-		    return escape2Html(this.shop.agencyIntro)
-		}
     },
     methods: {
-		getShopDetail(){
+		getTeacherList(){
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/shop/view`,
+			    url: `${this.doMain}/teacher/listByShopId`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
 			    data: { shopId: this.shopId},
 			    success: res => {
 			        if (res.data.code === 0) {
-			            this.shop = res.data.data;
+			            this.shop = res.data.data.shop;
+						this.shop.logoPic = this.imgUrl + this.shop.logoPic;
+						this.teacherList = res.data.data.teacherList;
+						if(this.teacherList != null && this.teacherList.length > 0){
+							for (let i = 0; i < this.teacherList.length; i++) {
+								this.teacherList[i].portrait = this.imgUrl + this.teacherList[i].portrait;
+							}
+						}
 			        }
 			    }
 			});
 		},
-		openToTeachers(){
+		openToInstDetail(){
 			uni.navigateTo({
-				url: '../me/institution/instTeachers?shopId='+this.shopId
-			});
+				url:'../../me/institution/instView?shopId='+this.shop.shopId
+			})
+		},
+		openToTeacher(e){
+			let teacherId = e.currentTarget.dataset.teacherid;
+			uni.navigateTo({
+				url:'../../me/institution/teacherView?teacherId='+teacherId+'&shopId='+this.shop.shopId
+			})
 		}
     },
 	onLoad(e) {
 		this.shopId = e.shopId;
 	},
 	onShow() {
-		this.getShopDetail();
+		this.getTeacherList();
 	}
 }
 </script>
@@ -198,104 +200,16 @@ page {
 		}
     }
 	
-    .student-list {
-        width: 100%;
-        background: #fff;
-        border-radius: 8upx;
-        margin-top: 20upx;
-        overflow: hidden;
-        .item-content{
-            padding: 20upx 20upx 0;
-            .item{
-                width: 100%;
-                height: 100upx;
-                line-height: 100upx;
-                color: @gray_black;
-                font-size: 30upx;
-                font-weight: 500;
-                padding-left: 20upx;
-                &:not(:last-child){
-                    border-bottom: 1px solid #E6E6E6;
-                }
-            }
-        }
-    }
-	.tip {
-	    float: right;
-	    color: #7FBCB4;
-	}
+}	
 
-    .bottom-btn{
-        width: 100%;
-        height: 135upx;
-        background: #fff;
-        bottom: 0;
-        left: 0;
-        z-index: 10;
-        display: flex;
-        justify-content: space-between;
-        padding: 17upx 20upx;
-        border-top: 1px solid #DADADA;
-        .btn{
-            width: 344upx;
-            height: 100%;
-            line-height: 100upx;
-            border-right: 8upx;
-            border: 1px solid transparent;
-            color: #fff;
-            text-align: center;
-            font-size: 34upx;
-            border-radius: 8upx;
-            &.orange{
-                background-color: #1E9FFF;
-                border-color: #1E9FFF;
-            }
-            &.green{
-                background-color: #0B9186;
-                border-color: #1ABC9C;
-            }
-        }
-    }
-}	.p1{
-		height:72upx;
-		line-height: 72upx;
-		font-size:32upx;
-		font-family: "微软雅黑";
-		color: #333333;
-	}
-	.p2{
-		height:44upx;
-		line-height: 44upx;
-		font-size:28upx;
-		font-family: "微软雅黑";
-		color: #8E8E8E;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
-	.p2 img{
-		margin-left:60upx;
-		width:28upx;
-		height:28upx;
-	}
-	.p3{
-		padding-top: 20upx;
-		padding-bottom: 20upx;
-	}
-	.p4{
-		color:#333333;
-		height:72upx;
-		line-height: 72upx;
-		font-size:32upx;
-		font-family: "微软雅黑";
-		font-weight: bolder;
-	}
 	.p5{
 		height:120upx;
 		line-height: 120upx;
 		font-size:36upx;
-		text-align: center;
+		text-align: left;
 		color: #333333;
+		padding-left: 20upx;
+
 	}
 	.p6{
 		text-align: center;
@@ -310,5 +224,10 @@ page {
 		width:80upx;
 		height: 80upx;
 		vertical-align: middle;
+	}
+	.smallfont{
+		font-size: 26rpx;
+		color: #0A9187;
+		padding-left: 10rpx;
 	}
 </style>

@@ -275,6 +275,12 @@
 			"style": {
 				"navigationBarTitleText": "师资介绍"
 			}
+		},
+		{
+			"path": "pages/me/institution/teacherView",
+			"style": {
+				"navigationBarTitleText": "老师详情"
+			}
 		}
 	],
 	"globalStyle": {

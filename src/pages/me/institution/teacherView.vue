@@ -2,58 +2,69 @@
 	<div class="class-detail-teacher">
 		<div class="class-info">
 		    <p class="p5">
+			<image class="logo" :src="teacher.portrait"></image>
+				<span>{{teacher.userName }}</span>
+				<span class="smallfont">{{teacher.college }}</span>
+				<span class="smallfont" v-if="teacher.degree == 1">高中</span>
+				<span class="smallfont" v-if="teacher.degree == 2">中专</span>
+				<span class="smallfont" v-if="teacher.degree == 3">大专</span>
+				<span class="smallfont" v-if="teacher.degree == 4">本科</span>
+				<span class="smallfont" v-if="teacher.degree == 5">硕士</span>
+				<span class="smallfont" v-if="teacher.degree == 6">博士</span>
+				<span class="smallfont" v-if="teacher.degree == 7">博士后</span>
+			</p>
+		</div>
+		
+		<div class="class-info">
+		    {{remark}}
+		</div>
+		
+		<div class="class-info">
+			<p class="p5">
 				<image class="logo" :src="shop.logoPic"></image>
 				{{shop.shopName }}
 			</p>
-			<p class="p2">
-				地址：{{shop.districtFullName}}
+			<p class="p6" @click="openToInstDetail">
+				查看机构
 			</p>
-			<p class="p2">
-				电话：{{shop.contactPhone}}
-			</p>
-			<p class="p6" @click="openToTeachers">
-				师资介绍
-			</p>
-		</div>
-		<div class="class-info">
-		    <p class="p4">简介</p>
-		    <rich-text class="rich-text" :nodes="richText"></rich-text>
-		</div>
-		<div class="class-info">
-		    <p class="p4">相册</p>
-			<span v-for="pic in shop.shopPicList">
-				<image class="logo" :src="pic.picUrl"></image>
-			</span>
-		</div>
-		<div class="class-info">
-		    <p class="p4">视频</p>
-			<span v-for="video in shop.shopVideoList">
-				<image class="logo" :src="video.videoUrl"></image>
-			</span>
 		</div>
 	</div>
-	
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { escape2Html } from '@/utils'
 export default {
     data() {
         return {
+			teacherId:0,
+			teacher:'',
+			remark:'',
 			shopId:0,
-			shop:'',
-			agencyIntro:''
+			shop:''
         }
     },
     computed: {
 		...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
-		richText(){
-		    return escape2Html(this.agencyIntro)
-		}
     },
     methods: {
+		getTeacherDetail(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/teacher/view`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { teacherId: this.teacherId},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            this.teacher = res.data.data;
+						this.teacher.portrait = this.imgUrl + this.teacher.portrait;
+						this.remark = this.teacher.remark
+			        }
+			    }
+			});
+		},
 		getShopDetail(){
 			uni.request({
 			    method: 'POST',
@@ -65,20 +76,7 @@ export default {
 			    success: res => {
 			        if (res.data.code === 0) {
 			            this.shop = res.data.data;
-						if(this.shop != null){
-							this.agencyIntro = this.shop.agencyIntro;
-							this.shop.logoPic = this.imgUrl + this.shop.logoPic;
-							if(this.shop.shopPicList != null && this.shop.shopPicList.length > 0){
-								for (let i in this.shop.shopPicList) {
-									this.shop.shopPicList[i].picUrl = this.imgUrl + this.shop.shopPicList[i].picUrl;
-								}
-							}
-							if(this.shop.shopVideoList != null && this.shop.shopVideoList.length > 0){
-								for (let j in this.shop.shopVideoList) {
-									this.shop.shopVideoList[j].videoUrl = this.imgUrl + this.shop.shopVideoList[j].videoUrl;
-								}
-							}
-						}
+						this.shop.logoPic = this.imgUrl + this.shop.logoPic;
 			        }
 			    }
 			});
@@ -87,12 +85,19 @@ export default {
 			uni.navigateTo({
 				url: '../../me/institution/instTeachers?shopId='+this.shopId
 			});
-		}
+		},
+		openToInstDetail(){
+			uni.navigateTo({
+				url:'../../me/institution/instView?shopId='+this.shop.shopId
+			})
+		},
     },
 	onLoad(e) {
-		this.shopId = e.shopId;
+		this.teacherId = e.teacherId;
+		this.shopId = e.shopId
 	},
 	onShow() {
+		this.getTeacherDetail();
 		this.getShopDetail();
 	}
 }
@@ -278,7 +283,7 @@ page {
 		height:120upx;
 		line-height: 120upx;
 		font-size:36upx;
-		text-align: center;
+		text-align: left;
 		color: #333333;
 	}
 	.p6{
@@ -294,5 +299,10 @@ page {
 		width:80upx;
 		height: 80upx;
 		vertical-align: middle;
+	}
+	.smallfont{
+		font-size: 26rpx;
+		color: #0A9187;
+		padding-left: 10rpx;
 	}
 </style>
