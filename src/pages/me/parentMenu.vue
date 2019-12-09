@@ -34,7 +34,7 @@ export default {
                 icon: 'iconjiachang_shangkeqiandao',
                 label: '上课签到',
                 color: '#80d5f1',
-                path: ''
+                path: '../me/sign/student'
             }, {
                 icon: 'iconjiachang_shangkelishi',
                 label: '上课历史',

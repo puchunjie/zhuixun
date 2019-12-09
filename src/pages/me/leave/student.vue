@@ -77,8 +77,6 @@ export default {
 			this.form.studentLessonId = item.value;
         },
 		onShow(){
-			this.setUserInfo({parentId:4,shopId:6});
-			this.setTeacher(false);
 			this.getStuList();
 		},
         getList() {

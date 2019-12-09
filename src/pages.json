@@ -245,6 +245,12 @@
 			"style": {
 				"navigationBarTitleText": "学员详情"
 			}
+		},
+		{
+			"path": "pages/me/sign/student",
+			"style": {
+				"navigationBarTitleText": "上课签到"
+			}
 		}
 	],
 	"globalStyle": {
@@ -287,8 +293,8 @@
 	    "current": 0, //当前激活的模式（list 的索引项）
 	    "list": [
 	        {
-				"name": "我要请假", //模式名称
-				"path" : "pages/me/leave/student",
+				"name": "首页", //模式名称
+				"path" : "pages/index/index",
 	            "query": "" //启动参数，在页面的onLoad函数里面得到。
 	        }
 	    ]
