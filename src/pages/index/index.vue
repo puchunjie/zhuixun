@@ -107,11 +107,11 @@ export default {
 			}, {
 				label: '课程评价',
 				icon: '/static/home/pingjia.png',
-				url:''
+				url:'../me/evaluate/chooseCourse'
 			}, {
 				label: '课程购买',
 				icon: '/static/home/goumai.png',
-				url:''
+				url:'../me/course/buyCourseForParent'
 			}],
 			lessonList: [],
 			/* lessonList: [{
@@ -143,8 +143,8 @@ export default {
 		}
 	},
 	onShow() {
-		this.setUserInfo({parentId:4,shopId:6});
-		this.setTeacher(false);
+		/*this.setUserInfo({parentId:4,shopId:6});
+		this.setTeacher(false);*/
 		if(this.isTeacher){
 			this.getTeacherIndexInfo();
 		}else{

@@ -2,7 +2,7 @@
     <div class="parent-module">
         <div class="jigou-list-container mt30">
 			<label>课日程总数 {{list.length}}</label>
-            <div class="item" v-for="(item,i) in list" :key="i" @click="openToCourse" :data-studentlessonid="item.studentLessonId">
+            <div class="item" v-for="(item,i) in list" :key="i" >
                 <div class="info">
                     <h3 class="time">课程：{{ item.courseName }}
 						<span class="name lessontype" v-if="item.lessonType === 0">正式课</span>
@@ -17,10 +17,8 @@
 				<div class="lessonbottom">
 					<div class="place">
 					     教室：{{ item.classRoom}}  &nbsp;&nbsp;学员：{{ item.studentName}}
-						 <span v-if="item.state === 2">已请假</span>
-						 <span v-if="item.state === 1">已签到</span>
-						 <span v-if="item.state === 3">已旷课</span>
-						 <span class="qingjia" @click="addQingJia" :data-lessonid="item.studentLessonId" v-if="item.state === 0">请假</span>
+						 <span v-if="item.parentEvaluationed === 1">已评价</span>
+						 <span v-if="item.parentEvaluationed === 0" @click="openToEva" :data-studentlessonid="item.studentLessonId" :data-lessonid="item.lessonId" :data-teachername="item.teacherName">未评价</span>
 					</div>
 				</div>
             </div>
@@ -44,10 +42,13 @@ export default {
         }
     },
 	methods:{
-		openToCourse(e){
+		openToEva(e){
+			console.info("*******")
 			var studentLessonId = e.currentTarget.dataset.studentlessonid;
+			var lessonId = e.currentTarget.dataset.lessonid;
+			var teacherName = e.currentTarget.dataset.teachername;
 			uni.navigateTo({
-				url: '../curriculum/classDetail_parent?studentLessonId='+studentLessonId
+				url: '../../me/evaluate/teacher?studentLessonId='+studentLessonId+'&teacherName='+teacherName
 			});
 		}
 	}
@@ -99,5 +100,10 @@ export default {
 		padding-bottom: 30upx;
 
 	}
+}
+.place span{
+	float: right;
+	border: 1px solid #999;
+	padding: 2px;
 }
 </style>

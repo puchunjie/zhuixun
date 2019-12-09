@@ -49,7 +49,7 @@ export default {
                 icon: 'iconico',
                 label: '课程购买',
                 color: '#6EC828',
-                path: ''
+                path: '../me/course/buyCourseForParent'
             }]
         }
     },
