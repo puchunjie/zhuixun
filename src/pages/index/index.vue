@@ -70,6 +70,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import institutionList from '@/components/institutionList.vue'
+import { mapActions } from 'vuex'
 export default {
 	components: {
 		institutionList
@@ -98,19 +99,19 @@ export default {
 			parentEnters: [{
 				label: '上课签到',
 				icon: '/static/home/qiandao.png',
-				url:''
+				url:'../me/sign/student'
 			}, {
 				label: '我要请假',
 				icon: '/static/home/qingjia.png',
-				url:''
+				url:'../me/leave/student'
 			}, {
 				label: '课程评价',
 				icon: '/static/home/pingjia.png',
-				url:''
+				url:'../me/evaluate/chooseCourse'
 			}, {
 				label: '课程购买',
 				icon: '/static/home/goumai.png',
-				url:''
+				url:'../me/course/buyCourseForParent'
 			}],
 			lessonList: [],
 			/* lessonList: [{
@@ -142,6 +143,8 @@ export default {
 		}
 	},
 	onShow() {
+		/*this.setUserInfo({parentId:4,shopId:6});
+		this.setTeacher(false);*/
 		if(this.isTeacher){
 			this.getTeacherIndexInfo();
 		}else{
@@ -149,6 +152,7 @@ export default {
 		}
 	},
 	methods: {
+		...mapActions(['setUserInfo', 'setTeacher']),
 		swiperChange(e) {
 			this.activeIndex = e.mp.detail.current;
 			this.$emit("onChange", e.mp.detail.current);

@@ -68,10 +68,9 @@ export default {
 				header: {
 					'content-type': 'application/x-www-form-urlencoded'
 				},
-				data: {"parentId":this.userinfo.parentId, "date":this.startTime},
+				data: {"parentId":this.userinfo.parentId, "date":this.startTime,states:'1'},
 				success: res => {
 					if (res.data.code === 0) {
-						console.info(res.data.data);
 						this.lessonlist = res.data.data;
 					}else{
 						uni.showToast({

@@ -7,7 +7,7 @@
             <div class="info-panel">
                 <div class="head">
                     {{userName}}
-                    <div class="btn" @tab="openToAddShopOrStudent">＋{{ isTeacher ? '增加新机构' : '增加新学员' }}</div>
+                    <div class="btn" @click="openToAddShopOrStudent">＋{{ isTeacher ? '增加新机构' : '增加新学员' }}</div>
                 </div>
                 <div class="content">
                     <image class="h-logo" src='/static/boy.png'></image>

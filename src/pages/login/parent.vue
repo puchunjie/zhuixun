@@ -85,6 +85,7 @@ export default {
                 success: res => {
                     if (res.data.code === 0) {
                         this.setUserInfo(res.data.data);
+						console.info("家长信息"+res.data.data)
 						this.setTeacher(false);
                         uni.switchTab({
                             url: '/pages/index/index'

@@ -1,14 +1,21 @@
 <template>
     <div class="order-module">
-    	<div class="item" @click="openToClassCourse" :data-classid="item.classId"  v-for="item in classList" :key="item.orderId">
+    	<div class="item" v-for="(item,index) in courseClassList" :key="item.classId" >
 			<span class="dian"></span>
     		<p class="p1">
-				<span class="span1">班级:{{item.className}}</span>
+				<span class="span1">课程：{{item.className}}</span>
 			</p>
-			<div class="bottom"> 
-				<span class="span1"> 剩余：{{item.maxNormalNum-item.normalNum}}个名额</span>
-				<div class="ac-btn2" >立即购买</div>
-			</div>
+    		<p class="p2">
+				<span class="span1"> 机构：{{item.shopName}}</span>
+				<span class="span1"> 老师：{{item.teacherName}}</span>
+				<span class="span1"> 时间：{{item.classStartTime | dateformatYMD}}开始</span>
+				<span class="span1" v-for="subitem in item.classCourseList"> 
+					<span v-if="subitem.schedType == 1">{{subitem.lessonDate | dateformatYMD}} </span>
+					<span v-if="subitem.schedType == 2">每周{{subitem.weekday}}</span>
+				</span>
+				<span class="span1" v-if='item.maxNormalNum-item.normalNum >= 0'> 剩余{{item.maxNormalNum-item.normalNum}}名额</span>
+				<span class="span1" v-if='item.maxNormalNum-item.normalNum < 0'> 剩余0名额</span>
+			</p>
     	</div>
     	<p v-if="classList.length === 0" class="no-order">暂无记录~</p>
     </div>
@@ -19,31 +26,27 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            classList: [],
-			studentId:0
+            courseClassList: [],
         }
     },
     computed: {
         ...mapGetters(['userinfo'])
     },
-	onShow() {
-		this.getClassList();
-	},
-	onLoad(e) {
-		this.studentId = e.studentId;
-	},
     methods: {
-		getClassList() {
+		onShow() {
+			this.getCourseClassList();
+		},
+		getCourseClassList() {
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/listCourseClass`,
+			    url: `${this.doMain}/course/courseLesson/listCourseClassByParentId`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { teacherId: this.userinfo.teacherId},
+			    data: { parentId: this.userinfo.parentId},
 			    success: res => {
 			        if (res.data.code === 0) {
-			            this.classList = res.data.data;
+						this.courseClassList = res.data.data;
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -53,14 +56,8 @@ export default {
 					}
 			    }
 			});
-		},
-		openToClassCourse(e){
-			let classId = e.currentTarget.dataset.classid;
-			uni.navigateTo({
-				 url: '../../me/course/qygkChooseClassCourse?studentId='+this.studentId+'&classId='+classId
-			});
 		}
-    },
+    }
 }
 </script>
 
@@ -102,7 +99,8 @@ page {
 			font-weight:bold;
 			line-height:49upx;
 			padding:20upx 20upx 20upx 20upx;
-			
+			.span1{
+			}
 			.span2{
 				float: right;
 			}
@@ -117,7 +115,7 @@ page {
 			.span1{
 			}
 			.span2{
-				float: right;
+				float: left;
 			}
 		}
 	}
@@ -126,9 +124,6 @@ page {
 		display: flex;
 		width: 100%;
 		height: 80upx;
-		border-top: 1upx solid #999;
-		padding-top: 20upx;
-
 		.ac-btn{
 			position: absolute;
 			float: right;
@@ -152,12 +147,14 @@ page {
 			font-size: 26upx;
 			color: #fff;
 			background: #0A9187;
-			right: 30upx;
-		}
-		.span1{
-			padding-left: 20upx;
+			right: 40upx;
 		}
 	}
-	
+}
+.span1{
+		display: block;
+	}
+.span2{
+	display:inline;
 }
 </style>

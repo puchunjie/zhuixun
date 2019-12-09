@@ -1,56 +1,165 @@
 <template>
     <div class="order-module">
-    	<div class="item"  v-for="item in classList" :key="item.orderId">
+		<div class="tankuang" v-if="isQrShow">
+		</div>
+		<div class="erweima-warp" v-if="isQrShow">
+			<p class="tip-word" v-if="order.payType == 1"> 请用支付宝扫如上二维码进行支付</p>
+			<p class="tip-word" v-if="order.payType == 2"> 请用微信扫如上二维码进行支付</p>
+			<tki-qrcode style="display:inline-block" ref="qrcode" cid="cid" :val="qrCodeUrl" :size="200" unit="upx" loadMake onval/>
+			<p class="tip-word" @click="hideQr">关闭</p>
+		</div>
+    	<div class="item" >
 			<span class="dian"></span>
-    		<p class="p1">
-				<span class="span1">{{item.studentName}}</span>
-				<span class="span2">{{item.className}}</span>
+    		<p class="p1" style="text-align: center;">
+				<span class="span1">下单成功</span>
 			</p>
-    		<p class="p2">
-				<span class="span1"> 剩余课时：{{item.remainClassHour}}</span>
-				<span  v-show="item.orderAgainState ==0" class="span2"> 提醒次数：{{item.orderAgainMsgNum}}</span>
+			<p class="p1">
+				<span class="span2">所属班级：{{order.className}}</span>
+			</p>
+			<p class="p1">
+				<span class="span2">课程安排：{{order.orderCourseList.length}}</span>
+			</p>
+			<p class="p1">
+				<span class="span2">课程金额：{{order.payedAmount/100}}</span>
+			</p>
+			<p class="p1" v-if="order.payType != 1 && order.payType != 2" >
+				<span class="span2" v-if="order.state == 0">是否缴费：否</span>
+				<span class="span2" v-if="order.state == 1">是否缴费：是</span>
 			</p>
 			<div class="bottom"> 
-				<div class="ac-btn" v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div>
-				<div class="ac-btn" v-show="item.orderAgainState == 0">缴费</div>
-				<div class="ac-btn2" v-show="item.orderAgainState == 0">提醒</div>
+				<div class="ac-btn" @click="showQr" v-show="order.payType == 1 || order.payType == 2">显示收款码</div>
+				<div class="ac-btn2" @click="sendQr" v-show="order.payType == 1 || order.payType == 2">发送收款码</div>
 			</div>
+			
+			<div class="bottom">
+				<div class="submit-btn-fixed" @click="openToPage">返回</div>
+			</div>
+			
     	</div>
-    	<p v-if="classList.length === 0" class="no-order">暂无记录~</p>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import tkiQrcode from 'tki-qrcode/components/tki-qrcode/tki-qrcode.vue'
 export default {
+	components: {tkiQrcode},
     data() {
         return {
-            classList: [],
-			studentId:0,
-			
+            order: null,
+			orderId:0,
+			qrCodeUrl:'',
+			isQrShow:false,
+			timerIndex:''//定时器
         }
     },
     computed: {
         ...mapGetters(['userinfo'])
     },
 	onShow() {
-		this.getClassList();
+		this.getOrder();
 	},
 	onLoad(e) {
-		this.studentId = e.studentId;
+		this.orderId = e.orderId;
+		this.qrCodeUrl = e.qrCodeUrl1+'?'+e.qrCodeUrl2+'='+e.qrCodeUrl3;
 	},
     methods: {
-		getClassList() {
+		getOrder() {
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/listCourseClass`,
+			    url: `${this.doMain}/order/orderDetailed`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { teacherId: this.userinfo.teacherId},
+			    data: { orderId: this.orderId},
 			    success: res => {
 			        if (res.data.code === 0) {
-			            this.classList = res.data.data;
+			            this.order = res.data.data;
+						// if(this.order.state == 0 && (this.order.payType == 1 || this.order.payType == 2)){
+						// 	this.timerIndex = setInterval(function(){
+						// 		uni.request({
+						// 		    method: 'POST',
+						// 		    url: `${this.doMain}/order/orderDetailed`,
+						// 		    header: {
+						// 		        'content-type': 'application/x-www-form-urlencoded'
+						// 		    },
+						// 		    data: { orderId: this.orderId},
+						// 		    success: res => {
+						// 		        if (res.data.code === 0) {
+						// 		            this.order = res.data.data;
+						// 					if(this.order.state != 0 && (this.order.payType == 1 || this.order.payType == 2)){
+						// 						if(this.timerIndex != '')
+						// 						clearInterval(this.timerIndex);
+						// 					}
+						// 		        }
+						// 		    }
+						// 		});
+						// 	},5000);
+						// }else if(this.order.state != 0 && (this.order.payType == 1 || this.order.payType == 2)){
+						// 	if(this.timerIndex != '')
+						// 	clearInterval(this.timerIndex);
+						// }
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		},
+		getOrderV2() {
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/order/orderDetailed`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { orderId: this.orderId},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            this.order = res.data.data;
+						if(this.order.state != 0 && (this.order.payType == 1 || this.order.payType == 2)){
+							if(this.timerIndex != '')
+							uni.clearInterval(this.timerIndex);
+						}
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		},
+		openToPage(){
+			uni.switchTab({
+				url: '../../me/index'
+			}) 
+		},
+		showQr(){
+			this.isQrShow = true;
+		},
+		hideQr(){
+			this.isQrShow = false;
+		},
+		sendQr(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/order/sendTiXing`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { orderId: this.orderId,teacherId:this.userinfo.teacherId},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            uni.showToast({
+			            	title:'发送成功',
+			            	icon: 'none',
+			            	duration: 1000
+			            })
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -106,7 +215,6 @@ page {
 			.span1{
 			}
 			.span2{
-				float: right;
 			}
 		}
 		.p2 {
@@ -130,8 +238,21 @@ page {
 		height: 80upx;
 		.ac-btn{
 			position: absolute;
+			float: left;
+			width: 40%;
+			height: 47upx;
+			line-height: 44upx;
+			text-align: center;
+			font-size: 26upx;
+			color: #fff;
+			background: #0A9187;
+			left: 20upx;
+			top: 17upx;
+		}
+		.ac-btn2{
+			position: absolute;
 			float: right;
-			width: 140upx;
+			width: 40%;
 			height: 47upx;
 			line-height: 44upx;
 			text-align: center;
@@ -141,19 +262,35 @@ page {
 			right: 20upx;
 			top: 17upx;
 		}
-		.ac-btn2{
-			position: absolute;
-			float: right;
-			width: 140upx;
-			height: 47upx;
-			line-height: 44upx;
-			text-align: center;
-			font-size: 26upx;
-			color: #fff;
-			background: #0A9187;
-			right: 190upx;
-			top: 17upx;
-		}
 	}
 }
+.erweima-warp {
+	    width: 670rpx;
+	    height: 450rpx;
+	    padding: 60rpx 0;
+	    border-radius: 8rpx;
+	    border: 1px solid #ccc;
+	    margin: 113rpx auto 10rpx;
+	    text-align: center;
+	    z-index: 999;
+	    position: absolute;
+	    background: #fff;
+	    margin-left: 32rpx;
+	}
+	.tip-word {
+	    font-size: 28upx;
+	    color: #333;
+	    text-align: center;
+	    line-height: 56upx;
+	    margin-bottom: 50upx;
+		
+	}
+	.tankuang{
+		position: absolute;
+		background: #000;
+		width: 100%;
+		height: 100%;
+		opacity: 0.5;
+		z-index:888
+	}
 </style>
