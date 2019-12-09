@@ -101,7 +101,7 @@ export default {
 				url:''
 			}, {
 				label: '我要请假',
-				icon: '/static/home/qingjia.png',
+				icon: '../me/leave/student',
 				url:''
 			}, {
 				label: '课程评价',

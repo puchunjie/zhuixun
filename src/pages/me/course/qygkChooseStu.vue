@@ -1,7 +1,6 @@
 <template>
     <div class="user-info">
         <div class="form-div">
-			
             <singleElection title="家长" v-model="parentId" @onConfirm="getStuList" :data="parentArray"></singleElection>
 			<singleElection title="学生" v-model="studentId" :data="studentArray" @onConfirm="getStudentId"></singleElection>
 		</div>
