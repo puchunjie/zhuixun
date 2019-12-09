@@ -263,6 +263,18 @@
 			"style": {
 				"navigationBarTitleText": "课程购买"
 			}
+		},
+		{
+			"path": "pages/me/institution/instView",
+			"style": {
+				"navigationBarTitleText": "机构详情"
+			}
+		},
+		{
+			"path": "pages/me/institution/instTeachers",
+			"style": {
+				"navigationBarTitleText": "师资介绍"
+			}
 		}
 	],
 	"globalStyle": {

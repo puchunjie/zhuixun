@@ -1,159 +1,90 @@
 <template>
 	<div class="class-detail-teacher">
-		<div class="tankuang" v-if="isQrShow">
-		</div>
-		<div class="erweima-warp" v-if="isQrShow">
-			<p class="tip-word">请向老师出示二维码签到</p>
-			<tki-qrcode style="display:inline-block" ref="qrcode" cid="cid" :val="studentId" :size="200" unit="upx" loadMake onval/>
-			<p class="tip-word" @click="hideQr">关闭</p>
-		</div>
-	    <div class="class-info">
-	        <div class="body">
-	            <div class="class-name">当前班级：{{courseClassStudentLesson.className }}</div>
-	            <div class="gp">
-	                <div class="left">时间：{{courseClassStudentLesson.startTime | dateformatYMDHM }} - {{courseClassStudentLesson.endTime | dateformatHM }}</div>
-	            </div>
-	            <div class="gp">
-	                <div class="left">地址：{{shop.districtFullName}}</div>
-	            </div>
-	            <div class="gp">
-	                <div class="left">耗费课时：{{course.lessonMinutes}}</div>
-	            </div>
-				<div class="bottom-btn">
-				    <div class="btn orange" @click="showQr">签到</div>
-				    <div class="btn green" @click="openToLeave">请假</div>
-				</div>
-	        </div>
-	    </div>
-		<div class="class-info">
-		    <div class="body">
-		        <p class="p4">上课须知</p>
-				<p class="p2">1、请自备画架、画板、铅笔、碳棒等上课必要耗材。</p>
-				<p class="p2">2、本课程没有课间休息，课程连贯到底。</p>
-				<p class="p2">3、上课迟到早退不补学时。</p>
-				<p class="p2">4、无故改课、换课、缺课学时不退。</p>
-			</div>
-		</div>
-		<div class="class-info">
-		    <p class="p4">课程介绍</p>
-		    {{course.description }}
-		</div>
 		<div class="class-info">
 		    <p class="p5">
 				<image class="logo" :src="shop.logoPic"></image>
 				{{shop.shopName }}
 			</p>
-			<p class="p6" @click="openToInstDetail">
-				查看机构
+			<p class="p5">
+				地址：{{shop.districtFullName}}
 			</p>
+			<p class="p5">
+				电话：{{shop.contactPhone}}
+			</p>
+			<p class="p6" @click="openToTeachers">
+				师资介绍
+			</p>
+		</div>
+		<div class="class-info">
+		    <p class="p4">简介</p>
+		    <rich-text class="rich-text" :nodes="richText"></rich-text>
+		</div>
+		<div class="class-info">
+		    <p class="p4">相册</p>
+			<span v-for="pic in shop.shopPicList">
+				<image class="logo" :src="pic.picUrl"></image>
+			</span>
+		</div>
+		<div class="class-info">
+		    <p class="p4">视频</p>
+			<span v-for="video in shop.shopVideoList">
+				<image class="logo" :src="video.videoUrl"></image>
+			</span>
 		</div>
 	</div>
 	
 </template>
 
 <script>
-import tkiQrcode from 'tki-qrcode/components/tki-qrcode/tki-qrcode.vue'
 import { mapGetters } from 'vuex'
+import { escape2Html } from '@/utils'
 export default {
-    components: {tkiQrcode},
     data() {
         return {
-			studentLessonId:null,
-			courseClassStudentLesson:"",
-			course:null,
-			shop:null,
-			qrsize: 120, // 二维码大小
-			studentId: 0,
-			isQrShow:false,
-			
+			shopId:0,
+			shop:''
         }
     },
     computed: {
 		...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
+		richText(){
+		    return escape2Html(this.shop.agencyIntro)
+		}
     },
     methods: {
-		getCourseDetail(){
+		getShopDetail(){
 			uni.request({
 			    method: 'POST',
-			    url: `${this.doMain}/course/studentLesson/view`,
+			    url: `${this.doMain}/shop/view`,
 			    header: {
 			        'content-type': 'application/x-www-form-urlencoded'
 			    },
-			    data: { studentLessonId: this.studentLessonId},
+			    data: { shopId: this.shopId},
 			    success: res => {
-					console.info(res.data);
 			        if (res.data.code === 0) {
-			            var resData = res.data.data;
-						this.course = resData.course;
-						this.shop = resData.shop;
-						this.courseClassStudentLesson = resData.courseClassStudentLesson;
-						this.shop.logoPic = this.imgUrl + this.shop.logoPic;
-						this.studentId = this.courseClassStudentLesson.studentId;
+			            this.shop = res.data.data;
 			        }
 			    }
 			});
 		},
-		teacherSign(){
-			uni.request({
-			    method: 'POST',
-			    url: `${this.doMain}/course/teacher/sign`,
-			    header: {
-			        'content-type': 'application/x-www-form-urlencoded'
-			    },
-			    data: { lessonId: this.lessonId , teacherId: this.userinfo.teacherId},
-			    success: res => {
-					console.info(res.data);
-			        if (res.data.code === 0) {
-			            uni.showToast({
-			            	title:'老师签到成功',
-			            	icon: 'none',
-			            	duration: 1000
-			            })
-						this.isSign = 1;
-			        }else{
-						uni.showToast({
-							title:res.data.fieldErrors[0].message,
-							icon: 'none',
-							duration: 1000
-						})
-					}
-			    }
+		openToTeachers(){
+			uni.navigateTo({
+				url: '../me/institution/instTeachers?shopId='+this.shopId
 			});
-		},
-		openToStudentSign(){
-			uni.navigateTo({
-				url: '../curriculum/studentRegistration?lessonId='+this.studentLessonId
-			});
-		},
-		showQr(){
-			this.isQrShow = true;
-		},
-		hideQr(){
-			this.isQrShow = false;
-		},
-		openToLeave(){
-			uni.navigateTo({
-				url:'../me/leave/student'
-			})
-		},
-		openToInstDetail(){
-			uni.navigateTo({
-				url:'../me/institution/instView?shopId='+this.shop.shopId
-			})
 		}
     },
 	onLoad(e) {
-		this.studentLessonId = e.studentLessonId;
+		this.shopId = e.shopId;
 	},
 	onShow() {
-		this.getCourseDetail();
+		this.getShopDetail();
 	}
 }
 </script>
 
 <style lang="less">
-@import url('../../styles/base.less');
+@import url('../../../styles/base.less');
 page {
     padding: 20upx 20upx 160upx;
 }
@@ -379,34 +310,5 @@ page {
 		width:80upx;
 		height: 80upx;
 		vertical-align: middle;
-	}
-	.erweima-warp {
-	    width: 670rpx;
-	    height: 450rpx;
-	    padding: 60rpx 0;
-	    border-radius: 8rpx;
-	    border: 1px solid #ccc;
-	    margin: 113rpx auto 10rpx;
-	    text-align: center;
-	    z-index: 999;
-	    position: absolute;
-	    background: #fff;
-	    margin-left: 32rpx;
-	}
-	.tip-word {
-	    font-size: 28upx;
-	    color: #333;
-	    text-align: center;
-	    line-height: 56upx;
-	    margin-bottom: 50upx;
-		
-	}
-	.tankuang{
-		position: absolute;
-		background: #000;
-		width: 100%;
-		height: 100%;
-		opacity: 0.5;
-		z-index:888
 	}
 </style>
