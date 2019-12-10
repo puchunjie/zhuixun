@@ -1,6 +1,6 @@
 <template>
 	<div class="message-module">
-		<div class="item"  v-for="item in messageList" :key="item.messageId">
+		<div class="item"  v-for="item in messageList" :key="item.messageId" @click="viewMessage" :data-linkparams="item.linkParams" :data-businesstype="item.businessType">
 			<p class="p1">{{item.messageTitle}}</p>
 			<p class="p2">{{item.createdTimestamp | dateformatYMDHM}}</p>
 			<p class="p3">{{item.messageContent}}</p>
@@ -44,6 +44,15 @@ export default {
 					}
 			    }
 			});
+		},
+		viewMessage(e){
+			let orderId = e.currentTarget.dataset.linkparams;
+			let businessType = e.currentTarget.dataset.businesstype;
+			if(orderId != null && orderId != '' && (businessType == 1 || businessType == 3)){
+				uni.navigateTo({
+					url:'../../me/order/orderView?orderId='+orderId
+				})
+			}
 		}
     },
 }

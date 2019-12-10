@@ -49,7 +49,7 @@ export const enumFilter = (value, key) => {
 }
 
 export const priceFilter = (value) => {
-    if (!value) return "";
+    if (!value) return "0.00";
     value = parseFloat(value/100).toFixed(2);
 	return value;
 };

@@ -281,6 +281,12 @@
 			"style": {
 				"navigationBarTitleText": "老师详情"
 			}
+		},
+		{
+			"path": "pages/me/order/orderView",
+			"style": {
+				"navigationBarTitleText": "订单详情"
+			}
 		}
 	],
 	"globalStyle": {
