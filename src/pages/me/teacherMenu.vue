@@ -30,7 +30,7 @@ export default {
                 icon: 'iconjiachang_goukeqingdan',
                 label: '试听排课',
                 color: '#55D0F8',
-                path: ''
+                path: '/pages/me/audition'
             }, {
                 icon: 'iconico',
                 label: '签约购课',

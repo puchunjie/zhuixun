@@ -59,10 +59,9 @@
 
 <script>
 import { mapActions } from 'vuex'
-/*import singleElection from '@/components/singleElection.vue'
-import citySelect from '@/components/citySelect.vue'*/
-export default /*Vue.extend*/({
-   /* components: {singleElection,citySelect},*/
+import citySelect from '@/components/citySelect.vue'
+export default{
+    components: {citySelect},
     data() {
         return {
             form: {
@@ -111,14 +110,14 @@ export default /*Vue.extend*/({
                     }
                 }
             });
-        }/*,
+        },
         cityOnConfirm(data) {
             this.form.provinceId = data.value[0];
             this.form.cityId = data.value[1];
             this.form.districtId = data.value[2];
-        }*/
+        }
     }
-})
+}
 </script>
 
 <style lang="less">

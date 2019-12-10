@@ -78,7 +78,7 @@ export default {
         },
 		openToAddShopOrStudent(){
 			if(this.isTeacher){
-				uni.navigateTo({url: '/pages/me/institution/add'});
+				uni.navigateTo({url: '/pages/me/institution/addInst'});
 			}else{
 				uni.navigateTo({url: '/pages/me/studentMana/add'});
 			}

@@ -94,7 +94,7 @@ export default {
 			}, {
 				label: '试听安排',
 				icon: '/static/home/goumai.png',
-				url:''
+				url:'../me/audition'
 			}],
 			parentEnters: [{
 				label: '上课签到',
