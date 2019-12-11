@@ -28,10 +28,10 @@ export default {
 	    ...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
 	},
+	onShow() {
+		this.getParentList();
+	},
 	methods:{
-		onShow() {
-			this.getParentList();
-		},
 		getParentList(){
 			uni.request({
 			    method: 'POST',

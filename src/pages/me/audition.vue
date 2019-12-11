@@ -1,9 +1,9 @@
 <template>
     <div class="audition-container">
         <div class="form-div">
-            <singleElection title="近期课程" v-model="courseId" @onConfirm="getList" :data="courseList"></singleElection>
-            <singleElection title="选择班级" v-model="classId" :data="classList"></singleElection>
-            <dateSelect title="选择时间"></dateSelect>
+            <singleElection title="近期课程" v-model="courseId" @onConfirm="getClassList"  :data="courseList"></singleElection>
+            <singleElection title="选择班级" v-model="classId" @onConfirm="getClass" :data="classList"></singleElection>
+            <dateSelect title="选择时间" v-model="dateStr"></dateSelect>
         </div>
     
         <div class="class-div">
@@ -12,13 +12,16 @@
             </div>
             <div class="time-title">选择时段</div>
             <div class="class-list">
-                <p class="empty" v-show="courseLessonList.length === 0">无数据</p>
-                <div class="cls-item" v-for="(item,i) in courseLessonList" :key="i" @click="chooseLesson" :data-lessonid="item.lessonId">{{ item.startTimeStr }}-{{item.endTimeStr}}</div>
+                <p class="empty" v-if="courseLessonList.length === 0">无数据</p>
+                <div class="cls-item" v-for="(item,i) in courseLessonList" :key="i" @click="chooseLesson" :data-lessonid="item.lessonId">
+				{{ item.startTimeStr }}-{{item.endTimeStr}}
+				<i class="iconfont icon-duigou checked" v-if="item.lessonId==lessonId">√</i>
+				</div>
             </div>
         </div>
     
         <div class="search-div">
-            <div class="submit-btn nomargin" style="width:100%">扫一扫</div>
+            <div class="submit-btn nomargin" style="width:100%" @click="scanStu">扫一扫</div>
     
             <div class="search-warp">
                 <div class="box">
@@ -53,25 +56,29 @@ export default {
         return {
 			courseList:[],
 			courseLessonList:[],
+			studentList:[],
             classList: [],
-            form: {
-                studentName: ''
-            },
 			courseId:0,
 			classId:0,
 			lessonId:0,
 			studentNameLike:'',
-			studentId:0
+			studentId:0,
+			dateStr:'',
+			studentId2:0
         }
     },
 	computed: {
 		...mapGetters(['userinfo'])
 	},
+	onShow(){
+		this.getCourseList();
+	},
     methods: {
         check(item, i) {
             item.check = !item.check;
         },
-        getClassList() {
+        getClassList(data) {
+			this.courseId = data.value;
 			uni.request({
 			    method: 'POST',
 			    url: `${this.doMain}/course/courseClass/listByCourseId`,
@@ -91,6 +98,9 @@ export default {
 			    }
 			});
         },
+		getClass(data){
+			this.classId = data.value;
+		},
 		getCourseList(){
 			uni.request({
 			    method: 'POST',
@@ -149,7 +159,7 @@ export default {
 		chooseLesson(e){
 			this.lessonId = e.currentTarget.dataset.lessonid;
 		},
-		chooseStu(){
+		chooseStu(e){
 			this.studentId = e.currentTarget.dataset.studentid;
 		},
 		searchStu(){
@@ -172,6 +182,52 @@ export default {
 			        if (res.data.code === 0) {
 			            this.studentList = res.data.data;
 			        }
+			    }
+			});
+		},
+		scanStu(){
+			uni.scanCode({
+			    /*onlyFromCamera: true,*/
+				scanType:['qrCode'],
+			    success:  res => {
+					let result = res.result; // 当needResult 为 1 时，扫码返回的结果
+					if(result !=null && result !=''){
+						let index = result.lastIndexOf("\/");  
+						let studentIdStr  = result .substring(index + 1, result.length);
+						if(studentIdStr !=null && studentIdStr !=''){
+							this.studentId2 = studentIdStr;
+							this.viewStudent();
+						}else{
+							uni.showToast({
+								title:'扫描结果错误',
+								icon: 'none',
+								duration: 1000
+							})
+						}
+					}
+			    }
+			});
+		},
+		viewStudent(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/student/view`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: {studentId:this.studentId2},
+			    success: res => {
+			        if (res.data.code === 0 && res.data.data != null) {
+						this.studentId = res.data.data.studentId;
+			            this.studentList = [];
+						this.studentList.push(res.data.data);
+			        }else{
+						uni.showToast({
+							title:'未查询到相关信息',
+							icon: 'none',
+							duration: 1000
+						})
+					}
 			    }
 			});
 		},
@@ -205,8 +261,8 @@ export default {
 			        	icon: 'none',
 			        	duration: 1000
 			        })
-					uni.redirectTo({
-						url:'../../me/audition'
+					uni.switchTab({
+						url:'../index/index'
 					})
 			    }
 			});
@@ -334,5 +390,9 @@ export default {
             }
         }
     }
+}
+.icon-duigou.checked {
+	color: #0b9186;
+	float:right;
 }
 </style>
