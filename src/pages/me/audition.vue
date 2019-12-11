@@ -133,6 +133,7 @@ export default Vue.extend({
 									lable:item.className
 								}
 							});
+							console.info(this.classList)
 						}
 			        }
 			    }
@@ -152,13 +153,13 @@ export default Vue.extend({
 			    success: res => {
 			        if (res.data.code === 0) {
 						if(res.data.data != null && res.data.data.length > 0){
-							this.courseList = res.data.data;
-							this.courseList.map(item => {
+							this.courseList = res.data.data.map(item => {
 								return{
 									value:item.courseId, 
 									lable:item.courseName
 								}
 							});
+							// console.info(this.courseList)
 							// for (var i = 0; i < res.data.data.length; i++) {
 							// 	let item = new Object();
 							// 	item["value"]=res.data.data[i].courseId;

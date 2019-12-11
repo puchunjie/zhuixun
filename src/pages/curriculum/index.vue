@@ -103,12 +103,12 @@ export default {
 		},
 		start() {
 			//避免重复多次轮询
-			if(this.interval) return
+			/*if(this.interval) return
 			console.log('开始')
 			this.interval = setInterval(() => {
 				//do something
 				this.getData();
-			}, 2000);
+			}, 2000);*/
 		},
 		stop() {
 			console.log('销毁');
