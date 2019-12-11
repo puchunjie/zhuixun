@@ -64,6 +64,16 @@ export default {
                 }
             },
             immediate: true
+        },
+        listData:{
+            handler: function(val) {
+                let item = this.listData.find(item => item.value === val);
+                if (item) {
+                    this.pickerValueDefault = [val];
+                    this.label = item.label || '';
+                }
+            },
+            deep: true
         }
     },
     methods: {
