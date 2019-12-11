@@ -37,7 +37,7 @@
         </div>
 
         <div class="bottom-btn">
-            <div class="btn orange">添加试听学员</div>
+            <div class="btn orange" @click="addStu">添加试听学员</div>
             <div class="btn green" v-if="isSign === 0" @click="teacherSign">老师签到</div>
 			<div class="btn green" v-if="isSign === 1" @click="openToStudentSign">学员签到</div>
         </div>
@@ -162,6 +162,13 @@ export default {
 		openToStudentSign(){
 			uni.navigateTo({
 				url: '../curriculum/studentRegistration?lessonId='+this.lessonId
+			});
+		},
+		addStu(){
+			let now = new Date(this.courseLesson.startTime*1000);
+			let dateStr = (now.getFullYear()) + "-" + (now.getMonth() + 1) + "-" +(now.getDate());
+			uni.navigateTo({
+				url: '../me/audition?flag=1&courseId='+this.courseLesson.courseId+'&classId='+this.courseLesson.classId+'&dateStr='+dateStr
 			});
 		}
     },

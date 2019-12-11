@@ -40,17 +40,17 @@
                 </div>
             </div>
         </div>
-    
         <div class="submit-btn-fixed" @click="submit">确定</div>
     
     </div>
 </template>
 
 <script>
+import Vue from "vue";
 import singleElection from '@/components/singleElection.vue'
 import dateSelect from '@/components/dateSelect.vue'
 import { mapGetters } from 'vuex'
-export default {
+export default Vue.extend({
     components: { dateSelect, singleElection },
     data() {
         return {
@@ -64,7 +64,8 @@ export default {
 			studentNameLike:'',
 			studentId:0,
 			dateStr:'',
-			studentId2:0
+			studentId2:0,
+			flag:0,//添加试听学员的入口0为首页和我的  1位课程详情
         }
     },
 	computed: {
@@ -72,12 +73,24 @@ export default {
 	},
 	onShow(){
 		this.getCourseList();
+		if(this.flag == 1){
+			this.getClassListV2();
+		}
+	},
+	onLoad(e) {
+		if(e.flag == 1){
+			this.flag = e.flag;
+			this.courseId = e.courseId;
+			this.classId = e.classId;
+			this.dateStr = e.dateStr;
+		}
 	},
     methods: {
         check(item, i) {
             item.check = !item.check;
         },
         getClassList(data) {
+			this.classList = [];
 			this.courseId = data.value;
 			uni.request({
 			    method: 'POST',
@@ -89,15 +102,42 @@ export default {
 			    success: res => {
 			        if (res.data.code === 0) {
 						if(res.data.data != null && res.data.data.length > 0){
-							for (var i = 0; i < res.data.data.length; i++) {
-								let item = {value:res.data.data[i].classId,label:res.data.data[i].className};
-								this.classList.push(item);
-							}
+							this.classList = res.data.data;
+							this.classList.map(item => {
+								return{
+									value:item.classId, 
+									lable:item.className
+								}
+							});
 						}
 			        }
 			    }
 			});
         },
+		getClassListV2() {
+			this.classList=[];
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/courseClass/listByCourseId`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: {shopId:this.userinfo.shopId,courseId:this.courseId},
+			    success: res => {
+			        if (res.data.code === 0) {
+						if(res.data.data != null && res.data.data.length > 0){
+							this.classList = res.data.data;
+							this.classList.map(item => {
+								return{
+									value:item.classId, 
+									lable:item.className
+								}
+							});
+						}
+			        }
+			    }
+			});
+		},
 		getClass(data){
 			this.classId = data.value;
 		},
@@ -112,10 +152,21 @@ export default {
 			    success: res => {
 			        if (res.data.code === 0) {
 						if(res.data.data != null && res.data.data.length > 0){
-							for (var i = 0; i < res.data.data.length; i++) {
-								let item = {value:res.data.data[i].courseId,label:res.data.data[i].courseName};
-								this.courseList.push(item);
-							}
+							this.courseList = res.data.data;
+							this.courseList.map(item => {
+								return{
+									value:item.courseId, 
+									lable:item.courseName
+								}
+							});
+							// for (var i = 0; i < res.data.data.length; i++) {
+							// 	let item = new Object();
+							// 	item["value"]=res.data.data[i].courseId;
+							// 	item["label"]=res.data.data[i].courseName;
+							// 	// this.courseList.push({value:res.data.data[i].courseId,lable:res.data.data[i].courseName});
+							// 	console.info(this.courseList);
+							// 	console.info(item);
+							// }
 						}
 			        }
 			    }
@@ -268,7 +319,7 @@ export default {
 			});
 		}
     }
-}
+})
 </script>
 
 <style lang="less">

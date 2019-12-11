@@ -68,6 +68,7 @@ export default {
     },
     methods: {
         showPicker() {
+			console.info(this.pickerValueDefault+'*/*/*/');
             this.$refs.mpvuePicker.show();
         },
         onConfirm(e) {
