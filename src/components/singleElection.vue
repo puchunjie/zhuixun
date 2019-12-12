@@ -78,6 +78,7 @@ export default {
     },
     methods: {
         showPicker() {
+            if(!this.$refs.mpvuePicker) return
             this.$refs.mpvuePicker.show();
         },
         onConfirm(e) {
