@@ -1,9 +1,11 @@
 <template>
     <div class="parent-mana-container">
 		<div class="top">
-			<p>全部家长：{{ parentList.length }}</p>
+			<p>全部家长：{{ parentList.length }}
+				<span class="icon-add" @click="openToAddParent">+</span>
+			</p>
 		</div>
-        <div class="item" v-for="item in parentList" :key="item.parentId">
+        <div class="item" v-for="(item,i) in parentList" :key="i" @tap="openToParentView" :data-parentId="item.parentId">
             <image class="gender-img" :src="'/static/head2.png'"></image>
             <div class="info">
                 <h3 class="name">{{ item.realName}}</h3>
@@ -45,7 +47,6 @@ export default {
 			    },
 			    data: { shopId: this.userinfo.shopId},
 			    success: res => {
-					console.info(this.userinfo.shopId);
 			        if (res.data.code === 0) {
 			            this.shop = res.data.data;
 			        }else{
@@ -80,6 +81,15 @@ export default {
 			    }
 			});
 		},
+		openToAddParent(){
+			uni.navigateTo({url: '/pages/me/parent/addParent'});
+		},
+		openToParentView(e){
+			var parentId = e.currentTarget.dataset.parentid;
+			uni.navigateTo({
+				url: '/pages/me/parent/view?parentId='+parentId
+			});
+		}
 	},
 }
 </script>
@@ -99,6 +109,13 @@ page {
 		width: 100%;
 		padding: 20upx 30upx 30upx;
 		margin-bottom: 20upx;
+		.icon-add{
+			position: absolute;
+			right:65upx;
+			top: 30rpx;
+			font-size: 45upx;
+			color:#92a4c3;
+		}
 	}
     .item {
 		background:#FFFFFF;
