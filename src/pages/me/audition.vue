@@ -1,8 +1,8 @@
 <template>
     <div class="audition-container">
         <div class="form-div">
-            <singleElection title="近期课程" v-model="courseId" @onConfirm="getClassList"  :data="courseList"></singleElection>
-            <singleElection title="选择班级" v-model="classId" @onConfirm="getClass" :data="classList"></singleElection>
+            <singleElection title="近期课程" v-model="courseId" @onConfirm="getClassList"  :data="courseArray"></singleElection>
+            <singleElection title="选择班级" v-model="classId" @onConfirm="getClass" :data="classArray"></singleElection>
             <dateSelect title="选择时间" v-model="dateStr"></dateSelect>
         </div>
     
@@ -40,31 +40,34 @@
                 </div>
             </div>
         </div>
-    
         <div class="submit-btn-fixed" @click="submit">确定</div>
     
     </div>
 </template>
 
 <script>
+import Vue from "vue";
 import singleElection from '@/components/singleElection.vue'
 import dateSelect from '@/components/dateSelect.vue'
 import { mapGetters } from 'vuex'
-export default {
+export default Vue.extend({
     components: { dateSelect, singleElection },
     data() {
         return {
 			courseList:[],
+			courseArray:[],
 			courseLessonList:[],
 			studentList:[],
             classList: [],
+			classArray: [],
 			courseId:0,
 			classId:0,
 			lessonId:0,
 			studentNameLike:'',
 			studentId:0,
 			dateStr:'',
-			studentId2:0
+			studentId2:0,
+			flag:0,//添加试听学员的入口0为首页和我的  1位课程详情
         }
     },
 	computed: {
@@ -72,12 +75,24 @@ export default {
 	},
 	onShow(){
 		this.getCourseList();
+		if(this.flag == 1){
+			this.getClassListV2();
+		}
+	},
+	onLoad(e) {
+		if(e.flag == 1){
+			this.flag = e.flag;
+			this.courseId = e.courseId;
+			this.classId = e.classId;
+			this.dateStr = e.dateStr;
+		}
 	},
     methods: {
         check(item, i) {
             item.check = !item.check;
         },
         getClassList(data) {
+			this.classList = [];
 			this.courseId = data.value;
 			uni.request({
 			    method: 'POST',
@@ -89,15 +104,40 @@ export default {
 			    success: res => {
 			        if (res.data.code === 0) {
 						if(res.data.data != null && res.data.data.length > 0){
-							for (var i = 0; i < res.data.data.length; i++) {
-								let item = {value:res.data.data[i].classId,label:res.data.data[i].className};
-								this.classList.push(item);
+							this.classList = res.data.data;
+							if(this.classList != null && this.classList.length > 0){
+								for (var i = 0; i < this.classList.length; i++) {
+									let item = {value:this.classList[i].classId,label:this.classList[i].className};
+									this.classArray.push(item);
+								}
 							}
 						}
 			        }
 			    }
 			});
         },
+		getClassListV2() {
+			this.classList=[];
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/courseClass/listByCourseId`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: {shopId:this.userinfo.shopId,courseId:this.courseId},
+			    success: res => {
+			        if (res.data.code === 0) {
+						this.classList = res.data.data;
+						if(this.classList != null && this.classList.length > 0){
+							for (var i = 0; i < this.classList.length; i++) {
+								let item = {value:this.classList[i].classId,label:this.classList[i].className};
+								this.classArray.push(item);
+							}
+						}
+			        }
+			    }
+			});
+		},
 		getClass(data){
 			this.classId = data.value;
 		},
@@ -111,13 +151,13 @@ export default {
 			    data: {shopId:this.userinfo.shopId},
 			    success: res => {
 			        if (res.data.code === 0) {
-						let arr = res.data.data || [];
-						this.courseList = arr.map(item => {
-							return {
-								value: item.courseId,
-								label: item.courseName
+						this.courseList = res.data.data;
+						if(this.courseList != null && this.courseList.length > 0){
+							for (var i = 0; i < this.courseList.length; i++) {
+								let item = {value:this.courseList[i].courseId,label:this.courseList[i].courseName};
+								this.courseArray.push(item);
 							}
-						})
+						}
 			        }
 			    }
 			});
@@ -269,7 +309,7 @@ export default {
 			});
 		}
     }
-}
+})
 </script>
 
 <style lang="less">

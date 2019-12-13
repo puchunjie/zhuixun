@@ -1,11 +1,11 @@
 <template>
     <view class="login-container">
-        <div class="switch-bar">
-            <div class="sw-item" @click="goAdd">添加未报名学员</div>
-            <div class="sw-item active">已有追寻账户登录</div>
-        </div>
-    
-        <div class="login-form">
+        <!-- TODO<div class="switch-bar">
+             <div class="sw-item" @click="goAdd">添加未报名学员</div>
+            <div class="sw-item active">已有追寻账户登录</div> 
+        </div>-->
+		
+        <div class="login-form" style="padding-top: 50upx;">
             <div class="login-form-group">
                 <div class="label">账号</div>
                 <div class="value">

@@ -11,9 +11,9 @@
 				<span  v-show="item.orderAgainState ==0" class="span2"> 提醒次数：{{item.orderAgainMsgNum}}</span>
 			</p>
 			<div class="bottom"> 
-				<div class="ac-btn" v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div>
+				<!-- TODO <div class="ac-btn" v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div> 
 				<div class="ac-btn" v-show="item.orderAgainState == 0">缴费</div>
-				<div class="ac-btn2" v-show="item.orderAgainState == 0">提醒</div>
+				<div class="ac-btn2" v-show="item.orderAgainState == 0">提醒</div>-->
 			</div>
     	</div>
     	<p v-if="orderList.length === 0" class="no-order">暂无记录~</p>
