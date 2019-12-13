@@ -14,9 +14,9 @@
 			    </div>
 			</div>
             <div class="form-group">
-                <div class="label">选择省</div>
+               <!-- <div class="label">选择省</div> -->
                 <div class="value">
-                     <citySelect required @onConfirm="cityOnConfirm"></citySelect>
+                     <citySelect ref="cityPicker" noPadding @onConfirm="cityOnConfirm" selectType></citySelect>
                 </div>
                 <i class="iconfont iconarrow"></i>
             </div>

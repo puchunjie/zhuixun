@@ -7,8 +7,8 @@
             <div class="info-panel">
                 <div class="head">
                     {{userName}}
-                    <div class="btn" @click="openToAddShopOrStudent">{{ isTeacher ? '' : '＋增加新学员' }}</div>
-					<!-- <div class="btn" @click="openToAddShopOrStudent">＋{{ isTeacher ? '增加新机构TODO' : '增加新学员' }}</div> -->
+                    <!-- <div class="btn" @click="openToAddShopOrStudent">{{ isTeacher ? '' : '＋增加新学员' }}</div> -->
+					<div class="btn" @click="openToAddShopOrStudent">＋{{ isTeacher ? '增加新机构' : '增加新学员' }}</div>
                 </div>
                 <div class="content">
                     <image class="h-logo" src='/static/boy.png'></image>
@@ -79,7 +79,7 @@ export default {
         },
 		openToAddShopOrStudent(){
 			if(this.isTeacher){
-				/*uni.navigateTo({url: '/pages/me/institution/addInst'}); TODO*/
+				uni.navigateTo({url: '/pages/me/institution/addInst'});
 			}else{
 				uni.navigateTo({url: '/pages/me/studentMana/add'});
 			}
