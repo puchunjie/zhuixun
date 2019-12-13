@@ -1,15 +1,27 @@
 <script>
-	export default {
-		onLaunch: function() {
-			// console.log('App Launch')
-		},
-		onShow: function() {
-			// console.log('App Show')
-		},
-		onHide: function() {
-			// console.log('App Hide')
+import { mapActions } from 'vuex'
+export default {
+	methods: {
+		...mapActions(['setCityData']),
+		getCitys() {
+			uni.request({
+				method: 'POST',
+				url: `${this.doMain}/shop/getLocation`,
+				header: {
+					'content-type': 'application/x-www-form-urlencoded'
+				},
+				success: (res) => {
+					if (res.data.code === 0) {
+						this.setCityData(res.data.data)
+					}
+				}
+			});
 		}
+	},
+	async created() {
+		this.getCitys();
 	}
+}
 </script>
 
 <style lang="less">
