@@ -43,11 +43,11 @@ export default {
             tabs: [{
                     label: '批量签到',
                     value: 1
-                },
+                }/* TODO ,
                 {
                     label: '扫码签到',
                     value: 2
-                }
+                }*/
             ],
             active: 1,
             list: [],

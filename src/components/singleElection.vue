@@ -53,12 +53,14 @@ export default {
     },
     watch: {
         pickerValueDefault(val) {
+			console.info("*"+val)
             this.$emit('input', val[0])
         },
         value: {
             handler: function(val) {
                 let item = this.listData.find(item => item.value === val);
                 if (item) {
+					console.info("**"+item)
                     this.pickerValueDefault = [val];
                     this.label = item.label || '';
                 }
@@ -67,8 +69,10 @@ export default {
         },
         listData:{
             handler: function(val) {
+				console.info("***"+val)
                 let item = this.listData.find(item => item.value === val);
                 if (item) {
+					console.info("****"+item)
                     this.pickerValueDefault = [val];
                     this.label = item.label || '';
                 }

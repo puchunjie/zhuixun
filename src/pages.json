@@ -287,6 +287,24 @@
 			"style": {
 				"navigationBarTitleText": "订单详情"
 			}
+		},
+		{
+			"path": "pages/me/parent/addParent",
+			"style": {
+				"navigationBarTitleText": "添加家长"
+			}
+		},
+		{
+			"path": "pages/me/parent/view",
+			"style": {
+				"navigationBarTitleText": "家长详情"
+			}
+		},
+		{
+			"path": "pages/me/parent/addStudent",
+			"style": {
+				"navigationBarTitleText": "添加学员"
+			}
 		}
 	],
 	"globalStyle": {

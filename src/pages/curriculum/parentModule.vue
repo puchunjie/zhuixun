@@ -20,7 +20,8 @@
 						 <span v-if="item.state === 2">已请假</span>
 						 <span v-if="item.state === 1">已签到</span>
 						 <span v-if="item.state === 3">已旷课</span>
-						 <span class="qingjia" @click="addQingJia" :data-lessonid="item.studentLessonId" v-if="item.state === 0">请假</span>
+						 <span class="qingjia" @click="openToLeave" :data-lessonid="item.studentLessonId" v-if="item.state === 0">请假</span>
+						 <!-- TODO 这个请假是要跳弹框的，我跳转到了请假那里 -->
 					</div>
 				</div>
             </div>
@@ -49,7 +50,12 @@ export default {
 			uni.navigateTo({
 				url: '../curriculum/classDetail_parent?studentLessonId='+studentLessonId
 			});
-		}
+		},
+		openToLeave(){
+			uni.navigateTo({
+				url:'../me/leave/student'
+			})
+		},
 	}
 }
 </script>
