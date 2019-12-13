@@ -8,7 +8,7 @@
         <block v-else>
             <div class="label">所属区域</div>
             <div class="value" @click="showPicker">
-                <div class="select" :class="{ 'vvv': label!=='' }">{{ label || '请选择'  }}<i class="iconfont arrow icondibudaohanglan"></i></div>
+                <div class="select" :class="{ 'vvv': label!=='' }">{{ label || '请选择'  }}<i class="iconfont arrow iconarrow"></i></div>
             </div>
         </block>
     
