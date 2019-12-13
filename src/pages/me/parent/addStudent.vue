@@ -16,8 +16,12 @@
             <dateSelect title="出生日期" v-model="form.birthday"></dateSelect>
             <singleElection title="性别" v-model="form.gender" :data="[{value: 1,label: '男'},{value: 2,label: '女'}]"></singleElection>
         </div>
-    
-        <div class="submit-btn-fixed" @click="submit">提交</div>
+		<div class="query-btn">
+			<div class="btn" @click="submit" :data-type="1">+添加</div>
+		</div>
+		<div class="query-btn">
+			<div class="btn" @click="submit" :data-type="2">+添加并签约购课</div>
+		</div>
     </div>
 </template>
 
@@ -46,13 +50,37 @@ export default  Vue.extend({
 	    ...mapGetters(['isTeacher']),
 		...mapGetters(['userinfo']),
 	},
+	onLoad:function(e) {
+		this.form.parentId = e.parentId;
+	},
+	onShow() {
+		this.getParent();
+	},
 	methods:{
 		...mapActions(['setUserInfo', 'setTeacher']),
-		onShow() {
-			this.form.mobilePhone = this.userinfo.mobilePhone;
-			this.form.parentId = this.userinfo.parentId;
+		getParent() {
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/parent/view`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { "parentId":this.form.parentId},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            this.form.mobilePhone = res.data.data.parent.mobilePhone;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
 		},
-		submit(){
+		submit(e){
+			var type = e.currentTarget.dataset.type;
 			if(this.form.studentName == ''){
 				uni.showToast({
 					title:'姓名不能为空',
@@ -91,9 +119,15 @@ export default  Vue.extend({
 							icon: 'none',
 							duration: 1000
 						})
-			            uni.navigateTo({
-			                url: '../../me/studentMana/index'
-			            });
+						if(type ===2){
+							uni.navigateTo({
+								 url: '/pages/me/course/qygkChooseClass?studentId='+res.data.data
+							});
+						}else{
+							uni.navigateTo({
+								url: '/pages/me/parent/view?parentId='+this.form.parentId
+							});
+						}	
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -123,5 +157,19 @@ export default  Vue.extend({
         height: 106upx;
         border-radius: 106upx;
     }
+	.query-btn {
+	    width: 100%;
+	    padding: 20upx 40upx;
+	    .btn {
+	        width: 100%;
+	        height: 66upx;
+	        line-height: 66upx;
+	        text-align: center;
+	        border: 1px dotted @dark_green;
+	        border-radius: 8upx;
+	        color: @dark_green;
+	        background: #fff;
+	    }
+	}
 }
 </style>

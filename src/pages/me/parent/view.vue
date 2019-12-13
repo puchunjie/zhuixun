@@ -31,7 +31,7 @@
 			</div>
 		</div>
 		<div class="query-btn">
-			<div class="btn" @click="toAddStudent">+添加学员</div>
+			<div class="btn" @click="openToAddStudent">+添加学员</div>
 		</div>
 	</div>
 </template>
@@ -85,9 +85,6 @@ export default {
 				url: '/pages/me/parent/addStudent?parentId='+this.parentId
 			});
 		},
-		toAddStudent(){
-			
-		}	
 	},
 }
 </script>
