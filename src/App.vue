@@ -6,7 +6,7 @@ export default {
 		getCitys() {
 			uni.request({
 				method: 'POST',
-				url: `${this.doMain}/shop/getLocation`,
+				url: `${this.doMain}/location/getLocationV2`,
 				header: {
 					'content-type': 'application/x-www-form-urlencoded'
 				},
