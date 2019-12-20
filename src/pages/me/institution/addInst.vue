@@ -47,11 +47,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import citySelect from '@/components/citySelect.vue'
 import dateSelect from '@/components/dateSelect.vue'
 import upload from '@/components/upload.vue'
 export default {
     components: { citySelect, dateSelect, upload },
+	computed: {
+	    ...mapGetters(['isTeacher']),
+		...mapGetters(['userinfo']),
+	},
     data() {
         return {
             form: {
@@ -64,7 +70,6 @@ export default {
                 districtId: 0,
 				creatorId:'',
 				logoImg:'',
-				
             },
         }
     },
@@ -74,9 +79,10 @@ export default {
             this.form.logoImg = imgs;
         },
         submit() {
+			this.form.creatorId = this.userinfo.teacherId;
             uni.request({
                 method: 'POST',
-                url: `${this.doMain}/shop/teacher/addShop`,
+                url: `${this.doMain}/shop/teacher/addShopV2`,
                 header: {
                     'content-type': 'application/x-www-form-urlencoded'
                 },

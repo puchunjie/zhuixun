@@ -150,7 +150,7 @@ export default {
 		quitToIndex(){
 			this.setUserInfo({});
 			this.setTeacher(null);
-			uni.navigateTo({url: '/pages/transfer/index'});
+			uni.reLaunch({url: '/pages/transfer/index'});
 		}, 
 		openToModify(){
 			if(this.isTeacher){
