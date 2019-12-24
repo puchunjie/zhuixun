@@ -9,15 +9,15 @@
 		</div>
 	    <div class="class-info">
 	        <div class="body">
-	            <div class="class-name">当前班级：{{courseClassStudentLesson.className }}</div>
+	            <div class="class-name">当前班级：{{courseClassStudentLesson.className || ''}}</div>
 	            <div class="gp">
 	                <div class="left">时间：{{courseClassStudentLesson.startTime | dateformatYMDHM }} - {{courseClassStudentLesson.endTime | dateformatHM }}</div>
 	            </div>
 	            <div class="gp">
-	                <div class="left">地址：{{shop.districtFullName}}</div>
+	                <div class="left">地址：{{shop.districtFullName|| ''}}</div>
 	            </div>
 	            <div class="gp">
-	                <div class="left">耗费课时：{{course.lessonMinutes}}</div>
+	                <div class="left">耗费课时：{{course.lessonMinutes|| ''}}</div>
 	            </div>
 				<div class="bottom-btn">
 				    <div class="btn orange" @click="showQr">签到</div>

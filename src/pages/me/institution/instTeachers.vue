@@ -3,8 +3,8 @@
 		<div class="class-info" v-for="item in teacherList" @click="openToTeacher" :data-teacherid="item.teacherId">
 		    <p class="p5">
 			<image class="logo" :src="item.portrait"></image>
-				<span>{{item.userName }}</span>
-				<span class="smallfont">{{item.college }}</span>
+				<span>{{item.userName || ''}}</span>
+				<span class="smallfont">{{item.college || ''}}</span>
 				<span class="smallfont" v-if="item.degree == 1">高中</span>
 				<span class="smallfont" v-if="item.degree == 2">中专</span>
 				<span class="smallfont" v-if="item.degree == 3">大专</span>
@@ -18,7 +18,7 @@
 		<div class="class-info">
 			<p class="p5">
 				<image class="logo" :src="shop.logoPic"></image>
-				{{shop.shopName }}
+				{{shop.shopName || ''}}
 			</p>
 			<p class="p6" @click="openToInstDetail">
 				查看机构
@@ -34,7 +34,7 @@ export default {
         return {
 			shopId:0,
 			shop:'',
-			teacherList:''
+			teacherList:[]
         }
     },
     computed: {
