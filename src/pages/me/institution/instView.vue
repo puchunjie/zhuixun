@@ -3,13 +3,13 @@
 		<div class="class-info">
 		    <p class="p5">
 				<image class="logo" :src="shop.logoPic"></image>
-				{{shop.shopName }}
+				{{shop.shopName || '' }}
 			</p>
 			<p class="p2">
-				地址：{{shop.districtFullName}}
+				地址：{{shop.districtFullName || ''}}
 			</p>
 			<p class="p2">
-				电话：{{shop.contactPhone}}
+				电话：{{shop.contactPhone || ''}}
 			</p>
 			<p class="p6" @click="openToTeachers">
 				师资介绍
@@ -42,7 +42,7 @@ export default {
     data() {
         return {
 			shopId:0,
-			shop:'',
+			shop:null,
 			agencyIntro:''
         }
     },

@@ -7,17 +7,17 @@
                 <div class="text">请假：{{qingJiaNum}}</div>
             </div>
             <div class="body">
-                <div class="class-name">{{courseLesson.className}} <span class="tag">签到中</span></div>
+                <div class="class-name">{{courseLesson.className|| ''}} <span class="tag">签到中</span></div>
                 <div class="gp">
-                    <div class="left">{{courseLesson.courseName}}</div>
+                    <div class="left">{{courseLesson.courseName|| ''}}</div>
                     <div class="right">{{courseLesson.startTime | dateformatYMD}}({{courseLesson.startTime | dateformatWeek}})</div>
                 </div>
                 <div class="gp">
-                    <div class="left">{{courseLesson.classRoom}}</div>
+                    <div class="left">{{courseLesson.classRoom|| ''}}</div>
                     <div class="right">{{courseLesson.startTime | dateformatHM}}-{{courseLesson.endTime | dateformatHM}}</div>
                 </div>
                 <div class="gp">
-                    <div class="left">{{courseLesson.teacherName}}</div>
+                    <div class="left">{{courseLesson.teacherName|| ''}}</div>
                     <div class="right">{{studentNum}}人</div>
                 </div>
             </div>

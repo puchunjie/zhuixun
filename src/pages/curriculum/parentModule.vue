@@ -2,9 +2,9 @@
 	<div class="parent-module">
 		<div class="jigou-list-container mt30">
 			<label>课日程总数 {{list.length}}</label>
-			<div class="item" v-for="(item,i) in list" :key="i" @click="openToCourse" :data-studentlessonid="item.studentLessonId">
-				<div class="info">
-					<h3 class="time">课程：{{ item.courseName }}
+            <div class="item" v-for="(item,i) in list" :key="i" >
+                <div class="info" @click="openToCourse" :data-studentlessonid="item.studentLessonId">
+                    <h3 class="time">课程：{{ item.courseName }}
 						<span class="name lessontype" v-if="item.lessonType === 0">正式课</span>
 						<span class="name lessontype" v-if="item.lessonType === 1">试听课</span>
 						<span class="name lessontype" v-if="item.lessonType === 2">临时课</span>
@@ -15,19 +15,18 @@
 				</div>
 				<div class="lessonbottom">
 					<div class="place">
-						教室：{{ item.classRoom}} &nbsp;&nbsp;学员：{{ item.studentName}}
-						<span v-if="item.state === 2">已请假</span>
-						<span v-if="item.state === 1">已签到</span>
-						<span v-if="item.state === 3">已旷课</span>
-						<span class="qingjia" @click="openToLeave" :data-lessonid="item.studentLessonId" v-if="item.state === 0">请假</span>
-						<!-- TODO 这个请假是要跳弹框的，我跳转到了请假那里 -->
+					     教室：{{ item.classRoom}}  &nbsp;&nbsp;学员：{{ item.studentName}}
+						 <span v-if="item.state === 2">已请假</span>
+						 <span v-if="item.state === 1">已签到</span>
+						 <span v-if="item.state === 3">已旷课</span>
+						 <span class="qingjia" @click="openToLeave" :data-studentlessonid="item.studentLessonId" v-if="item.state === 0">请假</span>
+						 <!-- TODO 这个请假是要跳弹框的，我跳转到了请假那里 -->
 					</div>
 				</div>
 			</div>
-			<p v-if="list.length === 0" class="no-class">今日暂无课程~</p>
 		</div>
-	
-		<div class="dialog-modle" v-if="modelShow">
+
+		<div class="dialog-modle">
 			<div class="d-warp">
 				<div class="content">
 					<textarea class="d-textarea" name="" id="" cols="30" rows="10"></textarea>
@@ -37,7 +36,6 @@
 					</div>
 				</div>
 			</div>
-	
 		</div>
 	</div>
 </template>
@@ -57,26 +55,68 @@ export default {
 			modelShow: false
 		}
 	},
-	methods: {
-		openToCourse(e) {
+    data() {
+        return {
+			leaveReason:'',
+			payShow:false,
+			actions: [{
+			        name: '取消'
+			    },
+			    {
+			        name: '',
+			        color: '#ed3f14',
+			        loading: false
+			    }
+			],
+			studentLessonId: ''
+        }
+    },
+	methods:{
+		openToCourse(e){
 			var studentLessonId = e.currentTarget.dataset.studentlessonid;
 			uni.navigateTo({
 				url: '../curriculum/classDetail_parent?studentLessonId=' + studentLessonId
 			});
 		},
-		openToLeave() {
+		openToLeave(e){
+			// this.payShow = true;
+			// this.studentLessonId = e.currentTarget.dataset.studentlessonid;
 			uni.navigateTo({
 				url: '../me/leave/student'
 			})
 		},
-		showModel(){
-			uni.hideTabBar();
-			this.modelShow = true;
+		handleClick({ leaveReason }) {
+		    if (leaveReason === '') {
+				uni.showToast({
+				    title: '请填写请假理由'
+				})
+		        this.payShow = false;
+		    } else {
+				console.info(leaveReason);
+		        this.actions[1].loading = true;
+		        uni.request({
+		            method: 'POST',
+		            url: `${this.doMain}/leave/addLevaeForJson`,
+		            header: {
+		                'content-type': 'application/x-www-form-urlencoded'
+		            },
+		            data: {
+		                leaveReason: leaveReason,
+		                studentLessonId: this.studentLessonId
+		            },
+		            success: res => {
+		                if (res.data.code === 0) {
+		                    this.actions[1].loading = false;
+		                    uni.showToast({
+		                        title: '请假成功'
+		                    })
+		                    this.payShow = false
+		                }
+		            }
+		        });
+		
+		    }
 		},
-		hideModel(){
-			uni.showTabBar();
-			this.modelShow = false;
-		}
 	}
 }
 </script>
