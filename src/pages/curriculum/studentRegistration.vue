@@ -57,7 +57,7 @@ export default {
     },
     computed: {
         checkAll() {
-            return this.list.filter(item => !item.state).every(item => item.check)
+            return this.list.filter(item => item.state === 0).every(item => item.check)
         }
     },
     methods: {
@@ -71,9 +71,11 @@ export default {
         },
         setAllCheck() {
             let checkAll = this.checkAll;
+			console.info(checkAll);
             this.list.forEach(item => {
                 item.check = !checkAll;
             })
+			console.info(this.list);
         },
         getList() {
 			uni.request({
@@ -86,7 +88,13 @@ export default {
 			    success: res => {
 					console.info(res.data);
 			        if (res.data.code === 0) {
-			            this.list = res.data.data;
+			            let list = res.data.data;
+						if(list != null && list.length > 0){
+							this.list = list.map(item => {
+							    item.check = false;
+							    return item
+							})
+						}
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,
@@ -96,10 +104,7 @@ export default {
 					}
 			    }
 			});
-            this.list.map(item => {
-                item.check = false;
-                return item
-            })
+            
         },
 		signForBatch(){			  
 			let studentIds = '';
@@ -229,6 +234,11 @@ export default {
             line-height: 99upx;
             font-size: 34upx;
         }
+		.sd-item {
+		    .check{
+		        color: green;
+		    }
+		}
     }
 }
 </style>

@@ -121,7 +121,9 @@ export default {
 		}
 	},
 	onShow() {
-		this.startTime = this.getNowFormatDate();
+		if(this.startTime == null){
+			this.startTime = this.getNowFormatDate();
+		}
 		/*this.setUserInfo({parentId:4,shopId:6});*/
 		/*this.setUserInfo({teacherId:14,shopId:6,userName:'梁慧'});
 		this.setTeacher(true);*/
