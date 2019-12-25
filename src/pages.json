@@ -329,12 +329,12 @@
 				"iconPath": "static/tab/tab_05.png",
 				"selectedIconPath": "static/tab/tab_16.png"
 			},
-			{
+			/*{
 				"pagePath": "pages/find/index",
 				"text": "发现",
 				"iconPath": "static/tab/tab_07.png",
 				"selectedIconPath": "static/tab/tab_17.png"
-			},
+			},*/
 			{
 				"pagePath": "pages/me/index",
 				"text": "我的",

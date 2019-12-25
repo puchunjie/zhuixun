@@ -52,7 +52,7 @@
 			<institutionList :list="lessonList"></institutionList>
 		</div>
 	
-		<h3 class="title">发现</h3>
+		<!-- <h3 class="title">发现</h3>
 		<div class="find-banners">
 			<image class="banner" src="/static/home/find01.png"></image>
 			<image class="banner" src="/static/home/find02.png"></image>
@@ -63,7 +63,7 @@
 				<div class="value" >{{ item.articleName }}</div>
 				<div class="time">{{ item.createdTimestamp | dateformatYMD}}</div>
 			</div>
-		</div>
+		</div> -->
 	</view>
 </template>
 
