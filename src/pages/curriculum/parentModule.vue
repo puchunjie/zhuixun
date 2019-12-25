@@ -26,7 +26,7 @@
 			</div>
 		</div>
 
-		<div class="dialog-modle">
+		<div class="dialog-modle" v-if="modelShow">
 			<div class="d-warp">
 				<div class="content">
 					<textarea class="d-textarea" name="" id="" cols="30" rows="10"></textarea>
@@ -117,6 +117,14 @@ export default {
 		
 		    }
 		},
+		showModel(){
+			uni.hideTabBar();
+			this.modelShow = true;
+		},
+		hideModel(){
+			uni.showTabBar();
+			this.modelShow = false;
+		}
 	}
 }
 </script>
