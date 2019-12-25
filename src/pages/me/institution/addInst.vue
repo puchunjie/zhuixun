@@ -11,7 +11,7 @@
                 <div class="form-group block">
                     <div class="label">机构LOGO</div>
                     <div class="value">
-                        <upload ref="upload" @onChange="fujianChange" ></upload>
+                        <upload ref="upload" @onChange="fujianChange" :viewMode="viewMode"></upload>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
             </div>
 			<view class="section form-group">
 			    <view class="section__title label">开始时间</view>
-			    <picker class="value" v-model="form.openTime" mode="time" start="09:01" end="21:01" @change="bindStartTimeChange">
+			    <picker class="value" style="padding: 38upx 0 0 40upx;" v-model="form.openTime" mode="time" start="09:01" end="21:01" @change="bindStartTimeChange">
 			        <view style="height: 50upx;">
 			            {{form.openTime || '请选择营业开始时间'}}
 			        </view>
@@ -32,7 +32,7 @@
 			</view>
 			<view class="section form-group">
 			    <view class="section__title label">结束时间</view>
-			    <picker class="value" style="line-height: 50upx;" v-model="form.stopTime" mode="time" start="09:01" end="21:01" @change="bindStopTimeChange">
+			    <picker class="value" style="padding: 38upx 0 0 40upx;" v-model="form.stopTime" mode="time" start="09:01" end="21:01" @change="bindStopTimeChange">
 			        <view style="height: 50upx;">
 			            {{form.stopTime|| '请选择营业结束时间'}}
 			        </view>
@@ -71,15 +71,18 @@ export default {
 				creatorId:'',
 				logoImg:'',
             },
+			viewMode:false
         }
     },
     methods: {
         ...mapActions(['setUserInfo']),
         fujianChange(imgs) {
             this.form.logoImg = imgs;
+			this.viewMode = true
         },
         submit() {
 			this.form.creatorId = this.userinfo.teacherId;
+			console.info(this.form);
             uni.request({
                 method: 'POST',
                 url: `${this.doMain}/shop/teacher/addShopV2`,
