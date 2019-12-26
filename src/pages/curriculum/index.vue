@@ -31,8 +31,14 @@ export default {
 	methods: {
 		...mapActions(['setUserInfo', 'setTeacher']),
 		tapDate(data) {
-			console.log(data.fullDate);
 			this.startTime = data.fullDate;
+			if (this.isTeacher) {
+				this.getCourseLessonList();
+			} else {
+				this.getCourseLessonListForParent();
+			}
+		},
+		tapDateForParent() {
 			if (this.isTeacher) {
 				this.getCourseLessonList();
 			} else {
@@ -49,7 +55,6 @@ export default {
 				data: { "teacherId": this.userinfo.teacherId, "shopId": this.userinfo.shopId, "startTime": this.startTime },
 				success: res => {
 					if (res.data.code === 0) {
-						console.info(res.data.data);
 						this.lessonlist = res.data.data;
 					} else {
 						uni.showToast({
