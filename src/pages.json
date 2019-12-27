@@ -305,6 +305,24 @@
 			"style": {
 				"navigationBarTitleText": "添加学员"
 			}
+		},
+		{
+			"path": "pages/curriculum/courseAdjust",
+			"style": {
+				"navigationBarTitleText": "课程调整"
+			}
+		},
+		{
+			"path": "pages/curriculum/courseAdjust_single",
+			"style": {
+				"navigationBarTitleText": "单节调课"
+			}
+		},
+		{
+			"path": "pages/curriculum/courseAdjust_batch",
+			"style": {
+				"navigationBarTitleText": "批量调课"
+			}
 		}
 	],
 	"globalStyle": {

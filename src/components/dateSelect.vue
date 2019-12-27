@@ -99,6 +99,7 @@ export default {
     methods: {
         bindChange(e){
             this.inValue = e;
+			this.$emit('bindChange', e)
         }
     }
 }

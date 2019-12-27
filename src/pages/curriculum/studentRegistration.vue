@@ -109,7 +109,7 @@ export default {
 		signForBatch(){			  
 			let studentIds = '';
 			this.list.forEach(item => {
-				if(item.check){
+				if(item.check && item.state === 0){
 					studentIds += item.studentId+",";
 				}
 			})

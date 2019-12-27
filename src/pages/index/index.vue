@@ -87,11 +87,11 @@ export default {
 				label: '我要请假',
 				icon: '/static/home/qingjia.png',
 				url:'../me/leave/teacher'
-			}, /* TODO{
+			},{
 				label: '课程调整',
 				icon: '/static/home/pingjia.png',
-				url:''
-			},*/ {
+				url:'../curriculum/courseAdjust'
+			},{
 				label: '试听安排',
 				icon: '/static/home/goumai.png',
 				url:'../me/audition'
