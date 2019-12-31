@@ -17,7 +17,7 @@
 	                <div class="left">地址：{{shop.districtFullName|| ''}}</div>
 	            </div>
 	            <div class="gp">
-	                <div class="left">耗费课时：{{course.lessonMinutes|| ''}}</div>
+	                <div class="left">耗费课时：{{courseClassCourse.classHours|| ''}}</div>
 	            </div>
 				<div class="bottom-btn">
 				    <div class="btn orange" @click="showQr">签到</div>
@@ -25,7 +25,7 @@
 				</div>
 	        </div>
 	    </div>
-		<div class="class-info">
+		<!-- <div class="class-info">
 		    <div class="body">
 		        <p class="p4">上课须知</p>
 				<p class="p2">1、请自备画架、画板、铅笔、碳棒等上课必要耗材。</p>
@@ -33,7 +33,7 @@
 				<p class="p2">3、上课迟到早退不补学时。</p>
 				<p class="p2">4、无故改课、换课、缺课学时不退。</p>
 			</div>
-		</div>
+		</div> -->
 		<div class="class-info">
 		    <p class="p4">课程介绍</p>
 		    {{course.description }}
@@ -65,6 +65,7 @@ export default {
 			qrsize: 120, // 二维码大小
 			studentId: 0,
 			isQrShow:false,
+			courseClassCourse:{}
 			
         }
     },
@@ -87,6 +88,7 @@ export default {
 			            var resData = res.data.data;
 						this.course = resData.course;
 						this.shop = resData.shop;
+						this.courseClassCourse = resData.courseClassCourse;
 						this.courseClassStudentLesson = resData.courseClassStudentLesson;
 						this.shop.logoPic = this.imgUrl + this.shop.logoPic;
 						this.studentId = this.courseClassStudentLesson.studentId;

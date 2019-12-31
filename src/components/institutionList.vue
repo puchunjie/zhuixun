@@ -1,6 +1,6 @@
 <template>
     <div class="jigou-list-container">
-        <div class="item" v-for="(item,i) in list" :key="i">
+        <div class="item" v-for="(item,i) in list" :key="i" @click="toCourse">
             <image class="icon" mode="aspectFill" :src="item.icon"></image>
             <div class="info">
                 <h3 class="time">{{ item.time | dateformatYMD}} {{ item.week }}  {{ item.time | dateformatHM}}</h3>
@@ -20,17 +20,7 @@ export default {
         list: {
             type: Array,
             default: function() {
-                return [{
-                    icon: '/static/home/logo01.png',
-                    time: '2019-03-07 周六 14:00',
-                    place: '追寻艺术培训',
-                    name: '周杰伦'
-                }, {
-                    icon: '/static/home/logo01.png',
-                    time: '2019-03-07 周六 14:00',
-                    place: '追寻艺术培训',
-                    name: '周杰伦轮'
-                }]
+                return []
             }
         }
     },
@@ -39,6 +29,13 @@ export default {
 
         }
     },
+	methods:{
+		toCourse(){
+			uni.switchTab({
+				url: '/pages/curriculum/index'
+			})
+		}
+	}
 }
 </script>
 

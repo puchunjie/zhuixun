@@ -4,7 +4,7 @@
             <image class="add-icon" src="/static/home/add.png"></image>请添加机构
         </div> -->
     
-        <div class="item" v-for="(item,i) in list" :key="i">
+        <div class="item" v-for="(item,i) in list" :key="i" @click="toCourse">
             <image class="icon" mode="aspectFill" :src="item.logoPic"></image>
             <div class="info">
                 <h3 class="time" >{{item.shopName}}</h3>
@@ -33,6 +33,13 @@ export default {
 
         }
     },
+	methods:{
+		toCourse(){
+			uni.switchTab({
+				url: '../pages/curriculum/index'
+			})
+		}
+	}
 }
 </script>
 
