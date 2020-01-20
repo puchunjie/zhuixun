@@ -8,7 +8,7 @@ import './styles/iconfont.css';
 
 Vue.config.productionTip = false
 Vue.prototype.doMain = 'https://zhuixuncn.com/zapi/webService';
-Vue.prototype.imgUrl = 'https://ptpic.oss-cn-hangzhou.aliyuncs.com/wechat_img';
+Vue.prototype.imgUrl = 'https://zhuixunpic.oss-cn-hangzhou.aliyuncs.com/wechat_img';
 Vue.prototype.version = '1.0.5';
 Vue.prototype.$clearData = obj => JSON.parse(JSON.stringify(obj));
 Vue.prototype.ScEnumKeys = ScEnumKeys;
