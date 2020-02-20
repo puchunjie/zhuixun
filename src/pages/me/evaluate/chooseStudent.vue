@@ -45,13 +45,20 @@ export default {
     },
     methods: {
 		check(item) {
-			this.studentLesson.map(item => {
-			    item.check = false;
-			    return item
-			})
-		    item.check = !item.check;
-			this.studentLessonId = item.studentLessonId;
-			this.studentName = item.studentName;
+			if(item.teacherEvaluationed === 0){
+				this.studentLesson.map(item => {
+					item.check = false;
+					return item
+				})
+				item.check = !item.check;
+				this.studentLessonId = item.studentLessonId;
+				this.studentName = item.studentName;
+			}
+			if(item.teacherEvaluationed === 1){
+				uni.navigateTo({
+					url:'./evaluateView?studentLessonId='+item.studentLessonId
+				})
+			}
 		},
 		getLessonDetail(){
 			uni.request({

@@ -26,9 +26,20 @@ export default {
 	onLoad() {
 
 	},
+	onShow(){
+		let role = uni.getStorageSync('role');
+		if(role !== ""){
+			if(role === 'parent'){
+				uni.navigateTo({url: '/pages/login/parent'})
+			}else{
+				uni.navigateTo({url: '/pages/login/teacher'})
+			}
+		}
+	},
 	methods: {
 		goRouter(enter,i){
 			this.active = i;
+			console.info('i的值'+this.active);
 			setTimeout(() => {
 				uni.navigateTo({url: enter.url})
 			},500)

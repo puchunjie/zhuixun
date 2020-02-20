@@ -20,13 +20,9 @@
     
         <div class="content" v-if="active === 2">
             <div class="erweima-warp">
-                <tki-qrcode style="display:inline-block" ref="qrcode" cid="cid" :val="'xxxxxxxxxxxxxx'" :size="200" unit="upx" loadMake onval/>
+                <image style='width:200upx;height: 200upx;' src="../../static/sao.png" @click="saoma"></image>
             </div>
-            <p class="tip-word">xxx签到成功</p>
-    
-            <div class="fix-btottom">
-                <div class="btn">提交</div>
-            </div>
+            <p class="tip-word">{{tipword}}</p>
         </div>
     
     
@@ -43,16 +39,18 @@ export default {
             tabs: [{
                     label: '批量签到',
                     value: 1
-                }/* TODO ,
+                } ,
                 {
                     label: '扫码签到',
                     value: 2
-                }*/
+                }
             ],
             active: 1,
             list: [],
 			lessonId:0,
-			studentIds:''
+			studentIds:'',
+			studentId:0,
+			tipword:''
         }
     },
     computed: {
@@ -147,6 +145,47 @@ export default {
 					}
 					this.getList()
 			    }
+			});
+		},
+		signForSingel(){
+			uni.showLoading({ title: '处理中' });
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/course/student/qianDao`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { lessonId: this.lessonId , studentId: this.studentId},
+			    success: res => {
+					uni.hideLoading();
+					if (res.data.code === 0) {
+						this.tipword = res.data.data.studentName + ':签到成功';
+			        }else{
+						this.tipword = res.data.fieldErrors[0].message;
+					}
+			    }
+			});
+		},
+		saoma(){
+			uni.scanCode({
+				scanType:['qrCode'],
+				success:  res => {
+					let result = res.result; // 当needResult 为 1 时，扫码返回的结果
+					if(result !=null && result !=''){
+						let index = result.lastIndexOf("\/");  
+						let studentIdStr  = result .substring(index + 1, result.length);
+						if(studentIdStr !=null && studentIdStr !=''){
+							this.studentId = studentIdStr;
+							this.signForSingel();
+						}else{
+							uni.showToast({
+								title:'扫描结果错误',
+								icon: 'none',
+								duration: 1000
+							})
+						}
+					}
+				}
 			});
 		}
     },

@@ -36,7 +36,7 @@ export default {
 	methods:{
 		openToEnterInst(){
 			uni.navigateTo({
-				url: '../../me/institution/enterInstForSearch'
+				url: '../../me/institution/enterInstIndex'
 			});
 		},
 		getShopList(){

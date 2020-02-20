@@ -148,6 +148,14 @@ export default {
 			})
 		},
 		quitToIndex(){
+			if(this.isTeacher){
+				uni.setStorageSync('teacherLoginName','');
+				uni.setStorageSync('teacherPwd','');
+			}else{
+				uni.setStorageSync('parentLoginName','');
+				uni.setStorageSync('parentPwd','');
+			}
+			uni.setStorageSync('role','');
 			this.setUserInfo({});
 			this.setTeacher(null);
 			uni.reLaunch({url: '/pages/transfer/index'});

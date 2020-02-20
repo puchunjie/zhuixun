@@ -80,6 +80,9 @@ export default {
                 data: {mobilePhone:this.form.mobilePhone},
                 success: res => {
                     if (res.data.code === 0) {
+						//保存家长端的账号和密码进本地
+						uni.setStorageSync('teacherLoginName',this.form.mobilePhone);
+						uni.setStorageSync('role',"teacher");
                         this.setUserInfo(res.data.data);
                         this.setTeacher(true);
                         uni.switchTab({

@@ -11,9 +11,9 @@
 				<span  v-show="item.orderAgainState ==0" class="span2"> 提醒次数：{{item.orderAgainMsgNum}}</span>
 			</p>
 			<div class="bottom"> 
-				<!-- TODO <div class="ac-btn" v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div> 
-				<div class="ac-btn" v-show="item.orderAgainState == 0">缴费</div>
-				<div class="ac-btn2" v-show="item.orderAgainState == 0">提醒</div>-->
+				<div class="ac-btn" @click="paike(item)"  v-show="item.orderAgainId ==null ||  item.orderAgainId=='' ">排课</div> 
+				<div class="ac-btn" @click="jiaofei(item)" v-show="item.orderAgainState == 0">缴费</div>
+				<div class="ac-btn2" @click="tixing(item)" v-show="item.orderAgainState == 0">提醒</div>
 			</div>
     	</div>
     	<p v-if="orderList.length === 0" class="no-order">暂无记录~</p>
@@ -46,6 +46,41 @@ export default {
 			    success: res => {
 			        if (res.data.code === 0) {
 			            this.orderList = res.data.data;
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		},
+		paike(item){
+			uni.navigateTo({
+				url:'./paike?orderId='+item.orderId
+			})
+		},
+		jiaofei(item){
+			uni.navigateTo({
+				url:'./xuke?orderId='+item.orderAgainId
+			})
+		},
+		tixing(item){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/order/sendTiXing`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: { orderId: item.orderId,teacherId:this.userinfo.teacherId},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            uni.showToast({
+			            	title:'发送成功',
+			            	icon: 'none',
+			            	duration: 1000
+			            })
 			        }else{
 						uni.showToast({
 							title:res.data.fieldErrors[0].message,

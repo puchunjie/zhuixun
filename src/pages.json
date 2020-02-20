@@ -323,6 +323,30 @@
 			"style": {
 				"navigationBarTitleText": "批量调课"
 			}
+		},
+		{
+			"path": "pages/me/evaluate/evaluateView",
+			"style": {
+				"navigationBarTitleText": "评价详情"
+			}
+		},
+		{
+			"path": "pages/me/course/xuke",
+			"style": {
+				"navigationBarTitleText": "续课"
+			}
+		},
+		{
+			"path": "pages/me/course/paike",
+			"style": {
+				"navigationBarTitleText": "排课"
+			}
+		},
+		{
+			"path": "pages/me/institution/enterInstIndex",
+			"style": {
+				"navigationBarTitleText": "加入机构"
+			}
 		}
 	],
 	"globalStyle": {

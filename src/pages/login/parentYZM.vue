@@ -46,6 +46,10 @@ export default {
 		getYZM(data){
 			this.form.yzmtrue = data
 		},
+		onShow(){
+			//从本地取家长端的账号和密码
+			this.form.mobilePhone = uni.getStorageSync('parentLoginName');
+		},
         submit() {
 			if(this.form.mobilePhone == ''){
 				uni.showToast({
@@ -81,6 +85,8 @@ export default {
                 success: res => {
                     if (res.data.code === 0) {
                         this.setUserInfo(res.data.data);
+						uni.setStorageSync('role',"parent");
+						uni.setStorageSync('parentLoginName',this.form.mobilePhone);
                         this.setTeacher(false);
                         uni.switchTab({
                             url: '/pages/index/index'

@@ -15,7 +15,7 @@ export default {
                 icon: 'iconjiachang_shangkeqiandao',
                 label: '上课签到',
                 color: '#80d5f1',
-                path: ''
+                path: '/pages/curriculum/index'
             }, {
                 icon: 'iconjiachang_woyaoqingjia',
                 label: '我要请假',
@@ -57,9 +57,15 @@ export default {
 	methods: {
 		openToPath(url){
 			console.info(url);
-			uni.navigateTo({
-				url: url
-			});
+			if(url === '/pages/curriculum/index'){
+				uni.switchTab({
+					url:url
+				})
+			}else{
+				uni.navigateTo({
+					url: url
+				});
+			}
 		}
 	}
 		 

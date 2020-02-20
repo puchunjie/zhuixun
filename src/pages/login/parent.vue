@@ -54,6 +54,9 @@ export default {
 			//从本地取家长端的账号和密码
 			this.form.mobilePhone = uni.getStorageSync('parentLoginName');
 			this.form.pwd = uni.getStorageSync('parentPwd');
+			if(this.form.mobilePhone !== ""){
+				this.loginAuto();
+			}
 		},
         submit() {
 			if(this.form.mobilePhone == ''){
@@ -72,9 +75,6 @@ export default {
 				})
 				return false;
 			}
-			//保存家长端的账号和密码进本地
-			uni.setStorageSync('parentLoginName',this.form.mobilePhone);
-			uni.setStorageSync('parentPwd',this.form.pwd);
             uni.request({
                 method: 'POST',
                 url: `${this.doMain}/parent/loginByPwd`,
@@ -84,6 +84,10 @@ export default {
                 data: this.form,
                 success: res => {
                     if (res.data.code === 0) {
+						//保存家长端的账号和密码进本地
+						uni.setStorageSync('parentLoginName',this.form.mobilePhone);
+						uni.setStorageSync('parentPwd',this.form.pwd);
+						uni.setStorageSync('role',"parent");
                         this.setUserInfo(res.data.data);
 						console.info("家长信息"+res.data.data)
 						this.setTeacher(false);
@@ -99,7 +103,32 @@ export default {
 					}
                 }
             });
-        }
+        },
+		loginAuto(){
+			uni.request({
+			    method: 'POST',
+			    url: `${this.doMain}/parent/login`,
+			    header: {
+			        'content-type': 'application/x-www-form-urlencoded'
+			    },
+			    data: {mobilePhone:this.form.mobilePhone},
+			    success: res => {
+			        if (res.data.code === 0) {
+			            this.setUserInfo(res.data.data);
+			            this.setTeacher(false);
+			            uni.switchTab({
+			                url: '/pages/index/index'
+			            });
+			        }else{
+						uni.showToast({
+							title:res.data.fieldErrors[0].message,
+							icon: 'none',
+							duration: 1000
+						})
+					}
+			    }
+			});
+		}
     }
 }
 </script>

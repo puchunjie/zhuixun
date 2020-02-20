@@ -254,7 +254,7 @@ export default {
 		},
 		openToAddInst(){
 			uni.navigateTo({
-				url: '../me/institution/enterInstForSearchParent'
+				url: '../me/institution/enterInstIndex'
 			});
 		},
 		openToAddInstTeacher(){
